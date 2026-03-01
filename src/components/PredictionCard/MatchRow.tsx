@@ -15,7 +15,7 @@ function Crest({ url, fallback }: { url: string | null | undefined; fallback: st
   if (!url) {
     return (
       <div
-        className="w-5 h-5 rounded-full grid place-items-center text-[10px]"
+        className="w-5 h-5 rounded-full grid place-items-center text-[10px] flex-shrink-0"
         style={{ background: '#F2EEE9', border: '1px solid rgba(29,29,29,0.10)' }}
       >
         {fallback}
@@ -26,7 +26,7 @@ function Crest({ url, fallback }: { url: string | null | undefined; fallback: st
     <img
       src={mediaUrl(url)}
       alt=""
-      className="w-5 h-5 rounded-full object-cover"
+      className="w-5 h-5 rounded-full object-cover flex-shrink-0"
       style={{ border: '1px solid rgba(29,29,29,0.10)' }}
       loading="lazy"
     />
@@ -42,7 +42,7 @@ export function MatchRow({ leg, variant, showDivider }: MatchRowProps) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full text-left flex items-center gap-3 px-4 py-3 transition-colors"
+        className="w-full text-left flex items-center gap-2 px-4 py-2.5 transition-colors"
         style={{
           background: variant === 'single' ? '#FFFFFF' : 'transparent',
           borderRadius: variant === 'single' ? '8px' : undefined,
@@ -51,36 +51,45 @@ export function MatchRow({ leg, variant, showDivider }: MatchRowProps) {
         onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = variant === 'single' ? '#FAFAFA' : 'rgba(29,29,29,0.02)' }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = variant === 'single' ? '#FFFFFF' : 'transparent' }}
       >
-        {/* Time + crests */}
-        <div className="min-w-[42px] flex flex-col items-center gap-1">
-          <div
-            className="text-[14px] font-bold leading-none"
+        {/* Time + TZ */}
+        <div className="flex items-baseline gap-1 flex-shrink-0">
+          <span
+            className="text-[13px] font-bold leading-none"
             style={{ fontFamily: "'DM Mono', monospace", color: '#1D1D1D' }}
           >
             {kickoff.time}
-          </div>
-          <div
-            className="text-[8px] leading-none"
+          </span>
+          <span
+            className="text-[9px] leading-none"
             style={{ fontFamily: "'DM Mono', monospace", color: '#777777' }}
           >
             {kickoff.tz}
-          </div>
-          <div className="flex mt-1">
-            <Crest url={leg.left_icon_url} fallback="⚽" />
-            <div className="-ml-1">
-              <Crest url={leg.right_icon_url} fallback="🛡" />
-            </div>
+          </span>
+        </div>
+
+        {/* Crests */}
+        <div className="flex items-center flex-shrink-0">
+          <Crest url={leg.left_icon_url} fallback="⚽" />
+          <div className="-ml-1">
+            <Crest url={leg.right_icon_url} fallback="🛡" />
           </div>
         </div>
 
-        {/* Pick + match */}
-        <div className="flex-1">
-          <div className="text-[14px] font-medium leading-tight" style={{ color: '#1D1D1D' }}>
+        {/* Pick · Match */}
+        <div className="flex-1 flex items-baseline gap-1 min-w-0 overflow-hidden">
+          <span
+            className="text-[13px] font-medium leading-snug truncate"
+            style={{ color: '#1D1D1D' }}
+          >
             {leg.pick_title}
-          </div>
-          <div className="text-[12px] mt-0.5" style={{ color: '#4F4841', fontWeight: 300 }}>
+          </span>
+          <span className="text-[11px] flex-shrink-0" style={{ color: 'rgba(29,29,29,0.25)' }}>·</span>
+          <span
+            className="text-[12px] leading-snug truncate"
+            style={{ color: '#4F4841', fontWeight: 300 }}
+          >
             {leg.match_label}
-          </div>
+          </span>
         </div>
 
         <ChevronDown

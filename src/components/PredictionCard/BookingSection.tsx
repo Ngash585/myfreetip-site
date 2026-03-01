@@ -10,9 +10,6 @@ interface BookingSectionProps {
   selectedBookieId: string | number
   onBookieChange: (id: string | number) => void
   activeBookie: TipCard['bookies'][0] | undefined
-  selectedStake: number
-  onStakeChange: (stake: number) => void
-  activeReturn: { return_label: string; return_amount?: number; stake_label?: string } | undefined
   timerState: TimerState
 }
 
@@ -21,9 +18,6 @@ export function BookingSection({
   selectedBookieId,
   onBookieChange,
   activeBookie,
-  selectedStake,
-  onStakeChange,
-  activeReturn,
   timerState,
 }: BookingSectionProps) {
   const bookieName = activeBookie?.name ?? 'Bookie'
@@ -38,13 +32,6 @@ export function BookingSection({
       />
       <CodeBlock
         activeBookie={activeBookie}
-        selectedStake={selectedStake}
-        onStakeChange={onStakeChange}
-        activeReturn={
-          activeReturn
-            ? { stake_label: activeReturn.stake_label ?? '', return_label: activeReturn.return_label }
-            : undefined
-        }
         timerState={timerState}
       />
       <HowToUse bookieName={bookieName} />

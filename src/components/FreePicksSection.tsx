@@ -41,7 +41,7 @@ export function FreePicksSection() {
     <div className="bg-[#1a2634] rounded-2xl overflow-hidden">
       {/* Header + tabs */}
       <div className="flex items-center justify-between px-4 border-b border-[#2a3a4a]">
-        <h2 className="text-sm font-bold text-white uppercase tracking-wider py-3">
+        <h2 className="text-xs font-bold text-white uppercase tracking-widest py-3">
           Free Picks
         </h2>
         <div className="flex">

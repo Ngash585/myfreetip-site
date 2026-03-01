@@ -20,25 +20,6 @@ function formatDate(iso: string): string {
   });
 }
 
-function Thumbnail({ article }: { article: NewsArticle }) {
-  if (article.cover_url) {
-    return (
-      <div className="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden">
-        <img
-          src={article.cover_url}
-          alt={article.title}
-          className="w-full h-full object-cover"
-        />
-      </div>
-    );
-  }
-  return (
-    <div className="w-16 h-16 flex-shrink-0 rounded-xl bg-[#0f1923] border border-[#2a3a4a] flex items-center justify-center text-2xl">
-      {CATEGORY_ICON[article.category] ?? "📰"}
-    </div>
-  );
-}
-
 export function LatestNewsSnippet() {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
 
@@ -53,44 +34,55 @@ export function LatestNewsSnippet() {
   return (
     <section>
       {/* Header */}
-      <div className="flex items-end justify-between mb-4">
+      <div className="flex items-end justify-between mb-6">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">
-              Latest news
-            </span>
-          </div>
-          <h2 className="text-2xl font-extrabold text-white leading-none">
+          <p className="text-xs font-semibold text-emerald-400 uppercase tracking-widest mb-2">
+            Latest news
+          </p>
+          <h2 className="text-2xl font-extrabold text-white tracking-tight leading-none">
             Football News
           </h2>
         </div>
         <Link
           to="/sports-news"
-          className="text-sm font-semibold text-emerald-400 hover:underline whitespace-nowrap"
+          className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors whitespace-nowrap"
         >
           All articles →
         </Link>
       </div>
 
-      {/* Article rows */}
-      <div className="flex flex-col gap-3">
+      {/* Article grid — stacked on mobile, 3-col on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {articles.map((article) => (
           <Link
             key={article.id}
             to={`/sports-news/${article.slug}`}
-            className="flex items-center gap-4 bg-[#1a2634] rounded-2xl p-4 hover:ring-1 hover:ring-emerald-500/40 transition"
+            className="group flex flex-col bg-[#1a2634] rounded-2xl overflow-hidden border border-[#2a3a4a] hover:border-emerald-500/40 transition-colors"
           >
-            <Thumbnail article={article} />
+            {/* Cover image / icon */}
+            <div className="h-36 w-full flex-shrink-0 overflow-hidden bg-[#0f1923]">
+              {article.cover_url ? (
+                <img
+                  src={article.cover_url}
+                  alt={article.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-4xl opacity-30">
+                  {CATEGORY_ICON[article.category] ?? "📰"}
+                </div>
+              )}
+            </div>
 
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1">
+            {/* Text */}
+            <div className="flex flex-col flex-1 p-4 gap-1.5">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-emerald-400">
                 {article.category}
               </p>
-              <p className="text-sm font-bold text-white leading-snug line-clamp-2">
+              <p className="text-sm font-bold text-white leading-snug line-clamp-3 flex-1">
                 {article.title}
               </p>
-              <p className="text-xs text-[#8a9bb0] mt-1">
+              <p className="text-xs text-white/35 mt-1">
                 {formatDate(article.published_at)}
               </p>
             </div>

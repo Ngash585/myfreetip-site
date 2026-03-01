@@ -8,7 +8,7 @@ import { LatestNewsSnippet } from "@/components/LatestNewsSnippet";
 import { HeroSection } from "@/components/HeroSection";
 
 export default function Home() {
-  const [bestBet, setBestBet]           = useState<TipCard | null>(null);
+  const [bestBet, setBestBet]               = useState<TipCard | null>(null);
   const [bestBetLoading, setBestBetLoading] = useState(true);
 
   useEffect(() => {
@@ -19,45 +19,51 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="px-4 py-6 text-white max-w-2xl mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      {/* Hero */}
-      <HeroSection />
+      {/* ── Hero + Best Bet — single col mobile, 2-col desktop ── */}
+      <div className="pt-10 pb-16 lg:pt-16 lg:pb-20 lg:grid lg:grid-cols-[1fr_440px] lg:gap-16 lg:items-start">
 
-      {/* Best Bet Today */}
-      <section>
-        {bestBetLoading && <PredictionCardSkeleton />}
-        {!bestBetLoading && bestBet && (
-          <>
-            <div className="mb-2 flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-semibold text-[#8a9bb0] uppercase tracking-wide">
-                Best Bet Today
-              </span>
-            </div>
-            <PredictionCard card={bestBet} />
-          </>
-        )}
-        {!bestBetLoading && !bestBet && (
-          <p className="text-[#8a9bb0] text-sm">No pick available today.</p>
-        )}
-      </section>
+        <HeroSection />
 
-      {/* Free Picks snippet */}
-      <section className="mt-8">
-        <FreePicksSection />
-      </section>
+        {/* Best Bet card — stacks below on mobile, sticky right col on desktop */}
+        <div className="mt-8 lg:mt-0 lg:sticky lg:top-24">
+          {bestBetLoading && <PredictionCardSkeleton />}
 
-      {/* Latest News */}
-      <section className="mt-8">
-        <LatestNewsSnippet />
-      </section>
+          {!bestBetLoading && bestBet && (
+            <>
+              <div className="mb-3 flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-semibold text-white/40 uppercase tracking-widest">
+                  Best Bet Today
+                </span>
+              </div>
+              <PredictionCard card={bestBet} />
+            </>
+          )}
 
-      {/* Analyst Win Rate */}
-      <section className="mt-8">
-        <AnalystWinRateSection stepNumber={5} />
-      </section>
+          {!bestBetLoading && !bestBet && (
+            <p className="text-white/40 text-sm">No pick available today.</p>
+          )}
+        </div>
+      </div>
 
+      {/* ── Full-width sections ── */}
+      <div className="flex flex-col gap-16 pb-20">
+
+        <section>
+          <FreePicksSection />
+        </section>
+
+        <section>
+          <LatestNewsSnippet />
+        </section>
+
+        <section>
+          <AnalystWinRateSection stepNumber={5} />
+        </section>
+
+      </div>
     </div>
   );
 }

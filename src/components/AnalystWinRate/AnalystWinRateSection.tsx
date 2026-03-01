@@ -43,19 +43,13 @@ export function AnalystWinRateSection({
   return (
     <section>
       {/* Section header — gold step-circle + label */}
-      <div className="flex items-center gap-2.5 mb-4">
-        <div
-          className="flex-shrink-0 h-6 w-6 rounded-full border-2 flex items-center justify-center"
-          style={{ borderColor: '#F4B400', color: '#F4B400' }}
-        >
+      <div className="flex items-center gap-2.5 mb-6">
+        <div className="flex-shrink-0 h-6 w-6 rounded-full border-2 border-emerald-500 text-emerald-400 flex items-center justify-center">
           <span className="font-mono text-[11px] font-bold leading-none">
             {stepNumber}
           </span>
         </div>
-        <span
-          className="font-mono text-[12px] font-extrabold uppercase tracking-[0.16em]"
-          style={{ color: '#F4B400' }}
-        >
+        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
           {heading}
         </span>
       </div>

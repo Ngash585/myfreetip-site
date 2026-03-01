@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface CardHeaderProps {
   title: string
   type?: string | null

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { TipCard } from '@/lib/api'
 import { mediaUrl } from '@/lib/api'
 import { ChevronDown } from 'lucide-react'

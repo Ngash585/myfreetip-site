@@ -1,4 +1,3 @@
-import React from 'react'
 import type { TipCard } from '@/lib/api'
 import { MatchRow } from './MatchRow'
 

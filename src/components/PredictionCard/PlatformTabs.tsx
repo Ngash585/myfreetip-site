@@ -1,6 +1,4 @@
-import React from 'react'
 import type { TipCard } from '@/lib/api'
-import { mediaUrl } from '@/lib/api'
 
 interface PlatformTabsProps {
   bookies: TipCard['bookies']

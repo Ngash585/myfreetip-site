@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { TipCard } from '@/lib/api'
 import { Copy } from 'lucide-react'
 import { type TimerState } from './timerUtils'

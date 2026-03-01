@@ -38,11 +38,11 @@ export function MatchRow({ leg, variant, showDivider }: MatchRowProps) {
   const kickoff = useMemo(() => formatKickoff(leg.kickoff_iso), [leg.kickoff_iso])
 
   return (
-    <div style={variant === 'multi' && showDivider ? { borderBottom: '1px solid rgba(29,29,29,0.08)' } : {}}>
+    <div style={variant === 'multi' && showDivider ? { borderBottom: '1px solid rgba(29,29,29,0.12)' } : {}}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full text-left flex items-center gap-2 px-4 py-2.5 transition-colors"
+        className="w-full text-left flex items-center gap-2 px-4 py-2 transition-colors"
         style={{
           background: variant === 'single' ? '#FFFFFF' : 'transparent',
           borderRadius: variant === 'single' ? '8px' : undefined,
@@ -51,21 +51,13 @@ export function MatchRow({ leg, variant, showDivider }: MatchRowProps) {
         onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = variant === 'single' ? '#FAFAFA' : 'rgba(29,29,29,0.02)' }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = variant === 'single' ? '#FFFFFF' : 'transparent' }}
       >
-        {/* Time + TZ */}
-        <div className="flex items-baseline gap-1 flex-shrink-0">
-          <span
-            className="text-[13px] font-bold leading-none"
-            style={{ fontFamily: "'DM Mono', monospace", color: '#1D1D1D' }}
-          >
-            {kickoff.time}
-          </span>
-          <span
-            className="text-[9px] leading-none"
-            style={{ fontFamily: "'DM Mono', monospace", color: '#777777' }}
-          >
-            {kickoff.tz}
-          </span>
-        </div>
+        {/* Time */}
+        <span
+          className="text-[13px] font-bold leading-none flex-shrink-0"
+          style={{ fontFamily: "'DM Mono', monospace", color: '#1D1D1D' }}
+        >
+          {kickoff.time}
+        </span>
 
         {/* Crests */}
         <div className="flex items-center flex-shrink-0">

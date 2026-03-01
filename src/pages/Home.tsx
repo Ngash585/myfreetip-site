@@ -22,7 +22,7 @@ export default function Home() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
       {/* ── Hero + Best Bet — single col mobile, 2-col desktop ── */}
-      <div className="pt-10 pb-16 lg:pt-16 lg:pb-20 lg:grid lg:grid-cols-[1fr_440px] lg:gap-16 lg:items-start">
+      <div className="pt-12 pb-12 lg:pt-20 lg:pb-20 lg:grid lg:grid-cols-[1fr_440px] lg:gap-16 lg:items-start">
 
         <HeroSection />
 

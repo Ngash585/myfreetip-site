@@ -55,38 +55,50 @@ const SECTIONS = [
   },
 ];
 
+const CARD = {
+  background: '#FFFFFF',
+  boxShadow: 'rgba(29,29,29,0.08) 4px 16px 32px 0',
+  borderRadius: '16px',
+  padding: '20px',
+} as const;
+
 export default function Privacy() {
   return (
-    <div className="text-white max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-4 py-8" style={{ color: '#1D1D1D' }}>
 
-      {/* ── Header ──────────────────────────────────────────────── */}
+      {/* ── Header ── */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+          <span className="w-2 h-2 rounded-full" style={{ background: '#3DB157' }} />
+          <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#2D9A47' }}>
             Legal
           </span>
         </div>
-        <h1 className="text-3xl font-extrabold mb-3 leading-tight">Privacy Policy</h1>
-        <p className="text-[#8a9bb0] leading-relaxed">
-          At <span className="text-white font-semibold">MyFreeTip.com</span> we
+        <h1
+          className="mb-3 leading-tight"
+          style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: '2rem', fontWeight: 400 }}
+        >
+          Privacy Policy
+        </h1>
+        <p className="leading-relaxed" style={{ color: '#777777' }}>
+          At <span className="font-semibold" style={{ color: '#1D1D1D' }}>MyFreeTip.com</span> we
           value your privacy and are committed to protecting your personal
           information. This policy explains how we collect, use, and safeguard
           your data when you visit or interact with our website.
         </p>
       </div>
 
-      {/* ── Sections ────────────────────────────────────────────── */}
+      {/* ── Sections ── */}
       <div className="flex flex-col gap-4 mb-8">
         {SECTIONS.map((s) => (
-          <div key={s.title} className="bg-[#1a2634] rounded-2xl p-5">
-            <h2 className="text-base font-bold text-white mb-2">{s.title}</h2>
-            <p className="text-sm text-[#8a9bb0] leading-relaxed">{s.body}</p>
+          <div key={s.title} style={CARD}>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#1D1D1D' }}>{s.title}</h2>
+            <p className="text-sm leading-relaxed" style={{ color: '#777777' }}>{s.body}</p>
             {s.items && (
               <ul className="mt-3 space-y-1.5">
                 {s.items.map((item) => (
-                  <li key={item} className="flex gap-2 text-sm text-[#8a9bb0]">
-                    <span className="text-emerald-500 flex-shrink-0 mt-0.5">·</span>
+                  <li key={item} className="flex gap-2 text-sm" style={{ color: '#777777' }}>
+                    <span className="flex-shrink-0 mt-0.5" style={{ color: '#3DB157' }}>·</span>
                     {item}
                   </li>
                 ))}
@@ -96,35 +108,32 @@ export default function Privacy() {
         ))}
       </div>
 
-      {/* ── Section 9: Contact ──────────────────────────────────── */}
-      <div className="bg-[#1a2634] rounded-2xl p-5 mb-8">
-        <h2 className="text-base font-bold text-white mb-2">9. Contact Us</h2>
-        <p className="text-sm text-[#8a9bb0] leading-relaxed mb-3">
+      {/* ── Section 9: Contact ── */}
+      <div style={CARD} className="mb-8">
+        <h2 className="text-base font-bold mb-2" style={{ color: '#1D1D1D' }}>9. Contact Us</h2>
+        <p className="text-sm leading-relaxed mb-3" style={{ color: '#777777' }}>
           If you have questions about this Privacy Policy or your data, please
           get in touch:
         </p>
         <div className="flex flex-col gap-2 text-sm">
           <div className="flex gap-2 items-center">
-            <span className="text-emerald-500">·</span>
-            <span className="text-[#8a9bb0]">Email: </span>
-            <a
-              href="mailto:contact@myfreetip.com"
-              className="text-emerald-400 hover:underline"
-            >
+            <span style={{ color: '#3DB157' }}>·</span>
+            <span style={{ color: '#777777' }}>Email: </span>
+            <a href="mailto:contact@myfreetip.com" className="hover:underline" style={{ color: '#2D9A47' }}>
               contact@myfreetip.com
             </a>
           </div>
           <div className="flex gap-2">
-            <span className="text-emerald-500 flex-shrink-0 mt-0.5">·</span>
-            <span className="text-[#8a9bb0]">
+            <span className="flex-shrink-0 mt-0.5" style={{ color: '#3DB157' }}>·</span>
+            <span style={{ color: '#777777' }}>
               Address: 39 Thistle Street, Edinburgh, EH2 1DY, United Kingdom
             </span>
           </div>
         </div>
       </div>
 
-      {/* ── Footer note ─────────────────────────────────────────── */}
-      <p className="text-xs text-[#8a9bb0] text-center">
+      {/* ── Footer note ── */}
+      <p className="text-xs text-center" style={{ color: '#777777' }}>
         Last updated: March {new Date().getFullYear()}
       </p>
 

@@ -43,23 +43,23 @@ export default function Predictions() {
   const filtered = cards.filter((c) => getCardTab(c) === active);
 
   return (
-    <div className="text-white">
+    <div style={{ color: '#1D1D1D' }}>
       {/* Tab bar */}
-      <div className="border-b border-[#2a3a4a]">
+      <div style={{ borderBottom: '1px solid rgba(29,29,29,0.08)' }}>
         <div className="flex px-4">
           {TABS.map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActive(tab)}
-              className={[
-                "px-4 py-4 text-sm font-semibold transition-colors relative",
-                active === tab ? "text-emerald-400" : "text-[#8a9bb0] hover:text-white",
-              ].join(" ")}
+              className="px-4 py-4 text-sm font-semibold transition-colors relative"
+              style={{ color: active === tab ? '#1D1D1D' : '#777777' }}
+              onMouseEnter={(e) => { if (active !== tab) (e.currentTarget as HTMLElement).style.color = '#1D1D1D' }}
+              onMouseLeave={(e) => { if (active !== tab) (e.currentTarget as HTMLElement).style.color = '#777777' }}
             >
               {TAB_LABELS[tab]}
               {active === tab && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400 rounded-full" />
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full" style={{ background: '#3DB157' }} />
               )}
             </button>
           ))}
@@ -75,7 +75,7 @@ export default function Predictions() {
         ))}
 
         {!loading && filtered.length === 0 && (
-          <p className="text-[#8a9bb0] text-sm py-6 text-center">
+          <p className="text-sm py-6 text-center" style={{ color: '#777777' }}>
             {active === "tomorrow"
               ? "Tomorrow's codes drop at 9:00 AM — check back soon."
               : `No picks available for ${TAB_LABELS[active].toLowerCase()} yet.`}

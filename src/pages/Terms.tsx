@@ -35,49 +35,60 @@ const SECTIONS = [
   },
 ];
 
+const CARD = {
+  background: '#FFFFFF',
+  boxShadow: 'rgba(29,29,29,0.08) 4px 16px 32px 0',
+  borderRadius: '16px',
+  padding: '20px',
+} as const;
+
 export default function Terms() {
   return (
-    <div className="text-white max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-4 py-8" style={{ color: '#1D1D1D' }}>
 
-      {/* ── Header ──────────────────────────────────────────────── */}
+      {/* ── Header ── */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+          <span className="w-2 h-2 rounded-full" style={{ background: '#3DB157' }} />
+          <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#2D9A47' }}>
             Legal
           </span>
         </div>
-        <h1 className="text-3xl font-extrabold mb-3 leading-tight">
+        <h1
+          className="mb-3 leading-tight"
+          style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: '2rem', fontWeight: 400 }}
+        >
           Terms &amp; Conditions
         </h1>
-        <p className="text-[#8a9bb0] leading-relaxed">
-          Welcome to <span className="text-white font-semibold">MyFreeTip.com</span>.
+        <p className="leading-relaxed" style={{ color: '#777777' }}>
+          Welcome to <span className="font-semibold" style={{ color: '#1D1D1D' }}>MyFreeTip.com</span>.
           By using our website you agree to the following terms. Please read
           them carefully before engaging with our services.
         </p>
       </div>
 
-      {/* ── 18+ warning banner ──────────────────────────────────── */}
-      <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl px-5 py-4 flex gap-3 items-start mb-8">
+      {/* ── 18+ warning banner ── */}
+      <div className="rounded-2xl px-5 py-4 flex gap-3 items-start mb-8"
+        style={{ background: '#FFFBF0', border: '1px solid rgba(184,134,11,0.30)' }}>
         <span className="text-xl flex-shrink-0">⚠️</span>
-        <p className="text-sm text-amber-300 leading-relaxed">
+        <p className="text-sm leading-relaxed" style={{ color: '#92650A' }}>
           You must be <strong>18 years or older</strong> to use this site and
           place bets with our partner bookmakers. Gambling may be illegal in
           your jurisdiction — it is your responsibility to check local laws.
         </p>
       </div>
 
-      {/* ── Sections ────────────────────────────────────────────── */}
+      {/* ── Sections ── */}
       <div className="flex flex-col gap-4">
         {SECTIONS.map((s) => (
-          <div key={s.title} className="bg-[#1a2634] rounded-2xl p-5">
-            <h2 className="text-base font-bold text-white mb-2">{s.title}</h2>
-            <p className="text-sm text-[#8a9bb0] leading-relaxed">{s.body}</p>
+          <div key={s.title} style={CARD}>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#1D1D1D' }}>{s.title}</h2>
+            <p className="text-sm leading-relaxed" style={{ color: '#777777' }}>{s.body}</p>
             {s.items && (
               <ul className="mt-3 space-y-1.5 list-none">
                 {s.items.map((item) => (
-                  <li key={item} className="flex gap-2 text-sm text-[#8a9bb0]">
-                    <span className="text-emerald-500 flex-shrink-0 mt-0.5">·</span>
+                  <li key={item} className="flex gap-2 text-sm" style={{ color: '#777777' }}>
+                    <span className="flex-shrink-0 mt-0.5" style={{ color: '#3DB157' }}>·</span>
                     {item}
                   </li>
                 ))}
@@ -87,8 +98,8 @@ export default function Terms() {
         ))}
       </div>
 
-      {/* ── Footer note ─────────────────────────────────────────── */}
-      <p className="text-xs text-[#8a9bb0] text-center mt-8">
+      {/* ── Footer note ── */}
+      <p className="text-xs text-center mt-8" style={{ color: '#777777' }}>
         Last updated: March {new Date().getFullYear()}
       </p>
 

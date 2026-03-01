@@ -49,42 +49,52 @@ const PARTNERS = [
   { name: "Sportsbet", logo: "/sportsbet.png", url: "https://sportsbet.io" },
 ];
 
+const CARD = {
+  background: '#FFFFFF',
+  boxShadow: 'rgba(29,29,29,0.08) 4px 16px 32px 0',
+  borderRadius: '16px',
+  padding: '20px',
+} as const;
+
 export default function About() {
   return (
-    <div className="text-white max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-4 py-8" style={{ color: '#1D1D1D' }}>
 
-      {/* ── Hero ────────────────────────────────────────────────── */}
+      {/* ── Hero ── */}
       <section className="mb-10">
         <div className="flex items-center gap-2 mb-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+          <span className="w-2 h-2 rounded-full" style={{ background: '#3DB157' }} />
+          <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#2D9A47' }}>
             About us
           </span>
         </div>
-        <h1 className="text-3xl font-extrabold mb-4 leading-tight">
+        <h1
+          className="mb-4 leading-tight"
+          style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: '2rem', fontWeight: 400, color: '#1D1D1D' }}
+        >
           Stop guessing.<br />Start winning.
         </h1>
-        <p className="text-[#8a9bb0] leading-relaxed">
+        <p className="leading-relaxed" style={{ color: '#777777' }}>
           Every day, our analysis finds the highest-confidence match and gives
           you a booking code — just paste it into 1xBet, Paripesa, Melbet and
           more. It costs you nothing.
         </p>
       </section>
 
-      {/* ── We know why you're here ──────────────────────────────── */}
+      {/* ── We know why you're here — white card, green left border ── */}
       <section className="mb-10">
-        <div className="bg-[#1a2634] border-l-4 border-emerald-500 rounded-2xl p-5">
-          <h2 className="text-base font-bold text-white mb-3">
+        <div style={{ ...CARD, borderLeft: '3px solid #3DB157' }}>
+          <h2 className="text-base font-bold mb-3" style={{ color: '#1D1D1D' }}>
             We know why you're here
           </h2>
-          <div className="space-y-3 text-sm text-[#8a9bb0] leading-relaxed">
+          <div className="space-y-3 text-sm leading-relaxed" style={{ color: '#777777' }}>
             <p>
               You've followed tipsters who disappeared after a bad week. You've
               seen win rates that never show the losses. You've copied a code
               that expired before you could use it. You've lost money you
               couldn't afford to lose and didn't fully understand why.
             </p>
-            <p className="text-white font-medium">
+            <p className="font-medium" style={{ color: '#1D1D1D' }}>
               That's not bad luck. That's a broken system. We built MyFreeTip
               to fix it.
             </p>
@@ -92,30 +102,31 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── What we do differently ───────────────────────────────── */}
+      {/* ── What we do differently ── */}
       <section className="mb-10">
         <h2 className="text-lg font-bold mb-4">What we do differently</h2>
         <div className="flex flex-col gap-3">
           {WHAT_WE_DO_DIFFERENTLY.map((item) => (
-            <div key={item.title} className="bg-[#1a2634] rounded-2xl p-5 flex gap-4">
+            <div key={item.title} style={CARD} className="flex gap-4">
               <span className="text-2xl flex-shrink-0 mt-0.5">{item.icon}</span>
               <div>
-                <p className="font-bold text-white mb-1">{item.title}</p>
-                <p className="text-sm text-[#8a9bb0] leading-relaxed">{item.body}</p>
+                <p className="font-bold mb-1" style={{ color: '#1D1D1D' }}>{item.title}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#777777' }}>{item.body}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── What we don't do ─────────────────────────────────────── */}
+      {/* ── What we don't do ── */}
       <section className="mb-10">
         <h2 className="text-lg font-bold mb-4">What we don't do</h2>
-        <div className="bg-[#1a2634] rounded-2xl p-5">
+        <div style={CARD}>
           <ul className="space-y-3">
             {WHAT_WE_DONT_DO.map((item) => (
-              <li key={item} className="flex items-center gap-3 text-sm text-[#8a9bb0]">
-                <span className="w-5 h-5 flex-shrink-0 rounded-full bg-red-500/15 text-red-400 flex items-center justify-center text-xs font-bold">
+              <li key={item} className="flex items-center gap-3 text-sm" style={{ color: '#777777' }}>
+                <span className="w-5 h-5 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold"
+                  style={{ background: 'rgba(192,57,43,0.10)', color: '#C0392B' }}>
                   ✕
                 </span>
                 {item}
@@ -125,33 +136,34 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Our record ───────────────────────────────────────────── */}
+      {/* ── Our record ── */}
       <section className="mb-10">
         <h2 className="text-lg font-bold mb-4">Our record</h2>
         <div className="grid grid-cols-2 gap-3 mb-3">
           {STATS.map((s) => (
-            <div key={s.label} className="bg-[#1a2634] rounded-2xl p-5 text-center">
-              <p className="text-3xl font-extrabold text-emerald-400">{s.value}</p>
-              <p className="text-xs text-[#8a9bb0] mt-1">{s.label}</p>
+            <div key={s.label} style={CARD} className="text-center">
+              <p className="text-3xl font-extrabold" style={{ color: '#3DB157' }}>{s.value}</p>
+              <p className="text-xs mt-1" style={{ color: '#777777' }}>{s.label}</p>
             </div>
           ))}
         </div>
-        <p className="text-xs text-[#8a9bb0] text-center">
+        <p className="text-xs text-center" style={{ color: '#777777' }}>
           Record updated as results are confirmed. Wins and losses both shown, always.
         </p>
       </section>
 
-      {/* ── Our analyst ──────────────────────────────────────────── */}
+      {/* ── Our analyst ── */}
       <section className="mb-10">
         <h2 className="text-lg font-bold mb-4">Our analyst</h2>
-        <div className="bg-[#1a2634] rounded-2xl p-5 flex gap-4 items-start">
-          <div className="w-14 h-14 flex-shrink-0 rounded-full bg-[#0f1923] border-2 border-emerald-500/40 flex items-center justify-center text-2xl">
+        <div style={CARD} className="flex gap-4 items-start">
+          <div className="w-14 h-14 flex-shrink-0 rounded-full flex items-center justify-center text-2xl border-2"
+            style={{ background: '#F2EEE9', borderColor: 'rgba(61,177,87,0.30)' }}>
             🎯
           </div>
           <div>
-            <p className="font-bold text-white">TipMaster</p>
-            <p className="text-xs text-emerald-400 mb-2">Lead Analyst · 73% Win Rate</p>
-            <p className="text-sm text-[#8a9bb0] leading-relaxed">
+            <p className="font-bold" style={{ color: '#1D1D1D' }}>TipMaster</p>
+            <p className="text-xs mb-2" style={{ color: '#2D9A47' }}>Lead Analyst · 73% Win Rate</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#777777' }}>
               Six years analysing football data across the Premier League,
               Champions League, La Liga, and African leagues. Specialises in
               goals markets, Asian handicaps, and value accumulator builds.
@@ -161,10 +173,10 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Partner bookmakers ───────────────────────────────────── */}
+      {/* ── Partner bookmakers ── */}
       <section className="mb-10">
         <h2 className="text-lg font-bold mb-1">Our partner bookmakers</h2>
-        <p className="text-xs text-[#8a9bb0] mb-4">
+        <p className="text-xs mb-4" style={{ color: '#777777' }}>
           We only partner with bookmakers we'd use ourselves.
         </p>
         <div className="grid grid-cols-2 gap-3">
@@ -174,23 +186,24 @@ export default function About() {
               href={p.url}
               target="_blank"
               rel="noreferrer noopener"
-              className="bg-[#1a2634] rounded-2xl p-4 flex items-center gap-3 hover:ring-1 hover:ring-emerald-500/40 transition"
+              className="flex items-center gap-3 transition-shadow hover:shadow-md"
+              style={CARD}
             >
               <img src={p.logo} alt={p.name} className="w-8 h-8 object-contain rounded" />
-              <span className="text-sm font-semibold text-white">{p.name}</span>
+              <span className="text-sm font-semibold" style={{ color: '#1D1D1D' }}>{p.name}</span>
             </a>
           ))}
         </div>
       </section>
 
-      {/* ── Affiliate Disclosure (legally required) ──────────────── */}
+      {/* ── Affiliate Disclosure ── */}
       <section className="mb-10">
-        <div className="bg-[#1a2634] border border-amber-500/30 rounded-2xl p-5">
+        <div className="rounded-2xl p-5" style={{ background: '#FFFBF0', border: '1px solid rgba(184,134,11,0.25)' }}>
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-amber-400 text-lg">⚠️</span>
-            <h2 className="text-base font-bold text-amber-400">Affiliate Disclosure</h2>
+            <span className="text-lg">⚠️</span>
+            <h2 className="text-base font-bold" style={{ color: '#B8860B' }}>Affiliate Disclosure</h2>
           </div>
-          <div className="space-y-3 text-sm text-[#8a9bb0] leading-relaxed">
+          <div className="space-y-3 text-sm leading-relaxed" style={{ color: '#777777' }}>
             <p>
               MyFreeTip earns commission when you register or deposit with our
               partner bookmakers through links on this site. This is how we fund
@@ -198,7 +211,7 @@ export default function About() {
             </p>
             <p>
               Our affiliate relationships do{" "}
-              <strong className="text-white">not</strong> influence our
+              <strong style={{ color: '#1D1D1D' }}>not</strong> influence our
               predictions. Tips are selected on statistical merit only. We will
               never recommend a bet to benefit our affiliate revenue at the
               expense of your results.
@@ -211,14 +224,14 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Responsible Gambling ─────────────────────────────────── */}
+      {/* ── Responsible Gambling ── */}
       <section className="mb-10">
-        <div className="bg-[#1a2634] border border-[#2a3a4a] rounded-2xl p-5">
+        <div className="rounded-2xl p-5" style={{ background: '#FFFFFF', border: '1px solid rgba(29,29,29,0.08)', boxShadow: 'rgba(29,29,29,0.06) 4px 16px 32px 0' }}>
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg">🛡️</span>
-            <h2 className="text-base font-bold text-white">Responsible Gambling</h2>
+            <h2 className="text-base font-bold" style={{ color: '#1D1D1D' }}>Responsible Gambling</h2>
           </div>
-          <div className="space-y-3 text-sm text-[#8a9bb0] leading-relaxed">
+          <div className="space-y-3 text-sm leading-relaxed" style={{ color: '#777777' }}>
             <p>
               Betting should be entertainment, not a source of income. Never
               stake money you cannot afford to lose. Past results do not
@@ -228,21 +241,22 @@ export default function About() {
               Set a budget before you bet and stick to it. If gambling is
               affecting your finances, relationships, or mental health, please
               seek help. You must be{" "}
-              <strong className="text-white">18 years or older</strong> to use
+              <strong style={{ color: '#1D1D1D' }}>18 years or older</strong> to use
               this site.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── Contact CTA ──────────────────────────────────────────── */}
+      {/* ── Contact CTA ── */}
       <section className="text-center">
-        <p className="text-sm text-[#8a9bb0] mb-3">
+        <p className="text-sm mb-3" style={{ color: '#777777' }}>
           Have a question or partnership enquiry?
         </p>
         <Link
           to="/contact"
-          className="inline-block bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-6 py-3 rounded-xl transition text-sm"
+          className="inline-block text-white font-bold px-6 py-3 rounded-xl transition-opacity hover:opacity-80 text-sm"
+          style={{ background: '#080A2D' }}
         >
           Contact us
         </Link>

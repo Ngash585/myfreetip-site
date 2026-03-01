@@ -9,6 +9,8 @@ const TODAY = new Date().toLocaleDateString("en-GB", {
   year: "numeric",
 });
 
+const DS = "'DM Serif Display', Georgia, serif";
+
 export function HeroSection() {
   const [record, setRecord] = useState<AnalystStatRecord | null>(null);
 
@@ -22,84 +24,105 @@ export function HeroSection() {
     <section>
 
       {/* ── Social proof pill ── */}
-      <div className="inline-flex items-center gap-2 border border-emerald-500/30 bg-emerald-500/8 rounded-full px-3 py-1.5 mb-8">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
-        <span className="text-xs text-emerald-300 font-medium tracking-wide">
+      <div
+        className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 mb-8"
+        style={{ background: '#EAF7EE', border: '1px solid rgba(61,177,87,0.30)' }}
+      >
+        <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ background: '#3DB157' }} />
+        <span className="text-xs font-medium tracking-wide" style={{ color: '#2D9A47' }}>
           40,000 bettors follow our daily picks
         </span>
-        <span className="text-emerald-700 select-none">|</span>
-        <span className="text-xs text-emerald-400 font-bold tracking-widest">LIVE</span>
+        <span className="select-none" style={{ color: 'rgba(61,177,87,0.35)' }}>|</span>
+        <span className="text-xs font-bold tracking-widest" style={{ color: '#3DB157' }}>LIVE</span>
       </div>
 
-      {/* ── Headline ── */}
-      <div className="mb-5">
-        <h1 className="text-5xl sm:text-6xl lg:text-6xl font-black leading-[1.05] tracking-tight text-white">
+      {/* ── Headline — DM Serif Display ── */}
+      <div className="mb-8">
+        <h1
+          className="leading-[1.05] tracking-[-0.04em]"
+          style={{ fontFamily: DS, fontSize: 'clamp(48px, 8vw, 72px)', color: '#1D1D1D', fontWeight: 400 }}
+        >
           Stop guessing.
         </h1>
-        <h1 className="text-5xl sm:text-6xl lg:text-6xl font-black leading-[1.05] tracking-tight text-white/20">
+        <h1
+          className="leading-[1.05] tracking-[-0.04em]"
+          style={{ fontFamily: DS, fontSize: 'clamp(48px, 8vw, 72px)', color: 'rgba(29,29,29,0.20)', fontWeight: 400 }}
+        >
           Start winning.
         </h1>
       </div>
 
-      {/* ── Green accent dash ── */}
-      <div className="w-10 h-1 bg-emerald-500 rounded-full mb-6" />
-
-      {/* ── Subtext ── */}
-      <p className="text-base text-white/60 leading-7 mb-8 max-w-lg">
+      {/* ── Body copy ── */}
+      <p
+        className="mb-10 max-w-lg"
+        style={{ fontSize: '17px', color: '#4F4841', lineHeight: '1.7', fontWeight: 300 }}
+      >
         Every day, our analysis finds the highest-confidence match and gives
         you a booking code —{" "}
-        <strong className="text-white font-semibold">
+        <strong style={{ color: '#1D1D1D', fontWeight: 500 }}>
           just paste it into 1xBet, Paripesa, Melbet and more.
         </strong>{" "}
         It costs you nothing.
       </p>
 
-      {/* ── Stats bar ── */}
+      {/* ── Stats row — inline on warm bg, no card ── */}
       {record ? (
         <>
-          <div className="grid grid-cols-4 bg-[#1a2634] rounded-2xl overflow-hidden border border-[#2a3a4a]">
-            <div className="py-5 text-center border-r border-[#2a3a4a]">
-              <p className="text-2xl font-extrabold text-emerald-400 tracking-tight">
-                {record.win_rate_pct}%
-              </p>
-              <p className="text-[11px] text-white/35 mt-1 uppercase tracking-wider">Win Rate</p>
-            </div>
-            <div className="py-5 text-center border-r border-[#2a3a4a]">
-              <p className="text-2xl font-extrabold text-emerald-400 tracking-tight">
-                {record.won}
-              </p>
-              <p className="text-[11px] text-white/35 mt-1 uppercase tracking-wider">Won</p>
-            </div>
-            <div className="py-5 text-center border-r border-[#2a3a4a]">
-              <p className="text-2xl font-extrabold text-red-400 tracking-tight">
-                {record.lost}
-              </p>
-              <p className="text-[11px] text-white/35 mt-1 uppercase tracking-wider">Lost</p>
-            </div>
-            <div className="py-5 text-center">
-              <p className="text-2xl font-extrabold text-white tracking-tight">
-                {record.total}
-              </p>
-              <p className="text-[11px] text-white/35 mt-1 uppercase tracking-wider">Total</p>
-            </div>
+          <div className="flex items-stretch">
+            <StatNum value={`${record.win_rate_pct}%`} label="Win Rate" color="#3DB157" first />
+            <div className="w-px self-stretch my-1" style={{ background: 'rgba(29,29,29,0.10)' }} />
+            <StatNum value={record.won}   label="Won"   color="#1D1D1D" />
+            <div className="w-px self-stretch my-1" style={{ background: 'rgba(29,29,29,0.10)' }} />
+            <StatNum value={record.lost}  label="Lost"  color="#C0392B" />
+            <div className="w-px self-stretch my-1" style={{ background: 'rgba(29,29,29,0.10)' }} />
+            <StatNum value={record.total} label="Total" color="#1D1D1D" />
           </div>
 
-          <p className="text-[11px] text-white/25 text-center mt-2.5 tracking-wide">
+          <p className="text-xs mt-3" style={{ color: '#777777' }}>
             {TODAY} · {record.period_label ?? "all time"} · losses never hidden
           </p>
         </>
       ) : (
-        <div className="h-[88px] bg-[#1a2634] rounded-2xl animate-pulse border border-[#2a3a4a]" />
+        <div className="h-24 rounded-2xl animate-pulse" style={{ background: '#F2EEE9' }} />
       )}
 
-      {/* ── Scroll cue (mobile only — desktop has card on the right) ── */}
+      {/* ── Scroll cue (mobile only) ── */}
       <div className="mt-10 flex flex-col items-center gap-1 lg:hidden">
-        <p className="text-[10px] font-semibold text-white/20 uppercase tracking-[0.18em]">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em]" style={{ color: '#B8860B' }}>
           Today's best bet below
         </p>
-        <span className="text-white/20 text-xs animate-bounce">↓</span>
+        <span className="text-xs animate-bounce" style={{ color: '#B8860B' }}>↓</span>
       </div>
 
     </section>
+  );
+}
+
+function StatNum({
+  value,
+  label,
+  color,
+  first = false,
+}: {
+  value: string | number;
+  label: string;
+  color: string;
+  first?: boolean;
+}) {
+  return (
+    <div className={`flex flex-col items-center text-center ${first ? 'pr-6' : 'px-6'}`}>
+      <span
+        className="leading-none tracking-[-0.03em]"
+        style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: '52px', color, fontWeight: 400 }}
+      >
+        {value}
+      </span>
+      <span
+        className="mt-1.5 uppercase tracking-[0.08em] text-[11px]"
+        style={{ color: '#777777', fontWeight: 400 }}
+      >
+        {label}
+      </span>
+    </div>
   );
 }

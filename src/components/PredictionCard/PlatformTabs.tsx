@@ -8,7 +8,7 @@ interface PlatformTabsProps {
 
 export function PlatformTabs({ bookies, selectedId, onSelect }: PlatformTabsProps) {
   return (
-    <div className="flex gap-2 px-3 pt-3 overflow-x-auto scrollbar-hide">
+    <div className="flex gap-2 px-4 pt-4 overflow-x-auto scrollbar-hide">
       {bookies.map((b) => {
         const active = b.id === selectedId
         return (
@@ -16,18 +16,18 @@ export function PlatformTabs({ bookies, selectedId, onSelect }: PlatformTabsProp
             key={String(b.id)}
             type="button"
             onClick={() => onSelect(b.id)}
-            className={[
-              'flex items-center gap-1.5 px-3 py-1.5 rounded-full border',
-              'text-sm font-semibold whitespace-nowrap cursor-pointer transition-all',
-              active
-                ? 'border-emerald-500 text-[var(--text)] bg-emerald-500/10'
-                : 'border-white/15 text-[var(--muted)] bg-transparent',
-            ].join(' ')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm whitespace-nowrap cursor-pointer transition-all"
+            style={{
+              background: active ? '#FFFFFF' : '#F2EEE9',
+              border: `1px solid ${active ? 'rgba(29,29,29,0.20)' : 'rgba(29,29,29,0.10)'}`,
+              color: active ? '#1D1D1D' : '#4F4841',
+              fontWeight: active ? 500 : 400,
+              boxShadow: active ? 'rgba(29,29,29,0.08) 2px 4px 8px' : 'none',
+            }}
           >
-            {/* If you later add logo_url to API, swap dot for <img>. For now use brand_hex dot */}
             <span
-              className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: b.brand_hex ?? 'rgba(255,255,255,0.3)' }}
+              className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{ backgroundColor: b.brand_hex ?? 'rgba(29,29,29,0.20)' }}
             />
             <span>{b.name}</span>
           </button>

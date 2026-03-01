@@ -13,7 +13,6 @@ interface CodeBlockProps {
 
 function splitMoneyLabel(label: string | undefined) {
   if (!label) return { big: '–', dec: '' }
-  // Handles "KES 2,630.00" and also "2,630.00" etc.
   const parts = label.split('.')
   if (parts.length === 1) return { big: parts[0], dec: '' }
   return { big: parts[0], dec: `.${parts.slice(1).join('.')}` }
@@ -51,30 +50,28 @@ export function CodeBlock({
       await navigator.clipboard.writeText(activeBookie.code)
       setCopied(true)
       window.setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // silent: no toasts in spec
-    }
+    } catch { /* silent */ }
   }
 
   return (
     <div
-      className={[
-        'mx-3 mt-2 rounded-lg border border-white/10 bg-[var(--surface)]',
-        'p-3',
-        'grid grid-cols-[auto_1fr_auto] items-center gap-3',
-        disabled ? 'opacity-40 pointer-events-none' : '',
-      ].join(' ')}
+      className={`mx-4 mt-3 rounded-xl p-4 grid grid-cols-[auto_1fr_auto] items-center gap-3 ${disabled ? 'opacity-40 pointer-events-none' : ''}`}
+      style={{
+        background: '#F2EEE9',
+        border: '1px solid rgba(29,29,29,0.10)',
+      }}
     >
       {/* Col 1: code */}
       <div className="flex flex-col gap-1">
-        <div className="font-mono text-[9px] uppercase tracking-widest text-[var(--muted)] whitespace-nowrap">
+        <div
+          className="text-[9px] uppercase tracking-widest whitespace-nowrap"
+          style={{ color: '#777777' }}
+        >
           BOOKING CODE — {bookieName.toUpperCase()}
         </div>
         <div
-          className={[
-            'font-mono text-[24px] font-bold text-white tracking-widest leading-none',
-            disabled ? 'select-none' : 'select-text',
-          ].join(' ')}
+          className={`text-[24px] font-medium tracking-widest leading-none ${disabled ? 'select-none' : 'select-text'}`}
+          style={{ fontFamily: "'DM Mono', monospace", color: '#1D1D1D' }}
         >
           {code}
         </div>
@@ -85,15 +82,23 @@ export function CodeBlock({
         <button
           type="button"
           onClick={() => setDdOpen((v) => !v)}
-          className="bg-white border border-gray-300 rounded-md px-2 py-1 text-[12px] font-semibold text-blue-600 whitespace-nowrap"
+          className="rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors"
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid rgba(29,29,29,0.15)',
+            color: '#1D1D1D',
+          }}
         >
           {selectedStakeLabel} <span className="text-[10px]">▾</span>
         </button>
 
         {ddOpen && (
-          <div className="absolute top-[34px] z-50 w-44 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+          <div
+            className="absolute top-[38px] z-50 w-44 rounded-xl overflow-hidden"
+            style={{ background: '#FFFFFF', border: '1px solid rgba(29,29,29,0.12)', boxShadow: 'rgba(29,29,29,0.10) 0 8px 24px' }}
+          >
             {returns.length === 0 ? (
-              <div className="px-3 py-2 text-xs text-gray-500">No stakes available</div>
+              <div className="px-3 py-2 text-xs" style={{ color: '#777777' }}>No stakes available</div>
             ) : (
               returns.map((r, idx) => {
                 const isSel =
@@ -107,17 +112,17 @@ export function CodeBlock({
                       if (r.stake_amount != null) onStakeChange(r.stake_amount)
                       setDdOpen(false)
                     }}
-                    className={[
-                      'w-full px-3 py-2 text-left text-xs text-gray-700 flex items-center justify-between',
-                      'hover:bg-gray-50',
-                      isSel ? 'font-bold text-gray-900' : '',
-                    ].join(' ')}
+                    className="w-full px-3 py-2 text-left text-xs flex items-center justify-between transition-colors hover:bg-[#F8F4EF]"
+                    style={{
+                      color: isSel ? '#1D1D1D' : '#4F4841',
+                      fontWeight: isSel ? 600 : 400,
+                    }}
                   >
                     <span className="flex items-center gap-2">
-                      {isSel && <span className="text-emerald-700">✓</span>}
+                      {isSel && <span style={{ color: '#3DB157' }}>✓</span>}
                       <span>{r.stake_label}</span>
                     </span>
-                    <span className="text-gray-500">{r.return_label}</span>
+                    <span style={{ color: '#777777' }}>{r.return_label}</span>
                   </button>
                 )
               })
@@ -125,9 +130,14 @@ export function CodeBlock({
           </div>
         )}
 
-        <div className="flex items-baseline gap-1">
-          <span className="font-mono text-xl font-bold text-white">{big}</span>
-          <span className="font-mono text-xs text-[var(--muted)]">{dec}</span>
+        <div className="flex items-baseline gap-0.5">
+          <span
+            className="text-xl font-medium"
+            style={{ fontFamily: "'DM Serif Display', Georgia, serif", color: '#B8860B' }}
+          >
+            {big}
+          </span>
+          <span className="text-xs" style={{ color: '#777777', fontWeight: 300 }}>{dec}</span>
         </div>
       </div>
 
@@ -137,21 +147,17 @@ export function CodeBlock({
           type="button"
           onClick={onCopy}
           disabled={disabled}
-          className={[
-            'min-h-[40px] rounded-lg px-4 py-2',
-            'text-sm font-bold text-white',
-            copied ? 'bg-emerald-700' : 'bg-red-700',
-            disabled ? 'opacity-40 cursor-not-allowed' : '',
-            'flex items-center justify-center gap-2',
-          ].join(' ')}
+          className="min-h-[40px] rounded-lg px-4 py-2 text-sm font-medium flex items-center justify-center gap-2 text-white transition-opacity hover:opacity-80"
+          style={{ background: copied ? '#3DB157' : '#080A2D', borderRadius: '10px' }}
         >
           <Copy className="w-4 h-4" />
-          {copied ? '✓ Copied!' : 'Copy Code'}
+          {copied ? '✓ Copied!' : 'Copy'}
         </button>
 
         <a
           href={activeBookie?.signup_url ?? activeBookie?.deeplink_url ?? '#'}
-          className="min-h-[40px] rounded-lg px-4 py-2 bg-emerald-700 text-white text-xs font-bold flex items-center justify-center"
+          className="min-h-[40px] rounded-lg px-4 py-2 text-xs font-medium flex items-center justify-center text-white transition-opacity hover:opacity-80"
+          style={{ background: '#3DB157', borderRadius: '10px' }}
         >
           {activeBookie?.signup_cta_label ?? 'Claim Free Bets'}
         </a>

@@ -4,7 +4,7 @@ import { MatchRow } from './MatchRow'
 export function MatchBody({ legs }: { legs: TipCard['legs'] }) {
   if (legs.length === 1) {
     return (
-      <div className="mx-3 my-2">
+      <div className="mx-4 my-2">
         <MatchRow leg={legs[0]} variant="single" />
       </div>
     )
@@ -12,11 +12,14 @@ export function MatchBody({ legs }: { legs: TipCard['legs'] }) {
 
   return (
     <div
-      className={[
-        'mx-3 my-2 rounded-lg overflow-hidden',
-        'border border-black/[0.06] border-l-4 border-l-blue-600',
-        'bg-white dark:bg-white/5',
-      ].join(' ')}
+      className="mx-4 my-2 rounded-lg overflow-hidden"
+      style={{
+        background: '#F8F4EF',
+        borderLeft: '3px solid #3DB157',
+        border: '1px solid rgba(29,29,29,0.08)',
+        borderLeftWidth: '3px',
+        borderLeftColor: '#3DB157',
+      }}
     >
       {legs.map((leg, i) => (
         <MatchRow

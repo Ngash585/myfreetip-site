@@ -13,19 +13,12 @@ export function PickRow({ card, leg }: PickRowProps) {
   const bookie = card.bookies.find((b) => b.id === card.default_bookie_id) ?? card.bookies[0];
   const { secs, timerState } = useTimer(leg.kickoff_iso ?? card.expiresAt);
 
-  const timerColor = {
-    healthy:  "text-emerald-400",
-    warning:  "text-amber-400",
-    critical: "text-red-400",
-    expired:  "text-[#8a9bb0]",
-  }[timerState];
-
-  const btnClass = {
-    healthy:  "bg-emerald-500 hover:bg-emerald-400 text-white",
-    warning:  "bg-amber-500 hover:bg-amber-400 text-black",
-    critical: "bg-red-500 hover:bg-red-400 text-white",
-    expired:  "bg-[#2a3a4a] text-[#8a9bb0] cursor-not-allowed",
-  }[timerState];
+  const timerColor: Record<string, string> = {
+    healthy:  "#777777",
+    warning:  "#B8860B",
+    critical: "#C0392B",
+    expired:  "#BBBBBB",
+  };
 
   function copy() {
     if (timerState === "expired" || !bookie?.code) return;
@@ -35,25 +28,38 @@ export function PickRow({ card, leg }: PickRowProps) {
     });
   }
 
+  const isExpired = timerState === "expired";
+
   return (
-    <div className="flex items-center gap-3 py-3 border-b border-[#2a3a4a] last:border-0">
+    <div
+      className="flex items-center gap-3 py-4"
+      style={{ borderBottom: '1px solid rgba(29,29,29,0.07)' }}
+    >
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5 mb-0.5">
+        <div className="flex items-center gap-1.5 mb-1">
           {card.badge_label && (
-            <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded">
+            <span
+              className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded"
+              style={{ background: '#EAF7EE', color: '#2D9A47', border: '1px solid rgba(61,177,87,0.25)' }}
+            >
               {card.badge_label}
             </span>
           )}
-          <span className={`text-[10px] font-mono ${timerColor}`}>
-            {timerState === "expired" ? "Expired" : formatCountdown(secs)}
+          <span
+            className="text-[11px]"
+            style={{ fontFamily: "'DM Mono', monospace", color: timerColor[timerState] ?? '#777777' }}
+          >
+            {isExpired ? "Expired" : formatCountdown(secs)}
           </span>
         </div>
-        <p className="text-sm font-semibold text-white truncate">
+        <p className="text-sm font-medium truncate" style={{ color: '#1D1D1D' }}>
           {leg.match_label ?? `${leg.homeTeam} vs ${leg.awayTeam}`}
         </p>
-        <p className="text-xs text-[#8a9bb0] mt-0.5">
+        <p className="text-xs mt-0.5" style={{ color: '#4F4841' }}>
           {leg.pick_title ?? leg.prediction}
-          {leg.odds ? ` · ${leg.odds}` : ""}
+          {leg.odds ? (
+            <> · <span style={{ color: '#B8860B', fontWeight: 500 }}>{leg.odds}</span></>
+          ) : null}
         </p>
       </div>
 
@@ -61,14 +67,16 @@ export function PickRow({ card, leg }: PickRowProps) {
         <button
           type="button"
           onClick={copy}
-          disabled={timerState === "expired"}
-          className={[
-            "flex-shrink-0 px-3 rounded-lg text-xs font-bold transition-colors",
-            "min-w-[44px] min-h-[44px] flex items-center justify-center",
-            btnClass,
-          ].join(" ")}
+          disabled={isExpired}
+          className="flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-opacity text-white"
+          style={{
+            background: isExpired ? '#DDDDDD' : '#080A2D',
+            color: isExpired ? '#999' : '#FFFFFF',
+            cursor: isExpired ? 'not-allowed' : 'pointer',
+            minHeight: '40px',
+          }}
         >
-          {copied ? "✓" : "Copy"}
+          {copied ? "✓ Copied" : "Copy"}
         </button>
       )}
     </div>

@@ -10,21 +10,22 @@ export function HowToUse({ bookieName }: HowToUseProps) {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="mx-3 mt-2 rounded-lg overflow-hidden border border-white/10 bg-[var(--surface)]">
+    <div
+      className="mx-4 mt-3 rounded-xl overflow-hidden"
+      style={{ background: '#F2EEE9', border: '1px solid rgba(29,29,29,0.08)' }}
+    >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center gap-2 px-3 py-3 hover:bg-white/5"
+        className="w-full flex items-center gap-2 px-4 py-3 transition-colors hover:bg-black/[0.02]"
       >
-        <span className="text-red-500 font-bold text-base">?</span>
-        <span className="flex-1 text-left text-sm text-[var(--muted)]">
+        <span className="font-medium text-sm" style={{ color: '#3DB157' }}>?</span>
+        <span className="flex-1 text-left text-sm" style={{ color: '#4F4841', fontWeight: 300 }}>
           How to use this code
         </span>
         <ChevronDown
-          className={[
-            'w-4 h-4 text-[var(--muted)] transition-transform',
-            open ? 'rotate-180' : '',
-          ].join(' ')}
+          className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`}
+          style={{ color: '#777777' }}
         />
       </button>
 
@@ -37,18 +38,21 @@ export function HowToUse({ bookieName }: HowToUseProps) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-3 pb-3 pt-3 border-t border-white/10 bg-black/10">
+            <div
+              className="px-4 pb-4 pt-3"
+              style={{ borderTop: '1px solid rgba(29,29,29,0.08)' }}
+            >
               <Step n={1}>
-                <strong className="text-[var(--text)]">Copy the code above</strong> — tap the
-                button to copy it
+                <strong style={{ color: '#1D1D1D', fontWeight: 500 }}>Copy the code above</strong>
+                {' '}— tap the button to copy it
               </Step>
               <Step n={2}>
-                <strong className="text-[var(--text)]">Open {bookieName}</strong> — find
-                “Booking Code” in the menu
+                <strong style={{ color: '#1D1D1D', fontWeight: 500 }}>Open {bookieName}</strong>
+                {' '}— find "Booking Code" in the menu
               </Step>
               <Step n={3}>
-                <strong className="text-[var(--text)]">Paste the code</strong> — your
-                selections load automatically
+                <strong style={{ color: '#1D1D1D', fontWeight: 500 }}>Paste the code</strong>
+                {' '}— your selections load automatically
               </Step>
             </div>
           </motion.div>
@@ -60,11 +64,16 @@ export function HowToUse({ bookieName }: HowToUseProps) {
 
 function Step({ n, children }: { n: number; children: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-2 mb-3 last:mb-0">
-      <div className="w-5 h-5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold grid place-items-center flex-shrink-0">
+    <div className="flex items-start gap-3 mb-3 last:mb-0">
+      <div
+        className="w-5 h-5 rounded-full text-[10px] font-medium grid place-items-center flex-shrink-0"
+        style={{ background: '#EAF7EE', border: '1px solid rgba(61,177,87,0.30)', color: '#2D9A47' }}
+      >
         {n}
       </div>
-      <div className="text-[12px] text-[var(--muted)] leading-relaxed">{children}</div>
+      <div className="text-[13px] leading-relaxed" style={{ color: '#4F4841', fontWeight: 300 }}>
+        {children}
+      </div>
     </div>
   )
 }

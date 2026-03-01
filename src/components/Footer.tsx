@@ -1,101 +1,94 @@
-// src/components/Footer.tsx
 import { Link } from "react-router-dom";
 import SocialButtons from "@/components/SocialButtons";
 
 type FooterLink = { label: string; href: string };
-type Section = { heading: string; items: FooterLink[] };
+type Section    = { heading: string; items: FooterLink[] };
 
 type Props = {
-  brand?: string;
+  brand?:       string;
   description?: string;
-  sections?: Section[];
-  showSocial?: boolean;
+  sections?:    Section[];
+  showSocial?:  boolean;
   social?: {
-    twitter?: string;
+    twitter?:   string;
     instagram?: string;
-    telegram?: string;
-    facebook?: string;
+    telegram?:  string;
+    facebook?:  string;
   };
   className?: string;
-  compact?: boolean;
-  year?: number;
+  compact?:   boolean;
+  year?:      number;
 };
 
-/* -------------------- Default Sections (REAL PAGES ONLY) -------------------- */
 const DEFAULT_SECTIONS: Section[] = [
   {
     heading: "Pages",
     items: [
-      { label: "Home", href: "/" },
+      { label: "Home",        href: "/" },
       { label: "Predictions", href: "/predictions" },
-      { label: "Sports News", href: "/sports-news" },
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
+      { label: "News",        href: "/sports-news" },
+      { label: "About",       href: "/about" },
+      { label: "Contact",     href: "/contact" },
     ],
   },
   {
     heading: "Legal",
     items: [
       { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
+      { label: "Terms",   href: "/terms" },
     ],
   },
 ];
 
 export default function Footer({
-  brand = "MyFreeTip",
+  brand       = "MyFreeTip",
   description = "Free daily football tips. 18+ only — bet responsibly.",
-  sections = DEFAULT_SECTIONS,
-  showSocial = true,
+  sections    = DEFAULT_SECTIONS,
+  showSocial  = true,
   social = {
-    twitter: "https://x.com/Nganga_Kimingi",
-    facebook: "https://www.facebook.com/profile.php?id=61576700997754",
+    twitter:   "https://x.com/Nganga_Kimingi",
+    facebook:  "https://www.facebook.com/profile.php?id=61576700997754",
     instagram: "https://www.instagram.com/myfreetip?igsh=MWV2cGgzY2F2NHJ0Nw==",
-    telegram: "https://t.me/BetsmartTi",
+    telegram:  "https://t.me/BetsmartTi",
   },
   className = "",
-  compact = false,
-  year = new Date().getFullYear(),
+  compact   = false,
+  year      = new Date().getFullYear(),
 }: Props) {
   return (
     <footer
       role="contentinfo"
-      className={[
-        "mt-10 border-t border-[var(--border)]",
-        "bg-[var(--surface)]/70 supports-[backdrop-filter]:backdrop-blur",
-        "text-[color:var(--text)]",
-        className,
-      ].join(" ")}
+      className={className}
+      style={{ borderTop: '1px solid rgba(29,29,29,0.08)', background: '#F8F4EF' }}
     >
       {!compact && (
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
           <div
-            className="
-              grid gap-x-6 gap-y-6
-              grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5
-              rounded-3xl border border-[var(--border)]
-              bg-[var(--surface)]/80 supports-[backdrop-filter]:backdrop-blur
-              p-5 sm:p-8 shadow-[0_10px_30px_rgba(0,0,0,0.06)]
-            "
+            className="grid gap-x-6 gap-y-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 rounded-2xl p-6 sm:p-8"
+            style={{
+              background: '#FFFFFF',
+              boxShadow: 'rgba(29,29,29,0.06) 0 4px 24px 0',
+            }}
           >
-            {/* Brand / Description */}
+            {/* Brand */}
             <section aria-labelledby="footer-about" className="col-span-2 sm:col-span-1">
-              <h2 id="footer-about" className="text-base font-bold tracking-tight">
+              <h2
+                id="footer-about"
+                className="text-base tracking-[-0.02em]"
+                style={{ fontFamily: "'DM Serif Display', Georgia, serif", color: '#1D1D1D', fontWeight: 400 }}
+              >
                 {brand}
               </h2>
-
-              <p className="mt-2 text-sm leading-6 text-[color:var(--text)]/80">
+              <p className="mt-2 text-sm leading-6" style={{ color: '#4F4841', fontWeight: 300 }}>
                 {description}
               </p>
-
-              <p className="mt-2 text-xs leading-5 text-[color:var(--text)]/70">
+              <p className="mt-2 text-xs leading-5" style={{ color: '#777777', fontWeight: 300 }}>
                 Predictions are opinions and not guaranteed. This site may earn commission through affiliate links.
               </p>
-
               {showSocial && (
                 <div className="mt-5">
                   <SocialButtons
-                    size={45}
+                    size={40}
                     twitter={social.twitter}
                     instagram={social.instagram}
                     telegram={social.telegram}
@@ -105,27 +98,31 @@ export default function Footer({
               )}
             </section>
 
-            {/* Link Sections */}
+            {/* Link sections */}
             {sections.map((section) => {
               const id = `footer-${section.heading.replace(/\s+/g, "-").toLowerCase()}`;
               return (
-                <nav key={section.heading} className="sm:min-w-[12rem]" aria-labelledby={id}>
-                  <h2 id={id} className="text-sm font-semibold mb-1">
+                <nav key={section.heading} aria-labelledby={id}>
+                  <h2
+                    id={id}
+                    className="text-xs font-medium uppercase tracking-widest mb-3"
+                    style={{ color: '#777777' }}
+                  >
                     {section.heading}
                   </h2>
-                  <ul className="mt-1 space-y-1">
+                  <ul className="space-y-2">
                     {section.items.map((it) => {
-                      const classes =
-                        "block text-sm leading-6 text-[color:var(--text)]/85 hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded";
+                      const cls = "block text-sm transition-colors hover:opacity-70";
+                      const style = { color: '#4F4841', fontWeight: 300 };
                       return it.href.startsWith("http") ? (
                         <li key={it.label}>
-                          <a href={it.href} target="_blank" rel="noreferrer" className={classes}>
+                          <a href={it.href} target="_blank" rel="noreferrer" className={cls} style={style}>
                             {it.label}
                           </a>
                         </li>
                       ) : (
                         <li key={it.label}>
-                          <Link to={it.href} className={classes}>
+                          <Link to={it.href} className={cls} style={style}>
                             {it.label}
                           </Link>
                         </li>
@@ -139,7 +136,10 @@ export default function Footer({
         </div>
       )}
 
-      <div className="border-t border-[var(--border)] py-4 text-center text-xs text-[color:var(--text)]/70">
+      <div
+        className="py-4 text-center text-xs"
+        style={{ borderTop: '1px solid rgba(29,29,29,0.08)', color: '#777777' }}
+      >
         © {year} {brand}. All rights reserved.
       </div>
     </footer>

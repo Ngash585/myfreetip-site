@@ -8,43 +8,41 @@ interface CTAButtonProps {
 }
 
 export function CTAButton({ bookieName, affiliateUrl, timerState }: CTAButtonProps) {
-  const label =
-    timerState === 'expired'
-      ? 'Code Expired — See next pick ↓'
-      : `Open ${bookieName} & Place Bet →`
-
-  const href = affiliateUrl ?? '#'
+  const expired = timerState === 'expired'
+  const label = expired
+    ? 'Code Expired — See next pick ↓'
+    : `Open ${bookieName} & Place Bet →`
 
   return (
-    <div className="mx-3 mt-2 mb-3">
+    <div className="mx-4 mt-3 mb-4">
       <motion.a
-        href={href}
-        className={[
-          'relative block w-full py-4 rounded-xl',
-          'font-display font-extrabold text-base',
-          'bg-emerald-500 text-black',
-          'hover:bg-emerald-400 hover:-translate-y-0.5 transition-all',
-          'overflow-hidden text-center',
-        ].join(' ')}
+        href={affiliateUrl ?? '#'}
+        className="relative block w-full text-center font-medium text-white transition-opacity overflow-hidden"
+        style={{
+          background: expired ? '#CCCCCC' : '#080A2D',
+          borderRadius: '12px',
+          height: '52px',
+          lineHeight: '52px',
+          fontSize: '16px',
+          fontWeight: 600,
+          letterSpacing: '-0.01em',
+          cursor: expired ? 'default' : 'pointer',
+        }}
         animate={{
-          boxShadow:
-            timerState === 'expired'
-              ? undefined
-              : [
-                  '0 0 0 0px rgba(16,163,74,0.5)',
-                  '0 0 0 10px rgba(16,163,74,0)',
-                  '0 0 0 0px rgba(16,163,74,0)',
-                ],
+          boxShadow: expired
+            ? undefined
+            : [
+                '0 0 0 0px rgba(8,10,45,0.3)',
+                '0 0 0 10px rgba(8,10,45,0)',
+                '0 0 0 0px rgba(8,10,45,0)',
+              ],
         }}
-        transition={{
-          duration: 2,
-          repeat: timerState === 'expired' ? 0 : 2,
-          delay: timerState === 'expired' ? 0 : 0.5,
-        }}
+        transition={{ duration: 2, repeat: expired ? 0 : 2, delay: expired ? 0 : 0.5 }}
       >
         <span className="relative z-10">{label}</span>
-        {/* shimmer overlay */}
-        <span className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none rounded-xl" />
+        {!expired && (
+          <span className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none rounded-xl" />
+        )}
       </motion.a>
     </div>
   )

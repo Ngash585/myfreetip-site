@@ -13,19 +13,25 @@ export function Surface({
   noPadding: _noPadding,
   rounded,
   className = "",
+  style,
   ...props
 }: Props) {
-  const base =
-    variant === "raised"
-      ? "border border-[#2a3a4a] bg-[#1a2634] shadow-lg"
-      : variant === "flat"
-      ? "bg-[#1a2634]"
-      : "border border-[#2a3a4a] bg-[#1a2634]";
+  const bg =
+    variant === "flat" ? "#F2EEE9" : "#FFFFFF";
 
-  const radiusClass = rounded ? `rounded-${rounded}` : "rounded-2xl";
+  const shadow =
+    variant === "flat"
+      ? undefined
+      : "rgba(29, 29, 29, 0.08) 4px 16px 32px 0px";
+
+  const radiusClass = rounded ?? "rounded-2xl";
 
   return (
-    <div className={`${base} ${radiusClass} ${className}`} {...props}>
+    <div
+      className={`${radiusClass} ${className}`}
+      style={{ background: bg, boxShadow: shadow, ...style }}
+      {...props}
+    >
       {children}
     </div>
   );

@@ -6,80 +6,57 @@ interface TimerRowProps {
   confidenceLabel?: string
 }
 
-function timerClasses(timerState: TimerState) {
-  switch (timerState) {
-    case 'healthy':
-      return {
-        border: 'border-white/20',
-        text: 'text-[var(--text)]',
-        icon: '⏱',
-        labelPrefix: 'Valid for',
-        extra: '',
-      }
-    case 'warning':
-      return {
-        border: 'border-amber-400',
-        text: 'text-amber-400',
-        icon: '⚡',
-        labelPrefix: 'Expires in',
-        extra: '',
-      }
-    case 'critical':
-      return {
-        border: 'border-red-500 animate-border-pulse',
-        text: 'text-red-500',
-        icon: '⚠',
-        labelPrefix: 'Expires in',
-        extra: '',
-      }
-    case 'expired':
-    default:
-      return {
-        border: 'border-white/10',
-        text: 'text-white/30',
-        icon: '🔒',
-        labelPrefix: 'Code Expired',
-        extra: '',
-      }
-  }
-}
-
 export function TimerRow({ timerState, secs, confidenceLabel }: TimerRowProps) {
   const conf = confidenceLabel ?? 'High Confidence · 82%'
-  const t = timerClasses(timerState)
   const countdown = formatCountdown(secs)
 
+  const timerLabel =
+    timerState === 'expired'
+      ? '🔒 Code Expired'
+      : timerState === 'critical'
+      ? `⚠ Expires in ${countdown}`
+      : timerState === 'warning'
+      ? `⚡ Expires in ${countdown}`
+      : `⏱ Valid for ${countdown}`
+
+  const timerColor =
+    timerState === 'critical' ? '#C0392B'
+    : timerState === 'warning' ? '#B8860B'
+    : timerState === 'expired' ? '#BBBBBB'
+    : '#777777'
+
   return (
-    <div className="flex gap-2 p-3">
+    <div className="flex gap-2 px-4 py-3">
       {/* Confidence pill */}
-      <div className="flex-1 flex items-center gap-2 rounded-lg border border-emerald-500 bg-emerald-50 dark:bg-white/5 px-3 py-2">
-        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-        <span className="font-mono text-xs font-semibold text-emerald-500 whitespace-nowrap">
+      <div
+        className="flex-1 flex items-center gap-2 rounded-lg px-3 py-2"
+        style={{ background: '#EAF7EE', border: '1px solid rgba(61,177,87,0.30)' }}
+      >
+        <span className="w-2 h-2 rounded-full animate-pulse flex-shrink-0" style={{ background: '#3DB157' }} />
+        <span
+          className="text-xs font-medium whitespace-nowrap"
+          style={{ fontFamily: "'DM Mono', monospace", color: '#2D9A47' }}
+        >
           {conf}
         </span>
       </div>
 
       {/* Timer pill */}
       <div
-        className={[
-          'flex-1 flex items-center justify-center gap-2 rounded-lg border px-3 py-2 whitespace-nowrap',
-          'bg-[var(--surface)]',
-          t.border,
-          t.text,
-        ].join(' ')}
+        className={`flex-1 flex items-center justify-center gap-1 rounded-lg px-3 py-2 whitespace-nowrap ${timerState === 'critical' ? 'animate-border-pulse' : ''}`}
+        style={{
+          background: '#F2EEE9',
+          border: `1px solid ${timerState === 'critical' ? 'rgba(192,57,43,0.30)' : 'rgba(29,29,29,0.10)'}`,
+        }}
       >
-        <span className="font-mono text-xs font-semibold">
-          {timerState === 'expired' ? (
-            <>
-              {t.icon} {t.labelPrefix}
-            </>
-          ) : (
-            <>
-              {t.icon} {t.labelPrefix} <span>{countdown}</span>
-            </>
-          )}
+        <span
+          className="text-xs font-medium"
+          style={{ fontFamily: "'DM Mono', monospace", color: timerColor }}
+        >
+          {timerLabel}
         </span>
       </div>
     </div>
   )
 }
+

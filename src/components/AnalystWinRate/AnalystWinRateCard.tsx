@@ -11,39 +11,40 @@ export function AnalystWinRateCard({ record }: AnalystWinRateCardProps) {
 
   return (
     <div
-      className="rounded-2xl p-5 flex flex-col gap-5"
+      className="rounded-2xl p-6 flex flex-col gap-6"
       style={{
-        background: 'linear-gradient(145deg, #0D1E30 0%, #0B1A28 100%)',
-        border: '1px solid rgba(255,255,255,0.09)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+        background: '#FFFFFF',
+        boxShadow: 'rgba(29, 29, 29, 0.08) 4px 16px 32px 0px',
       }}
     >
-      {/* Top row: ring + title */}
+      {/* Ring + title */}
       <div className="flex items-center gap-5">
         <CircularProgress pct={record.win_rate_pct} size={100} strokeWidth={9} />
 
         <div className="flex flex-col gap-1 min-w-0">
           <h3
-            className="font-display font-extrabold text-white leading-tight"
+            className="leading-tight tracking-[-0.02em]"
             style={{
-              fontFamily: "'Montserrat Variable', Montserrat, sans-serif",
-              fontSize: 'clamp(15px, 3.5vw, 20px)',
+              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontSize: 'clamp(16px, 3.5vw, 20px)',
+              color: '#1D1D1D',
+              fontWeight: 400,
             }}
           >
             {record.title}
           </h3>
           {record.subtitle && (
-            <p className="text-[13px] leading-snug" style={{ color: 'rgba(250,250,235,0.55)' }}>
+            <p className="text-sm leading-snug" style={{ color: '#4F4841', fontWeight: 300 }}>
               {record.subtitle}
             </p>
           )}
         </div>
       </div>
 
-      {/* Stat tiles row */}
-      <div className="flex gap-2.5">
-        <StatCell value={record.won}  label="Won"   colour="green" />
-        <StatCell value={record.lost} label="Lost"  colour="red"   />
+      {/* Stat tiles */}
+      <div className="flex gap-3">
+        <StatCell value={record.won}   label="Won"   colour="green" />
+        <StatCell value={record.lost}  label="Lost"  colour="red"   />
         {showVoid && (
           <StatCell value={record.void!} label="Void" colour="amber" />
         )}

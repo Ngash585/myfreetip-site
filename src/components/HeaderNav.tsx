@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
 
 const NAV_LINKS = [
-  { label: "Home", href: "/" },
+  { label: "Home",        href: "/" },
   { label: "Predictions", href: "/predictions" },
-  { label: "Sports News", href: "/sports-news" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "News",        href: "/sports-news" },
+  { label: "About",       href: "/about" },
+  { label: "Contact",     href: "/contact" },
 ];
 
 type Props = {
@@ -22,7 +22,7 @@ export default function HeaderNav({
   return (
     <nav
       aria-label="Main navigation"
-      className={`flex ${orientation === "vertical" ? "flex-col gap-1" : "items-center gap-1"} ${className}`}
+      className={`flex ${orientation === "vertical" ? "flex-col" : "items-center gap-0"} ${className}`}
     >
       {NAV_LINKS.map(({ label, href }) => (
         <NavLink
@@ -30,16 +30,28 @@ export default function HeaderNav({
           to={href}
           end={href === "/"}
           onClick={onLinkClick}
-          className={({ isActive }) =>
-            [
-              "px-3 py-2 rounded-md text-sm font-medium transition-colors",
-              isActive
-                ? "text-[#00c853] bg-[#00c853]/10"
-                : "text-[#8a9bb0] hover:text-white hover:bg-[#2a3a4a]",
-            ].join(" ")
-          }
+          className="relative px-3 py-2 text-sm transition-colors"
+          style={({ isActive }) => ({
+            color: isActive ? "#1D1D1D" : "#777777",
+            fontWeight: isActive ? 500 : 400,
+            ...(orientation === "vertical" && {
+              borderBottom: "1px solid rgba(29,29,29,0.06)",
+              padding: "12px 16px",
+              display: "block",
+            }),
+          })}
         >
-          {label}
+          {({ isActive }) => (
+            <>
+              {label}
+              {isActive && orientation === "horizontal" && (
+                <span
+                  className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full"
+                  style={{ background: "#3DB157" }}
+                />
+              )}
+            </>
+          )}
         </NavLink>
       ))}
     </nav>

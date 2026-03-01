@@ -1,19 +1,12 @@
 import { useEffect, useRef } from 'react';
 
 interface CircularProgressProps {
-  /** 0–100 */
   pct: number;
-  /** Outer diameter in px. Default: 100 */
   size?: number;
-  /** Ring stroke width. Default: 9 */
   strokeWidth?: number;
 }
 
-export function CircularProgress({
-  pct,
-  size = 100,
-  strokeWidth = 9,
-}: CircularProgressProps) {
+export function CircularProgress({ pct, size = 100, strokeWidth = 9 }: CircularProgressProps) {
   const arcRef = useRef<SVGCircleElement>(null);
 
   const centre = size / 2;
@@ -24,12 +17,9 @@ export function CircularProgress({
   useEffect(() => {
     const el = arcRef.current;
     if (!el) return;
-
     const targetOffset = circumference * (1 - clampedPct / 100);
-
     el.style.transition = 'none';
     el.style.strokeDashoffset = String(circumference);
-
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         el.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -47,24 +37,20 @@ export function CircularProgress({
         style={{ transform: 'rotate(-90deg)' }}
         aria-hidden
       >
-        {/* Track ring */}
+        {/* Track */}
         <circle
-          cx={centre}
-          cy={centre}
-          r={radius}
+          cx={centre} cy={centre} r={radius}
           fill="none"
-          stroke="rgba(255,255,255,0.08)"
+          stroke="rgba(29, 29, 29, 0.08)"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
         />
-        {/* Animated fill arc */}
+        {/* Arc */}
         <circle
           ref={arcRef}
-          cx={centre}
-          cy={centre}
-          r={radius}
+          cx={centre} cy={centre} r={radius}
           fill="none"
-          stroke="#16A34A"
+          stroke="#3DB157"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -72,14 +58,14 @@ export function CircularProgress({
         />
       </svg>
 
-      {/* Centred percentage label */}
       <div className="absolute inset-0 flex items-center justify-center">
         <span
-          className="font-display font-extrabold leading-none"
+          className="leading-none"
           style={{
-            fontFamily: "'Montserrat Variable', Montserrat, sans-serif",
+            fontFamily: "'DM Serif Display', Georgia, serif",
             fontSize: size * 0.22,
-            color: '#16A34A',
+            color: '#3DB157',
+            fontWeight: 400,
           }}
         >
           {clampedPct}%

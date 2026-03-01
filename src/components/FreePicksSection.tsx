@@ -38,10 +38,19 @@ export function FreePicksSection() {
   const filtered = cards.filter((c) => getCardTab(c) === active);
 
   return (
-    <div className="bg-[#1a2634] rounded-2xl overflow-hidden">
+    <div
+      className="rounded-2xl overflow-hidden"
+      style={{ background: '#FFFFFF', boxShadow: 'rgba(29, 29, 29, 0.08) 4px 16px 32px 0px' }}
+    >
       {/* Header + tabs */}
-      <div className="flex items-center justify-between px-4 border-b border-[#2a3a4a]">
-        <h2 className="text-xs font-bold text-white uppercase tracking-widest py-3">
+      <div
+        className="flex items-center justify-between px-6"
+        style={{ borderBottom: '1px solid rgba(29,29,29,0.08)' }}
+      >
+        <h2
+          className="text-xs font-medium uppercase tracking-widest py-4"
+          style={{ color: '#777777' }}
+        >
           Free Picks
         </h2>
         <div className="flex">
@@ -50,14 +59,18 @@ export function FreePicksSection() {
               key={tab}
               type="button"
               onClick={() => setActive(tab)}
-              className={[
-                "px-3 py-3 text-xs font-semibold relative transition-colors",
-                active === tab ? "text-emerald-400" : "text-[#8a9bb0] hover:text-white",
-              ].join(" ")}
+              className="px-3 py-4 text-sm relative transition-colors"
+              style={{
+                color: active === tab ? '#1D1D1D' : '#777777',
+                fontWeight: active === tab ? 500 : 400,
+              }}
             >
               {TAB_LABELS[tab]}
               {active === tab && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400 rounded-full" />
+                <span
+                  className="absolute bottom-0 left-0 right-0 h-0.5"
+                  style={{ background: '#3DB157' }}
+                />
               )}
             </button>
           ))}
@@ -65,12 +78,12 @@ export function FreePicksSection() {
       </div>
 
       {/* Rows */}
-      <div className="px-4">
+      <div className="px-6">
         {loading && (
-          <p className="py-6 text-center text-xs text-[#8a9bb0]">Loading picks…</p>
+          <p className="py-6 text-center text-sm" style={{ color: '#777777' }}>Loading picks…</p>
         )}
         {!loading && filtered.length === 0 && (
-          <p className="py-6 text-center text-xs text-[#8a9bb0]">
+          <p className="py-6 text-center text-sm" style={{ color: '#777777' }}>
             {active === "tomorrow"
               ? "Tomorrow's picks drop at 9 AM — check back soon."
               : "No picks today."}
@@ -85,10 +98,11 @@ export function FreePicksSection() {
       </div>
 
       {/* Footer link */}
-      <div className="px-4 py-3 border-t border-[#2a3a4a]">
+      <div className="px-6 py-4" style={{ borderTop: '1px solid rgba(29,29,29,0.08)' }}>
         <Link
           to="/predictions"
-          className="block text-center text-xs text-emerald-400 font-semibold hover:underline"
+          className="block text-center text-sm font-medium transition-colors hover:opacity-70"
+          style={{ color: '#3DB157' }}
         >
           View all predictions →
         </Link>

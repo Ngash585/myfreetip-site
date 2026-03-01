@@ -4,16 +4,28 @@ interface CardHeaderProps {
 }
 
 export function CardHeader({ title, type }: CardHeaderProps) {
-  const badge = (type && type.trim()) || 'MFT'
+  const typeLabel = (type && type.trim()) ? type.trim() : null
 
   return (
-    <div className="px-4 py-3 flex items-center justify-between bg-gradient-to-r from-[#0B2545] to-[#162E50]">
-      <div className="font-display font-extrabold text-[15px] text-white leading-none">
+    <div className="px-6 pt-6 pb-2 flex items-center justify-between">
+      <span
+        className="text-[11px] font-medium uppercase tracking-[0.10em]"
+        style={{ color: '#777777' }}
+      >
         {title}
-      </div>
-      <div className="bg-blue-600 text-white font-mono text-[10px] px-2 py-0.5 rounded tracking-wide">
-        {badge}
-      </div>
+      </span>
+      {typeLabel && (
+        <span
+          className="text-xs font-medium px-2 py-0.5 rounded-md capitalize"
+          style={{
+            background: '#EAF7EE',
+            color: '#2D9A47',
+            border: '1px solid rgba(61,177,87,0.25)',
+          }}
+        >
+          {typeLabel}
+        </span>
+      )}
     </div>
   )
 }

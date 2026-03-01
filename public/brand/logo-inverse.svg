@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="240" viewBox="0 0 960 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MyFreeTip logo inverse">
+  <rect width="960" height="240" fill="none"/>
+  <g transform="translate(40,160)">
+    <text x="0" y="0" font-size="144" font-weight="800" font-family="Inter, Arial, sans-serif" fill="#FFFFFF">MyFreeTip</text>
+  </g>
+</svg>

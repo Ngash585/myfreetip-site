@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="240" viewBox="0 0 960 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MyFreeTip logo">
+  <rect width="960" height="240" fill="none"/>
+  <g transform="translate(40,160)">
+    <text x="0" y="0" font-size="144" font-weight="800" font-family="Inter, Arial, sans-serif" fill="#0B5A8C">MyFreeTip</text>
+    <!-- emerald accent tail under 'y' -->
+    <path d="M 118 -30 C 138 -8 160 -8 182 -30" fill="none" stroke="#22C55E" stroke-width="12" stroke-linecap="round"/>
+    <!-- 'i' dot -->
+    <circle cx="560" cy="-92" r="9" fill="#22C55E"/>
+  </g>
+</svg>

@@ -1,0 +1,37 @@
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* Variable fonts */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/montserrat";
+@import "@fontsource-variable/roboto-mono";
+
+@theme inline {
+  --font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
+  --font-heading: "Montserrat Variable", "Montserrat", sans-serif;
+  --font-mono: "Roboto Mono Variable", "Roboto Mono", monospace;
+}
+
+:root {
+  --bg: #0f1923;
+  --surface: #1a2634;
+  --accent: #00c853;
+  --text: #e8edf2;
+  --text-muted: #8a9bb0;
+  --border: #2a3a4a;
+}
+@layer utilities {
+  .animate-border-pulse {
+    animation: border-pulse 1s ease-in-out infinite;
+  }
+  @keyframes border-pulse {
+    0%, 100% { border-color: rgba(239, 68, 68, 0.4); }
+    50%      { border-color: rgba(239, 68, 68, 1); }
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+}

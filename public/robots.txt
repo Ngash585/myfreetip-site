@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://myfreetip.com/sitemap.xml

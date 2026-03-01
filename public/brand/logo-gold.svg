@@ -1,0 +1,15 @@
+<!-- /public/brand/logo-gold.svg -->
+<svg width="160" height="32" viewBox="0 0 160 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MyFreeTip">
+  <title>MyFreeTip</title>
+  <defs>
+    <style>
+      .gold { fill:#F4B400; }
+      .navy { fill:#0B1F2F; }
+      .stroke-navy { stroke:#0B1F2F; }
+      .word { font: 800 16px "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans", sans-serif; letter-spacing:.2px; }
+    </style>
+  </defs>
+  <rect x="4" y="4" width="24" height="24" rx="6" class="gold"/>
+  <path d="M11 18.5l3.8 3.8L22.5 12" fill="none" class="stroke-navy" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="36" y="22" class="word gold">MyFreeTip</text>
+</svg>

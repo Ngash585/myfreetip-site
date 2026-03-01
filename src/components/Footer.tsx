@@ -64,14 +64,14 @@ export default function Footer({
       {!compact && (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
           <div
-            className="grid gap-x-6 gap-y-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 rounded-2xl p-6 sm:p-8"
+            className="grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-[2fr_1fr_1fr] rounded-2xl p-6 sm:p-8"
             style={{
               background: '#FFFFFF',
               boxShadow: 'rgba(29,29,29,0.06) 0 4px 24px 0',
             }}
           >
             {/* Brand */}
-            <section aria-labelledby="footer-about" className="col-span-2 sm:col-span-1">
+            <section aria-labelledby="footer-about" className="col-span-2 md:col-span-1">
               <h2
                 id="footer-about"
                 className="text-base tracking-[-0.02em]"

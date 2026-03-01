@@ -5,15 +5,11 @@ import { getAnalystStats } from '@/lib/api';
 import type { AnalystStatRecord } from '@/lib/api';
 
 interface AnalystWinRateSectionProps {
-  /** The gold step-circle number shown in the section header. Default: 5 */
-  stepNumber?: number;
-  /** Section title. Default: "ANALYST WIN RATE" */
   heading?: string;
 }
 
 export function AnalystWinRateSection({
-  stepNumber = 5,
-  heading = 'ANALYST WIN RATE',
+  heading = 'Analyst Win Rate',
 }: AnalystWinRateSectionProps) {
   const [records, setRecords] = useState<AnalystStatRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,17 +38,13 @@ export function AnalystWinRateSection({
 
   return (
     <section>
-      {/* Section header — gold step-circle + label */}
-      <div className="flex items-center gap-2.5 mb-6">
-        <div className="flex-shrink-0 h-6 w-6 rounded-full border-2 border-emerald-500 text-emerald-400 flex items-center justify-center">
-          <span className="font-mono text-[11px] font-bold leading-none">
-            {stepNumber}
-          </span>
-        </div>
-        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
-          {heading}
-        </span>
-      </div>
+      {/* Section heading */}
+      <h2
+        className="mb-6 text-[13px] font-semibold uppercase tracking-[0.12em]"
+        style={{ color: '#777777' }}
+      >
+        {heading}
+      </h2>
 
       {/* Content */}
       <div className="flex flex-col gap-4">

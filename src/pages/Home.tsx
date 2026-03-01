@@ -33,8 +33,8 @@ export default function Home() {
           {!bestBetLoading && bestBet && (
             <>
               <div className="mb-3 flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-semibold text-white/40 uppercase tracking-widest">
+                <span className="inline-block w-2 h-2 rounded-full animate-pulse" style={{ background: '#3DB157' }} />
+                <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#777777' }}>
                   Best Bet Today
                 </span>
               </div>
@@ -60,7 +60,7 @@ export default function Home() {
         </section>
 
         <section>
-          <AnalystWinRateSection stepNumber={5} />
+          <AnalystWinRateSection />
         </section>
 
       </div>

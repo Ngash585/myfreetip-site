@@ -10,7 +10,7 @@ interface CardHeaderProps {
 
 export function CardHeader({ title, type, timerState, secs, confidenceLabel }: CardHeaderProps) {
   const typeLabel = (type && type.trim()) ? type.trim() : null
-  const conf = confidenceLabel ?? 'High Confidence · 82%'
+  const conf = confidenceLabel ?? 'Confidence · 82%'
   const countdown = formatCountdown(secs)
 
   const timerLabel =
@@ -36,8 +36,8 @@ export function CardHeader({ title, type, timerState, secs, confidenceLabel }: C
       {/* Title · Type */}
       <div className="flex items-center gap-1.5 flex-shrink-0">
         <span
-          className="text-[11px] font-medium uppercase tracking-[0.10em] whitespace-nowrap"
-          style={{ color: '#777777' }}
+          className="text-[11px] font-semibold uppercase tracking-[0.10em] whitespace-nowrap"
+          style={{ color: '#4F4841' }}
         >
           {title}
         </span>

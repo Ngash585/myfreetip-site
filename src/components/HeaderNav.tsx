@@ -30,24 +30,29 @@ export default function HeaderNav({
           to={href}
           end={href === "/"}
           onClick={onLinkClick}
-          className="relative px-3 py-2 text-sm transition-colors"
-          style={({ isActive }) => ({
-            color: isActive ? "#1D1D1D" : "#777777",
-            fontWeight: isActive ? 500 : 400,
-            ...(orientation === "vertical" && {
-              borderBottom: "1px solid rgba(29,29,29,0.06)",
-              padding: "12px 16px",
-              display: "block",
-            }),
-          })}
+          className={({ isActive }) =>
+            `group relative px-3 py-2 text-sm transition-colors ${
+              isActive
+                ? "text-[#1D1D1D] font-medium"
+                : "text-[#777777] hover:text-[#1D1D1D]"
+            } ${
+              orientation === "vertical"
+                ? "block border-b border-[rgba(29,29,29,0.06)] px-4 py-3"
+                : ""
+            }`
+          }
         >
           {({ isActive }) => (
             <>
               {label}
-              {isActive && orientation === "horizontal" && (
+              {orientation === "horizontal" && (
                 <span
-                  className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full"
-                  style={{ background: "#3DB157" }}
+                  className={`absolute bottom-0 left-3 right-3 h-0.5 rounded-full transition-opacity duration-150 ${
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-0 group-hover:opacity-30"
+                  }`}
+                  style={{ background: isActive ? "#3DB157" : "#1D1D1D" }}
                 />
               )}
             </>

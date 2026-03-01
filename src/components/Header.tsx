@@ -1,15 +1,8 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import BrandLogo from "@/components/BrandLogo";
 import HeaderNav from "@/components/HeaderNav";
 import SidebarDrawer from "@/components/SidebarDrawer";
-
-const STRIP_LINKS = [
-  { label: "Predictions", href: "/predictions" },
-  { label: "News",        href: "/sports-news" },
-  { label: "About",       href: "/about" },
-  { label: "Contact",     href: "/contact" },
-];
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -51,11 +44,11 @@ export default function Header() {
 
           {/* Right: CTA */}
           <div className="flex justify-end items-center gap-4">
-            {/* Mobile */}
+            {/* Mobile — smaller so logo stays dominant */}
             <Link
               to="/predictions"
-              className="md:hidden text-xs font-medium text-white whitespace-nowrap transition-opacity hover:opacity-80 px-4 py-2"
-              style={{ background: '#080A2D', borderRadius: '10px' }}
+              className="md:hidden text-[11px] font-medium text-white whitespace-nowrap transition-opacity hover:opacity-80 px-3 py-1.5"
+              style={{ background: '#080A2D', borderRadius: '8px' }}
             >
               Get Started
             </Link>
@@ -73,28 +66,6 @@ export default function Header() {
           </div>
         </div>
 
-        {/* ── Mobile nav strip ── */}
-        <div
-          className="md:hidden overflow-x-auto"
-          style={{ borderTop: '1px solid rgba(29,29,29,0.08)', scrollbarWidth: 'none' }}
-        >
-          <div className="flex items-center px-3 min-w-max">
-            {STRIP_LINKS.map(({ label, href }) => (
-              <NavLink
-                key={href}
-                to={href}
-                end={href === "/"}
-                className={({ isActive }) =>
-                  `px-3 py-2.5 text-xs font-medium uppercase tracking-wider whitespace-nowrap transition-colors ${
-                    isActive ? 'text-[#3DB157]' : 'text-[#777777] hover:text-[#1D1D1D]'
-                  }`
-                }
-              >
-                {label}
-              </NavLink>
-            ))}
-          </div>
-        </div>
       </header>
 
       <SidebarDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />

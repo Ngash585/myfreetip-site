@@ -5,6 +5,7 @@ import { PredictionCard, PredictionCardSkeleton } from "@/components/PredictionC
 import { AnalystWinRateSection } from "@/components/AnalystWinRate";
 import { FreePicksSection } from "@/components/FreePicksSection";
 import { LatestNewsSnippet } from "@/components/LatestNewsSnippet";
+import { HeroSection } from "@/components/HeroSection";
 
 export default function Home() {
   const [bestBet, setBestBet]           = useState<TipCard | null>(null);
@@ -19,6 +20,9 @@ export default function Home() {
 
   return (
     <div className="px-4 py-6 text-white max-w-2xl mx-auto">
+
+      {/* Hero */}
+      <HeroSection />
 
       {/* Best Bet Today */}
       <section>

@@ -1,4 +1,9 @@
 // API utilities and shared types
+// Data layer: all components call these functions only.
+// To migrate a function to Supabase, replace the mock body —
+// components require zero changes.
+
+import { supabase } from './supabase'
 
 export type Confidence = "low" | "medium" | "high";
 export type Result = "win" | "loss" | "pending";
@@ -125,13 +130,21 @@ export type AnalystStatsPayload = {
   generatedAt: string;
 };
 
-/**
- * Fetch analyst stat records.
- * Mock data — swap body for Supabase when ready:
- *   const { data } = await supabase.from('analyst_stats').select('*').order('created_at', { ascending: false }).limit(10)
- *   return { records: data ?? [], generatedAt: new Date().toISOString() }
- */
+// ─── Analyst Stats ────────────────────────────────────────────────────────────
+
 export async function getAnalystStats(): Promise<AnalystStatsPayload> {
+  if (supabase) {
+    const { data, error } = await supabase
+      .from('analyst_stats')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(10)
+    if (!error && data) {
+      return { records: data, generatedAt: new Date().toISOString() }
+    }
+  }
+
+  // Mock fallback
   return {
     records: [
       {
@@ -149,19 +162,136 @@ export async function getAnalystStats(): Promise<AnalystStatsPayload> {
   };
 }
 
-// ─── TipCards API ─────────────────────────────────────────────────────────────
+// ─── TipCards ─────────────────────────────────────────────────────────────────
 
-/**
- * Fetch tip cards.
- * Mock data — swap body for Supabase when ready:
- *   const { data } = await supabase
- *     .from('tip_cards')
- *     .select('*, legs(*), bookies(*, bookie_returns(*))')
- *     .order('created_at', { ascending: false })
- *     .limit(10)
- *   return data ?? []
- */
+/** Shape returned by Supabase for card_bookies rows */
+type RawCardBookie = {
+  bookie_id: string
+  code: string | null
+  is_default: boolean
+  return_5: number | null
+  return_10: number | null
+  return_20: number | null
+  bookies: {
+    name: string
+    logo_url: string | null
+    brand_hex: string | null
+    signup_url: string | null
+    deeplink_url: string | null
+    signup_cta_label: string | null
+  } | null
+}
+
+/** Shape returned by Supabase for tip_cards with nested relations */
+type RawTipCard = {
+  id: string
+  title: string
+  type: string
+  badge_label: string | null
+  total_odds_label: string | null
+  confidence: string
+  result: string
+  expires_at: string | null
+  default_bookie_id: string | null
+  analyst: string | null
+  category: string | null
+  created_at: string
+  legs: Array<{
+    id: string
+    home_team: string
+    away_team: string
+    match_label: string | null
+    league: string | null
+    kickoff_iso: string | null
+    kickoff_label: string | null
+    prediction: string | null
+    pick_title: string | null
+    odds: string | null
+    short_reason: string | null
+    left_icon_url: string | null
+    right_icon_url: string | null
+    sort_order: number
+  }>
+  card_bookies: RawCardBookie[]
+}
+
+function rawToTipCard(raw: RawTipCard): TipCard {
+  const legs: Leg[] = (raw.legs ?? [])
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map((l) => ({
+      homeTeam: l.home_team,
+      awayTeam: l.away_team,
+      match_label: l.match_label ?? `${l.home_team} vs ${l.away_team}`,
+      league: l.league ?? undefined,
+      kickoff_iso: l.kickoff_iso ?? undefined,
+      kickoff_label: l.kickoff_label ?? undefined,
+      prediction: l.prediction ?? '',
+      pick_title: l.pick_title ?? l.prediction ?? undefined,
+      odds: l.odds ?? undefined,
+      short_reason: l.short_reason ?? undefined,
+      left_icon_url: l.left_icon_url ?? undefined,
+      right_icon_url: l.right_icon_url ?? undefined,
+    }))
+
+  const bookies: Bookie[] = (raw.card_bookies ?? []).map((cb) => {
+    const b = cb.bookies
+    const returns: BookieReturn[] = []
+    if (cb.return_5 != null)  returns.push({ stake_amount: 5,  stake_label: 'KES 5',  return_label: `KES ${cb.return_5.toFixed(2)}`,  return_amount: cb.return_5  })
+    if (cb.return_10 != null) returns.push({ stake_amount: 10, stake_label: 'KES 10', return_label: `KES ${cb.return_10.toFixed(2)}`, return_amount: cb.return_10 })
+    if (cb.return_20 != null) returns.push({ stake_amount: 20, stake_label: 'KES 20', return_label: `KES ${cb.return_20.toFixed(2)}`, return_amount: cb.return_20 })
+    return {
+      id: cb.bookie_id,
+      name: b?.name ?? cb.bookie_id,
+      logo: b?.logo_url ?? undefined,
+      code: cb.code ?? undefined,
+      signup_url: b?.signup_url ?? undefined,
+      deeplink_url: b?.deeplink_url ?? undefined,
+      signup_cta_label: b?.signup_cta_label ?? undefined,
+      brand_hex: b?.brand_hex ?? undefined,
+      default: cb.is_default,
+      returns,
+    }
+  })
+
+  return {
+    id: raw.id,
+    title: raw.title,
+    type: raw.type as TipCard['type'],
+    badge_label: raw.badge_label ?? undefined,
+    total_odds_label: raw.total_odds_label ?? undefined,
+    legs,
+    confidence: raw.confidence as Confidence,
+    result: raw.result as Result,
+    expiresAt: raw.expires_at ?? undefined,
+    default_bookie_id: raw.default_bookie_id ?? undefined,
+    bookies,
+    analyst: raw.analyst ?? undefined,
+    category: raw.category ?? undefined,
+    date: new Date(raw.created_at).toLocaleDateString('en-GB'),
+  }
+}
+
 export async function getTipCards(): Promise<TipCard[]> {
+  if (supabase) {
+    const { data, error } = await supabase
+      .from('tip_cards')
+      .select(`
+        *,
+        legs ( * ),
+        card_bookies (
+          bookie_id, code, is_default, return_5, return_10, return_20,
+          bookies ( name, logo_url, brand_hex, signup_url, deeplink_url, signup_cta_label )
+        )
+      `)
+      .order('created_at', { ascending: false })
+      .limit(20)
+
+    if (!error && data) {
+      return (data as RawTipCard[]).map(rawToTipCard)
+    }
+  }
+
+  // Mock fallback — used when VITE_SUPABASE_URL is not configured
   const now = new Date();
   const todayKickoff    = new Date(now.getTime() + 6  * 60 * 60 * 1000).toISOString();
   const tomorrowKickoff = new Date(now.getTime() + 26 * 60 * 60 * 1000).toISOString();
@@ -201,9 +331,9 @@ export async function getTipCards(): Promise<TipCard[]> {
         },
       ],
       totalOdds: [
-        { id: "low",  stake_amount: 5,  stake_label: "$5",  returns: "23.15" },
-        { id: "mid",  stake_amount: 10, stake_label: "$10", returns: "46.30" },
-        { id: "high", stake_amount: 20, stake_label: "$20", returns: "92.60" },
+        { id: "low",  stake_amount: 5,  stake_label: "KES 5",  returns: "23.15" },
+        { id: "mid",  stake_amount: 10, stake_label: "KES 10", returns: "46.30" },
+        { id: "high", stake_amount: 20, stake_label: "KES 20", returns: "92.60" },
       ],
       confidence: "high",
       result: "pending",
@@ -215,9 +345,9 @@ export async function getTipCards(): Promise<TipCard[]> {
           deeplink_url: "https://1xbet.com/line", signup_cta_label: "Join 1xBet",
           brand_hex: "#1a6fc4", default: true,
           returns: [
-            { stake_amount: 5,  stake_label: "$5",  return_label: "$23.15", return_amount: 23.15 },
-            { stake_amount: 10, stake_label: "$10", return_label: "$46.30", return_amount: 46.30 },
-            { stake_amount: 20, stake_label: "$20", return_label: "$92.60", return_amount: 92.60 },
+            { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 23.15", return_amount: 23.15 },
+            { stake_amount: 10, stake_label: "KES 10", return_label: "KES 46.30", return_amount: 46.30 },
+            { stake_amount: 20, stake_label: "KES 20", return_label: "KES 92.60", return_amount: 92.60 },
           ],
         },
         {
@@ -226,9 +356,9 @@ export async function getTipCards(): Promise<TipCard[]> {
           deeplink_url: "https://melbet.com/line", signup_cta_label: "Join Melbet",
           brand_hex: "#d4aa00",
           returns: [
-            { stake_amount: 5,  stake_label: "$5",  return_label: "$23.15", return_amount: 23.15 },
-            { stake_amount: 10, stake_label: "$10", return_label: "$46.30", return_amount: 46.30 },
-            { stake_amount: 20, stake_label: "$20", return_label: "$92.60", return_amount: 92.60 },
+            { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 23.15", return_amount: 23.15 },
+            { stake_amount: 10, stake_label: "KES 10", return_label: "KES 46.30", return_amount: 46.30 },
+            { stake_amount: 20, stake_label: "KES 20", return_label: "KES 92.60", return_amount: 92.60 },
           ],
         },
       ],
@@ -263,9 +393,9 @@ export async function getTipCards(): Promise<TipCard[]> {
           deeplink_url: "https://paripesa.com/line", signup_cta_label: "Join Paripesa",
           brand_hex: "#e6000a", default: true,
           returns: [
-            { stake_amount: 5,  stake_label: "$5",  return_label: "$7.75",  return_amount: 7.75  },
-            { stake_amount: 10, stake_label: "$10", return_label: "$15.50", return_amount: 15.50 },
-            { stake_amount: 20, stake_label: "$20", return_label: "$31.00", return_amount: 31.00 },
+            { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 7.75",  return_amount: 7.75  },
+            { stake_amount: 10, stake_label: "KES 10", return_label: "KES 15.50", return_amount: 15.50 },
+            { stake_amount: 20, stake_label: "KES 20", return_label: "KES 31.00", return_amount: 31.00 },
           ],
         },
         {
@@ -274,9 +404,9 @@ export async function getTipCards(): Promise<TipCard[]> {
           deeplink_url: "https://1xbet.com/line", signup_cta_label: "Join 1xBet",
           brand_hex: "#1a6fc4",
           returns: [
-            { stake_amount: 5,  stake_label: "$5",  return_label: "$7.75",  return_amount: 7.75  },
-            { stake_amount: 10, stake_label: "$10", return_label: "$15.50", return_amount: 15.50 },
-            { stake_amount: 20, stake_label: "$20", return_label: "$31.00", return_amount: 31.00 },
+            { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 7.75",  return_amount: 7.75  },
+            { stake_amount: 10, stake_label: "KES 10", return_label: "KES 15.50", return_amount: 15.50 },
+            { stake_amount: 20, stake_label: "KES 20", return_label: "KES 31.00", return_amount: 31.00 },
           ],
         },
       ],
@@ -318,9 +448,9 @@ export async function getTipCards(): Promise<TipCard[]> {
           deeplink_url: "https://melbet.com/line", signup_cta_label: "Join Melbet",
           brand_hex: "#d4aa00", default: true,
           returns: [
-            { stake_amount: 5,  stake_label: "$5",  return_label: "$14.03", return_amount: 14.03 },
-            { stake_amount: 10, stake_label: "$10", return_label: "$28.05", return_amount: 28.05 },
-            { stake_amount: 20, stake_label: "$20", return_label: "$56.10", return_amount: 56.10 },
+            { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 14.03", return_amount: 14.03 },
+            { stake_amount: 10, stake_label: "KES 10", return_label: "KES 28.05", return_amount: 28.05 },
+            { stake_amount: 20, stake_label: "KES 20", return_label: "KES 56.10", return_amount: 56.10 },
           ],
         },
       ],
@@ -331,7 +461,7 @@ export async function getTipCards(): Promise<TipCard[]> {
   ];
 }
 
-// ─── News Articles API ────────────────────────────────────────────────────────
+// ─── News Articles ────────────────────────────────────────────────────────────
 
 export type NewsArticle = {
   id: string;
@@ -450,22 +580,25 @@ One important note: booking codes expire at kick-off time. If a match in the acc
   },
 ];
 
-/**
- * Fetch all news articles.
- * Swap body for Supabase when ready:
- *   const { data } = await supabase.from('news_articles').select('*').order('published_at', { ascending: false })
- *   return data ?? []
- */
 export async function getNewsArticles(): Promise<NewsArticle[]> {
-  return MOCK_NEWS;
+  if (supabase) {
+    const { data, error } = await supabase
+      .from('news_articles')
+      .select('*')
+      .order('published_at', { ascending: false })
+    if (!error && data) return data as NewsArticle[]
+  }
+  return MOCK_NEWS
 }
 
-/**
- * Fetch a single news article by slug.
- * Swap body for Supabase when ready:
- *   const { data } = await supabase.from('news_articles').select('*').eq('slug', slug).single()
- *   return data ?? null
- */
 export async function getNewsArticle(slug: string): Promise<NewsArticle | null> {
-  return MOCK_NEWS.find((a) => a.slug === slug) ?? null;
+  if (supabase) {
+    const { data, error } = await supabase
+      .from('news_articles')
+      .select('*')
+      .eq('slug', slug)
+      .single()
+    if (!error && data) return data as NewsArticle
+  }
+  return MOCK_NEWS.find((a) => a.slug === slug) ?? null
 }

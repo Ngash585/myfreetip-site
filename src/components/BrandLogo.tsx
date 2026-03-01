@@ -2,25 +2,23 @@ import { Link } from "react-router-dom";
 
 type Props = {
   size?: "sm" | "md" | "lg";
+  /** dark = white logo for dark backgrounds (default); light = blue logo for light backgrounds */
+  variant?: "dark" | "light";
   className?: string;
 };
 
-const sizeMap = { sm: "text-lg", md: "text-xl", lg: "text-2xl" };
-const imgMap = { sm: "h-6", md: "h-8", lg: "h-10" };
+const heightMap = { sm: "h-7", md: "h-9", lg: "h-11" };
 
-export default function BrandLogo({ size = "md", className = "" }: Props) {
+export default function BrandLogo({ size = "md", variant = "dark", className = "" }: Props) {
+  const src = variant === "light" ? "/brand/logo-primary.svg" : "/brand/logo-inverse.svg";
+
   return (
-    <Link to="/" className={`flex items-center gap-2 ${className}`}>
+    <Link to="/" aria-label="MyFreeTip home" className={`inline-flex items-center ${className}`}>
       <img
-        src="/brand/logo-primary.svg"
-        alt=""
-        aria-hidden="true"
-        className={`${imgMap[size]} w-auto`}
-        onError={(e) => (e.currentTarget.style.display = "none")}
+        src={src}
+        alt="MyFreeTip"
+        className={`${heightMap[size]} w-auto`}
       />
-      <span className={`font-heading font-bold text-white ${sizeMap[size]}`}>
-        MyFree<span className="text-[#00c853]">Tip</span>
-      </span>
     </Link>
   );
 }

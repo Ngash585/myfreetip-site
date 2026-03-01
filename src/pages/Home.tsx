@@ -4,6 +4,7 @@ import { getTipCards } from "@/lib/api";
 import { PredictionCard, PredictionCardSkeleton } from "@/components/PredictionCard";
 import { AnalystWinRateSection } from "@/components/AnalystWinRate";
 import { FreePicksSection } from "@/components/FreePicksSection";
+import { LatestNewsSnippet } from "@/components/LatestNewsSnippet";
 
 export default function Home() {
   const [bestBet, setBestBet]           = useState<TipCard | null>(null);
@@ -41,6 +42,11 @@ export default function Home() {
       {/* Free Picks snippet */}
       <section className="mt-8">
         <FreePicksSection />
+      </section>
+
+      {/* Latest News */}
+      <section className="mt-8">
+        <LatestNewsSnippet />
       </section>
 
       {/* Analyst Win Rate */}

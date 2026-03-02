@@ -119,6 +119,31 @@ create policy "public read card_bookies"   on public.card_bookies   for select u
 create policy "public read news_articles"  on public.news_articles  for select using (true);
 create policy "public read analyst_stats"  on public.analyst_stats  for select using (true);
 
+-- Authenticated users (admin team) — full write access
+create policy "auth write bookies insert"        on public.bookies        for insert to authenticated with check (true);
+create policy "auth write bookies update"        on public.bookies        for update to authenticated using (true);
+create policy "auth write bookies delete"        on public.bookies        for delete to authenticated using (true);
+
+create policy "auth write tip_cards insert"      on public.tip_cards      for insert to authenticated with check (true);
+create policy "auth write tip_cards update"      on public.tip_cards      for update to authenticated using (true);
+create policy "auth write tip_cards delete"      on public.tip_cards      for delete to authenticated using (true);
+
+create policy "auth write legs insert"           on public.legs           for insert to authenticated with check (true);
+create policy "auth write legs update"           on public.legs           for update to authenticated using (true);
+create policy "auth write legs delete"           on public.legs           for delete to authenticated using (true);
+
+create policy "auth write card_bookies insert"   on public.card_bookies   for insert to authenticated with check (true);
+create policy "auth write card_bookies update"   on public.card_bookies   for update to authenticated using (true);
+create policy "auth write card_bookies delete"   on public.card_bookies   for delete to authenticated using (true);
+
+create policy "auth write news_articles insert"  on public.news_articles  for insert to authenticated with check (true);
+create policy "auth write news_articles update"  on public.news_articles  for update to authenticated using (true);
+create policy "auth write news_articles delete"  on public.news_articles  for delete to authenticated using (true);
+
+create policy "auth write analyst_stats insert"  on public.analyst_stats  for insert to authenticated with check (true);
+create policy "auth write analyst_stats update"  on public.analyst_stats  for update to authenticated using (true);
+create policy "auth write analyst_stats delete"  on public.analyst_stats  for delete to authenticated using (true);
+
 -- ─── Indexes ────────────────────────────────────────────────────────────────
 create index if not exists legs_card_id_idx       on public.legs(card_id);
 create index if not exists card_bookies_card_idx  on public.card_bookies(card_id);

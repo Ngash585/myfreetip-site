@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import type { TipCard } from '@/lib/api'
-import { Copy } from 'lucide-react'
-import { type TimerState } from './timerUtils'
 import { BOOKMAKERS } from '@/constants/bookmakers'
+import { type TimerState } from './timerUtils'
 
 interface CodeBlockProps {
   activeBookie: TipCard['bookies'][0] | undefined
@@ -16,8 +15,8 @@ export function CodeBlock({ activeBookie, timerState }: CodeBlockProps) {
   const code = activeBookie?.code ?? '—'
   const bookieName = activeBookie?.name ?? '—'
   const brand = BOOKMAKERS[activeBookie?.id ?? '']
-  const joinUrl = brand?.affiliateUrl ?? activeBookie?.signup_url ?? activeBookie?.deeplink_url ?? '#'
-  const joinLabel = activeBookie?.signup_cta_label ?? `Join ${bookieName}`
+  const bonusUrl = brand?.affiliateUrl ?? activeBookie?.signup_url ?? activeBookie?.deeplink_url ?? '#'
+  const copyBg = copied ? '#3DB157' : (brand?.activeBg ?? '#080A2D')
 
   async function onCopy() {
     if (disabled || !activeBookie?.code) return
@@ -30,56 +29,82 @@ export function CodeBlock({ activeBookie, timerState }: CodeBlockProps) {
 
   return (
     <div
-      className={`mx-4 mt-3 flex items-center gap-2 rounded-xl px-3 py-2.5 ${disabled ? 'opacity-40 pointer-events-none' : ''}`}
-      style={{
-        background: '#F2EEE9',
-        border: '1px solid rgba(29,29,29,0.10)',
-      }}
+      className={`${disabled ? 'opacity-40 pointer-events-none' : ''}`}
+      style={{ margin: '0 14px', marginTop: '8px' }}
     >
-      {/* Label */}
-      <span
-        className="text-[9px] uppercase tracking-widest whitespace-nowrap flex-shrink-0"
-        style={{ color: '#777777' }}
-      >
-        Booking Code — {bookieName.toUpperCase()}
-      </span>
-
-      {/* Hairline divider */}
-      <div className="h-4 w-px flex-shrink-0" style={{ background: 'rgba(29,29,29,0.15)' }} />
-
-      {/* Code */}
-      <span
-        className={`text-[15px] font-medium tracking-widest leading-none flex-1 min-w-0 truncate ${disabled ? 'select-none' : 'select-text'}`}
-        style={{ fontFamily: "'DM Mono', monospace", color: '#1D1D1D' }}
-      >
-        {code}
-      </span>
-
-      {/* Copy button */}
-      <button
-        type="button"
-        onClick={onCopy}
-        disabled={disabled}
-        className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] font-medium text-white transition-opacity hover:opacity-80 flex-shrink-0"
-        style={{ background: copied ? '#3DB157' : '#080A2D' }}
-      >
-        <Copy className="w-3.5 h-3.5" />
-        {copied ? '✓ Copied!' : 'Copy'}
-      </button>
-
-      {/* Join bookie link */}
-      <a
-        href={joinUrl}
-        target="_blank"
-        rel="noopener noreferrer sponsored"
-        className="join-btn rounded-lg px-3 py-1.5 text-[12px] font-medium flex-shrink-0 whitespace-nowrap"
+      {/* Licence plate row */}
+      <div
         style={{
-          background: brand?.activeBg ?? '#080A2D',
-          color: brand?.activeText ?? '#FFFFFF',
-          textDecoration: 'none',
+          display: 'flex',
+          alignItems: 'stretch',
+          borderRadius: '10px',
+          border: '1.5px dashed rgba(29,29,29,0.20)',
+          overflow: 'hidden',
+          background: '#F8F4EF',
         }}
       >
-        {joinLabel}
+        {/* Code */}
+        <span
+          style={{
+            flex: '1 1 0',
+            fontFamily: "'DM Mono', monospace",
+            fontSize: '20px',
+            fontWeight: 700,
+            color: '#1D1D1D',
+            letterSpacing: '0.08em',
+            padding: '10px 14px',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            userSelect: disabled ? 'none' : 'text',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {code}
+        </span>
+
+        {/* Copy button — flush right, no border-radius */}
+        <button
+          type="button"
+          onClick={onCopy}
+          disabled={disabled}
+          style={{
+            flex: '0 0 auto',
+            padding: '10px 16px',
+            fontSize: '12px',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            color: '#FFFFFF',
+            background: copyBg,
+            border: 'none',
+            borderRadius: 0,
+            cursor: disabled ? 'default' : 'pointer',
+            transition: 'background 150ms ease',
+          }}
+        >
+          {copied ? '✓ Copied!' : 'Copy'}
+        </button>
+      </div>
+
+      {/* Bonus link */}
+      <a
+        href={bonusUrl}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        className="bookie-link"
+        style={{
+          display: 'block',
+          fontSize: '11px',
+          color: '#3DB157',
+          textDecoration: 'underline',
+          textAlign: 'center',
+          padding: '4px 0 8px',
+          cursor: 'pointer',
+        }}
+      >
+        {bookieName} Bonus →
       </a>
     </div>
   )

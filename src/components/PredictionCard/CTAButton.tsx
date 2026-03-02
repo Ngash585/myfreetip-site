@@ -21,7 +21,7 @@ export function CTAButton({ bookieName, bookieId, affiliateUrl, timerState }: CT
   const href = brand?.affiliateUrl ?? affiliateUrl ?? '#'
 
   return (
-    <div className="mx-4 mt-3 mb-4">
+    <div style={{ margin: '8px 14px 14px' }}>
       <motion.a
         href={expired ? undefined : href}
         target={expired ? undefined : '_blank'}
@@ -31,8 +31,7 @@ export function CTAButton({ bookieName, bookieId, affiliateUrl, timerState }: CT
           background: bg,
           color: textColor,
           borderRadius: '12px',
-          height: '52px',
-          lineHeight: '52px',
+          padding: '13px 20px',
           fontSize: '16px',
           fontWeight: 600,
           letterSpacing: '-0.01em',

@@ -34,9 +34,9 @@ export function PredictionCard({ card, showHeader = true }: PredictionCardProps)
       {showHeader && (
         <CardHeader
           title={card.badge_label ?? card.title}
-          type={card.type}
           timerState={timerState as TimerState}
           secs={secs}
+          totalOddsLabel={card.total_odds_label}
         />
       )}
 

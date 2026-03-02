@@ -9,7 +9,10 @@ interface PlatformTabsProps {
 
 export function PlatformTabs({ bookies, selectedId, onSelect }: PlatformTabsProps) {
   return (
-    <div className="flex gap-2 px-4 pt-4 overflow-x-auto scrollbar-hide">
+    <div
+      className="flex overflow-x-auto scrollbar-hide"
+      style={{ gap: '6px', padding: '8px 14px', flexWrap: 'nowrap' }}
+    >
       {bookies.map((b) => {
         const active = b.id === selectedId
         const brand = BOOKMAKERS[String(b.id)]
@@ -18,34 +21,42 @@ export function PlatformTabs({ bookies, selectedId, onSelect }: PlatformTabsProp
             key={String(b.id)}
             type="button"
             onClick={() => onSelect(b.id)}
-            className="flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+            className="inline-flex items-center whitespace-nowrap cursor-pointer"
             style={active ? {
+              height: '28px',
+              padding: '0 10px',
+              borderRadius: '14px',
+              fontSize: '12px',
+              fontWeight: 500,
+              gap: '5px',
               background: brand?.activeBg ?? '#1D1D1D',
               color: brand?.activeText ?? '#FFFFFF',
               border: 'none',
-              borderRadius: '20px',
-              padding: '6px 14px',
-              fontSize: '14px',
-              fontWeight: 500,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-              transition: 'background 200ms ease, color 200ms ease, box-shadow 200ms ease',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
+              transition: 'background 200ms ease, color 200ms ease',
             } : {
+              height: '28px',
+              padding: '0 10px',
+              borderRadius: '14px',
+              fontSize: '12px',
+              fontWeight: 500,
+              gap: '5px',
               background: '#F2EEE9',
               color: '#4F4841',
               border: '1px solid rgba(29,29,29,0.10)',
-              borderRadius: '20px',
-              padding: '6px 14px',
-              fontSize: '14px',
-              fontWeight: 400,
-              transition: 'background 200ms ease, color 200ms ease, box-shadow 200ms ease',
+              transition: 'background 200ms ease, color 200ms ease',
             }}
           >
             <span
-              className="w-2 h-2 rounded-full flex-shrink-0"
               style={{
-                backgroundColor: active
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                flexShrink: 0,
+                background: active
                   ? 'rgba(255,255,255,0.75)'
                   : (brand?.dot ?? b.brand_hex ?? 'rgba(29,29,29,0.20)'),
+                display: 'inline-block',
               }}
             />
             <span>{b.name}</span>

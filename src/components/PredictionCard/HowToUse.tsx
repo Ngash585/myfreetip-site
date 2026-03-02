@@ -11,7 +11,8 @@ export function HowToUse({ bookieName }: HowToUseProps) {
 
   return (
     <div
-      className="mx-4 mt-3 rounded-xl overflow-hidden"
+      className="rounded-xl overflow-hidden"
+      style={{ margin: '6px 14px 0' }}
       style={{ background: '#F2EEE9', border: '1px solid rgba(29,29,29,0.08)' }}
     >
       <button

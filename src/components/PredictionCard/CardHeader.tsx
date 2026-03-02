@@ -2,86 +2,109 @@ import { type TimerState, formatCountdown } from './timerUtils'
 
 interface CardHeaderProps {
   title: string
-  type?: string | null
   timerState: TimerState
   secs: number
   confidenceLabel?: string
+  totalOddsLabel?: string
 }
 
-export function CardHeader({ title, type, timerState, secs, confidenceLabel }: CardHeaderProps) {
-  const typeLabel = (type && type.trim()) ? type.trim() : null
+export function CardHeader({ title, timerState, secs, confidenceLabel, totalOddsLabel }: CardHeaderProps) {
   const conf = confidenceLabel ?? 'Confidence · 82%'
-  const countdown = formatCountdown(secs)
 
-  const timerLabel =
-    timerState === 'expired'
-      ? '🔒 Code Expired'
-      : timerState === 'critical'
-      ? `⚠ Expires in ${countdown}`
-      : timerState === 'warning'
-      ? `⚡ Expires in ${countdown}`
-      : `⏱ Valid for ${countdown}`
+  // Extract numeric odds from e.g. "4.62 | High" → "4.62"
+  const odds = totalOddsLabel ? totalOddsLabel.split(' |')[0].trim() : null
+
+  const timerText = timerState === 'expired'
+    ? '🔒 Expired'
+    : `⏱ ${formatCountdown(secs)}`
 
   const timerColor =
     timerState === 'critical' ? '#C0392B'
-    : timerState === 'warning' ? '#B8860B'
-    : timerState === 'expired' ? '#BBBBBB'
+    : timerState === 'warning'  ? '#B8860B'
+    : timerState === 'expired'  ? '#BBBBBB'
     : '#777777'
 
   return (
     <div
-      className="flex items-center px-4 pt-4 pb-3 overflow-x-auto"
-      style={{ borderBottom: '1px solid rgba(29,29,29,0.06)' }}
+      className="flex items-center"
+      style={{
+        padding: '10px 14px',
+        borderBottom: '1px solid rgba(29,29,29,0.06)',
+        gap: '8px',
+        flexWrap: 'nowrap',
+      }}
     >
-      {/* Title · Type */}
-      <div className="flex items-center gap-1.5 flex-shrink-0">
-        <span
-          className="text-[11px] font-semibold uppercase tracking-[0.10em] whitespace-nowrap"
-          style={{ color: '#4F4841' }}
-        >
-          {title}
-        </span>
-        {typeLabel && (
-          <>
-            <span className="text-[11px]" style={{ color: 'rgba(29,29,29,0.25)' }}>·</span>
-            <span
-              className="text-[10px] font-medium px-1.5 py-0.5 rounded capitalize whitespace-nowrap"
-              style={{
-                background: '#EAF7EE',
-                color: '#2D9A47',
-                border: '1px solid rgba(61,177,87,0.25)',
-              }}
-            >
-              {typeLabel}
-            </span>
-          </>
-        )}
-      </div>
+      {/* Title — "STAKE HIGH" etc. */}
+      <span
+        style={{
+          fontSize: '10px',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          letterSpacing: '0.08em',
+          color: '#777777',
+          flex: '0 0 auto',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {title}
+      </span>
 
-      {/* Hairline divider */}
-      <div className="mx-3 h-3 w-px flex-shrink-0" style={{ background: 'rgba(29,29,29,0.18)' }} />
+      {/* · separator */}
+      <span style={{ color: 'rgba(29,29,29,0.25)', fontSize: '10px', flex: '0 0 auto' }}>·</span>
 
-      {/* Confidence */}
-      <div className="flex items-center gap-1 flex-shrink-0">
-        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#3DB157' }} />
+      {/* Confidence dot + label */}
+      <div className="flex items-center" style={{ gap: '4px', flex: '0 0 auto' }}>
         <span
-          className="text-[11px] font-medium whitespace-nowrap"
-          style={{ fontFamily: "'DM Mono', monospace", color: '#2D9A47' }}
-        >
+          className="rounded-full"
+          style={{ width: 6, height: 6, background: '#3DB157', display: 'inline-block', flexShrink: 0 }}
+        />
+        <span style={{ fontSize: '12px', color: '#3DB157', flex: '0 0 auto', whiteSpace: 'nowrap' }}>
           {conf}
         </span>
       </div>
 
-      {/* Hairline divider */}
-      <div className="mx-3 h-3 w-px flex-shrink-0" style={{ background: 'rgba(29,29,29,0.18)' }} />
+      {/* Hairline — always visible */}
+      <div style={{ width: 1, height: 12, background: 'rgba(29,29,29,0.15)', flex: '0 0 auto' }} />
 
-      {/* Timer */}
-      <span
-        className="text-[11px] font-medium whitespace-nowrap"
-        style={{ fontFamily: "'DM Mono', monospace", color: timerColor }}
+      {/* Timer — hidden on mobile, visible md+ */}
+      <div
+        className="hidden md:flex items-center"
+        style={{ gap: 4, flex: '0 0 auto' }}
       >
-        {timerLabel}
-      </span>
+        <span
+          style={{
+            fontSize: '12px',
+            fontFamily: "'DM Mono', monospace",
+            color: timerColor,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {timerText}
+        </span>
+      </div>
+
+      {/* Second hairline — desktop only, sits between timer and odds */}
+      {odds && (
+        <div
+          className="hidden md:block"
+          style={{ width: 1, height: 12, background: 'rgba(29,29,29,0.15)', flex: '0 0 auto' }}
+        />
+      )}
+
+      {/* Odds — pushed to far right */}
+      {odds && (
+        <span
+          style={{
+            fontSize: '15px',
+            fontWeight: 700,
+            color: '#1D1D1D',
+            marginLeft: 'auto',
+            flex: '0 0 auto',
+          }}
+        >
+          {odds}
+        </span>
+      )}
     </div>
   )
 }

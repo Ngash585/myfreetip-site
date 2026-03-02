@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import type { TipCard } from '@/lib/api'
-import { mediaUrl } from '@/lib/api'
 import { ChevronDown } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { formatKickoff } from './timerUtils'
@@ -11,82 +10,66 @@ interface MatchRowProps {
   showDivider?: boolean
 }
 
-function Crest({ url, fallback }: { url: string | null | undefined; fallback: string }) {
-  if (!url) {
-    return (
-      <div
-        className="w-5 h-5 rounded-full grid place-items-center text-[10px] flex-shrink-0"
-        style={{ background: '#F2EEE9', border: '1px solid rgba(29,29,29,0.10)' }}
-      >
-        {fallback}
-      </div>
-    )
-  }
-  return (
-    <img
-      src={mediaUrl(url)}
-      alt=""
-      className="w-5 h-5 rounded-full object-cover flex-shrink-0"
-      style={{ border: '1px solid rgba(29,29,29,0.10)' }}
-      loading="lazy"
-    />
-  )
-}
-
-export function MatchRow({ leg, variant, showDivider }: MatchRowProps) {
+export function MatchRow({ leg, showDivider }: MatchRowProps) {
   const [open, setOpen] = useState(false)
   const kickoff = useMemo(() => formatKickoff(leg.kickoff_iso), [leg.kickoff_iso])
 
   return (
-    <div style={variant === 'multi' && showDivider ? { borderBottom: '1px solid rgba(29,29,29,0.12)' } : {}}>
+    <div style={showDivider ? { borderBottom: '1px solid rgba(29,29,29,0.07)' } : {}}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full text-left flex items-center gap-2 px-4 py-2 transition-colors"
-        style={{
-          background: variant === 'single' ? '#FFFFFF' : 'transparent',
-          borderRadius: variant === 'single' ? '8px' : undefined,
-          border: variant === 'single' ? '1px solid rgba(29,29,29,0.08)' : 'none',
-        }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = variant === 'single' ? '#FAFAFA' : 'rgba(29,29,29,0.02)' }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = variant === 'single' ? '#FFFFFF' : 'transparent' }}
+        className="w-full text-left flex items-center transition-colors"
+        style={{ padding: '8px 14px', gap: '10px', background: 'transparent' }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(29,29,29,0.02)' }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
       >
-        {/* Time */}
+        {/* Time — fixed 40px column */}
         <span
-          className="text-[13px] font-bold leading-none flex-shrink-0"
-          style={{ fontFamily: "'DM Mono', monospace", color: '#1D1D1D' }}
+          style={{
+            flex: '0 0 40px',
+            fontFamily: "'DM Mono', monospace",
+            fontSize: '13px',
+            fontWeight: 500,
+            color: '#1D1D1D',
+            paddingTop: '1px',
+          }}
         >
           {kickoff.time}
         </span>
 
-        {/* Crests */}
-        <div className="flex items-center flex-shrink-0">
-          <Crest url={leg.left_icon_url} fallback="⚽" />
-          <div className="-ml-1">
-            <Crest url={leg.right_icon_url} fallback="🛡" />
-          </div>
-        </div>
-
-        {/* Pick · Match */}
-        <div className="flex-1 flex items-baseline gap-1 min-w-0 overflow-hidden">
+        {/* Content — pick on top, match label below */}
+        <div style={{ flex: '1 1 0', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <span
-            className="text-[13px] font-medium leading-snug truncate"
-            style={{ color: '#1D1D1D' }}
+            style={{
+              fontSize: '13px',
+              fontWeight: 600,
+              color: '#1D1D1D',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
           >
             {leg.pick_title}
           </span>
-          <span className="text-[11px] flex-shrink-0" style={{ color: 'rgba(29,29,29,0.25)' }}>·</span>
           <span
-            className="text-[12px] leading-snug truncate"
-            style={{ color: '#4F4841', fontWeight: 300 }}
+            style={{
+              fontSize: '12px',
+              fontWeight: 400,
+              color: '#777777',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
           >
             {leg.match_label}
           </span>
         </div>
 
+        {/* Chevron */}
         <ChevronDown
-          className={`w-4 h-4 flex-shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
-          style={{ color: '#777777' }}
+          className={`flex-shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+          style={{ width: 16, height: 16, color: '#777777' }}
         />
       </button>
 
@@ -101,8 +84,8 @@ export function MatchRow({ leg, variant, showDivider }: MatchRowProps) {
             className="overflow-hidden"
           >
             <div
-              className="px-4 pb-4 pt-3"
               style={{
+                padding: '12px 14px 16px',
                 background: '#F8F4EF',
                 borderTop: '1px solid rgba(29,29,29,0.06)',
               }}

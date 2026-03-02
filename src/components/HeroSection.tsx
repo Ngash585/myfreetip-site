@@ -38,20 +38,14 @@ export function HeroSection() {
       </div>
 
       {/* ── Headline — 48px mobile, 64px desktop ── */}
-      <div className="mb-5">
-        <h1
-          className="leading-[1.05] tracking-[-0.04em] text-[48px] md:text-[64px]"
-          style={{ fontFamily: DS, color: '#1D1D1D', fontWeight: 400 }}
-        >
-          Stop guessing.
-        </h1>
-        <h1
-          className="leading-[1.05] tracking-[-0.04em] text-[48px] md:text-[64px]"
-          style={{ fontFamily: DS, color: 'rgba(29,29,29,0.35)', fontWeight: 400 }}
-        >
-          Start winning.
-        </h1>
-      </div>
+      <h1
+        className="mb-5 leading-[1.05] tracking-[-0.04em] text-[48px] md:text-[64px]"
+        style={{ fontFamily: DS, fontWeight: 400 }}
+      >
+        <span style={{ color: '#1D1D1D' }}>Stop guessing.</span>
+        <br />
+        <span style={{ color: 'rgba(29,29,29,0.35)' }}>Start winning.</span>
+      </h1>
 
       {/* ── Body copy ── */}
       <p

@@ -38,43 +38,44 @@ export function CodeBlock({ activeBookie, timerState }: CodeBlockProps) {
         border: '1px solid rgba(29,29,29,0.10)',
       }}
     >
-      {/* Label — shrinks first if space is tight */}
+      {/* Label — "CODE — PARIPESA", shrinks if tight */}
       <span
-        className="flex-shrink text-[9px] font-semibold uppercase tracking-widest whitespace-nowrap overflow-hidden"
-        style={{ color: '#777777', textOverflow: 'ellipsis', minWidth: 0 }}
+        className="text-[9px] font-semibold uppercase tracking-widest whitespace-nowrap flex-shrink"
+        style={{ color: '#777777', overflow: 'hidden', textOverflow: 'ellipsis' }}
       >
-        Booking Code — {bookieName}
+        Code — {bookieName}
       </span>
 
       {/* Hairline */}
       <div className="h-4 w-px flex-shrink-0" style={{ background: 'rgba(29,29,29,0.15)' }} />
 
-      {/* Code — fills remaining space */}
-      <span
-        className={`text-[13px] font-semibold tracking-widest leading-none flex-1 min-w-0 truncate ${disabled ? 'select-none' : 'select-text'}`}
-        style={{ fontFamily: "'DM Mono', monospace", color: '#1D1D1D' }}
-      >
-        {code}
-      </span>
+      {/* Code + Copy grouped tightly — no flex-1 so they stay together */}
+      <div className="flex items-center gap-1.5 flex-shrink-0">
+        <span
+          className={`text-[13px] font-semibold tracking-widest leading-none ${disabled ? 'select-none' : 'select-text'}`}
+          style={{ fontFamily: "'DM Mono', monospace", color: '#1D1D1D' }}
+        >
+          {code}
+        </span>
 
-      {/* Copy button */}
-      <button
-        type="button"
-        onClick={onCopy}
-        disabled={disabled}
-        className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] font-medium flex-shrink-0 transition-opacity hover:opacity-80"
-        style={{ background: copyBg, color: '#FFFFFF' }}
-      >
-        <Copy className="w-3.5 h-3.5" />
-        {copied ? '✓ Copied!' : 'Copy'}
-      </button>
+        <button
+          type="button"
+          onClick={onCopy}
+          disabled={disabled}
+          className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[12px] font-medium flex-shrink-0 transition-opacity hover:opacity-80"
+          style={{ background: copyBg, color: '#FFFFFF' }}
+        >
+          <Copy className="w-3 h-3" />
+          {copied ? '✓ Copied!' : 'Copy'}
+        </button>
+      </div>
 
-      {/* Bonus link — styled as pill button */}
+      {/* Bonus link */}
       <a
         href={bonusUrl}
         target="_blank"
         rel="noopener noreferrer sponsored"
-        className="join-btn flex-shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-medium whitespace-nowrap"
+        className="join-btn flex-shrink-0 rounded-lg px-2.5 py-1.5 text-[12px] font-medium whitespace-nowrap"
         style={{
           background: btnBg,
           color: btnText,

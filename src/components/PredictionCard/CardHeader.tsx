@@ -100,10 +100,10 @@ export function CardHeader({ title, timerState, secs, confidenceLabel, totalOdds
           <span
             style={{
               fontSize: '9px',
-              fontWeight: 600,
+              fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              color: '#777777',
+              color: '#4F4841',
               whiteSpace: 'nowrap',
             }}
           >
@@ -111,7 +111,7 @@ export function CardHeader({ title, timerState, secs, confidenceLabel, totalOdds
           </span>
           <span
             style={{
-              fontSize: '15px',
+              fontSize: '16px',
               fontWeight: 700,
               color: '#1D1D1D',
             }}

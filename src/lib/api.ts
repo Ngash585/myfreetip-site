@@ -4,6 +4,7 @@
 // components require zero changes.
 
 import { supabase } from './supabase'
+import { BOOKMAKERS } from '@/constants/bookmakers'
 
 export type Confidence = "low" | "medium" | "high";
 export type Result = "win" | "loss" | "pending";
@@ -341,9 +342,9 @@ export async function getTipCards(): Promise<TipCard[]> {
       bookies: [
         {
           id: "1xbet", name: "1xBet", logo: "/1xbet.png", code: "XB12345",
-          url: "https://1xbet.com", signup_url: "https://1xbet.com/register",
-          deeplink_url: "https://1xbet.com/line", signup_cta_label: "Join 1xBet",
-          brand_hex: "#1a6fc4", default: true,
+          signup_url: BOOKMAKERS["1xbet"].affiliateUrl,
+          signup_cta_label: "Join 1xBet",
+          brand_hex: "#1E3A6E", default: true,
           returns: [
             { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 23.15", return_amount: 23.15 },
             { stake_amount: 10, stake_label: "KES 10", return_label: "KES 46.30", return_amount: 46.30 },
@@ -352,9 +353,9 @@ export async function getTipCards(): Promise<TipCard[]> {
         },
         {
           id: "melbet", name: "Melbet", logo: "/melbet.png", code: "MB67890",
-          url: "https://melbet.com", signup_url: "https://melbet.com/register",
-          deeplink_url: "https://melbet.com/line", signup_cta_label: "Join Melbet",
-          brand_hex: "#d4aa00",
+          signup_url: BOOKMAKERS.melbet.affiliateUrl,
+          signup_cta_label: "Join Melbet",
+          brand_hex: "#F5A623",
           returns: [
             { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 23.15", return_amount: 23.15 },
             { stake_amount: 10, stake_label: "KES 10", return_label: "KES 46.30", return_amount: 46.30 },
@@ -389,9 +390,9 @@ export async function getTipCards(): Promise<TipCard[]> {
       bookies: [
         {
           id: "paripesa", name: "Paripesa", logo: "/paripesa.png", code: "PP11223",
-          url: "https://paripesa.com", signup_url: "https://paripesa.com/register",
-          deeplink_url: "https://paripesa.com/line", signup_cta_label: "Join Paripesa",
-          brand_hex: "#e6000a", default: true,
+          signup_url: BOOKMAKERS.paripesa.affiliateUrl,
+          signup_cta_label: "Join Paripesa",
+          brand_hex: "#1A56DB", default: true,
           returns: [
             { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 7.75",  return_amount: 7.75  },
             { stake_amount: 10, stake_label: "KES 10", return_label: "KES 15.50", return_amount: 15.50 },
@@ -400,9 +401,9 @@ export async function getTipCards(): Promise<TipCard[]> {
         },
         {
           id: "1xbet", name: "1xBet", logo: "/1xbet.png", code: "XB99001",
-          url: "https://1xbet.com", signup_url: "https://1xbet.com/register",
-          deeplink_url: "https://1xbet.com/line", signup_cta_label: "Join 1xBet",
-          brand_hex: "#1a6fc4",
+          signup_url: BOOKMAKERS["1xbet"].affiliateUrl,
+          signup_cta_label: "Join 1xBet",
+          brand_hex: "#1E3A6E",
           returns: [
             { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 7.75",  return_amount: 7.75  },
             { stake_amount: 10, stake_label: "KES 10", return_label: "KES 15.50", return_amount: 15.50 },
@@ -444,9 +445,9 @@ export async function getTipCards(): Promise<TipCard[]> {
       bookies: [
         {
           id: "melbet", name: "Melbet", logo: "/melbet.png", code: "MB55443",
-          url: "https://melbet.com", signup_url: "https://melbet.com/register",
-          deeplink_url: "https://melbet.com/line", signup_cta_label: "Join Melbet",
-          brand_hex: "#d4aa00", default: true,
+          signup_url: BOOKMAKERS.melbet.affiliateUrl,
+          signup_cta_label: "Join Melbet",
+          brand_hex: "#F5A623", default: true,
           returns: [
             { stake_amount: 5,  stake_label: "KES 5",  return_label: "KES 14.03", return_amount: 14.03 },
             { stake_amount: 10, stake_label: "KES 10", return_label: "KES 28.05", return_amount: 28.05 },

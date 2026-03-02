@@ -66,4 +66,13 @@ body {
   .font-display {
     font-family: 'DM Serif Display', Georgia, serif;
   }
+
+  .bookie-link:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+  }
+
+  .join-btn:hover {
+    opacity: 0.88;
+  }
 }

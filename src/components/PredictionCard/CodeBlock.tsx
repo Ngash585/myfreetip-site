@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { TipCard } from '@/lib/api'
 import { Copy } from 'lucide-react'
 import { type TimerState } from './timerUtils'
+import { BOOKMAKERS } from '@/constants/bookmakers'
 
 interface CodeBlockProps {
   activeBookie: TipCard['bookies'][0] | undefined
@@ -14,7 +15,8 @@ export function CodeBlock({ activeBookie, timerState }: CodeBlockProps) {
   const disabled = timerState === 'expired'
   const code = activeBookie?.code ?? '—'
   const bookieName = activeBookie?.name ?? '—'
-  const joinUrl = activeBookie?.signup_url ?? activeBookie?.deeplink_url ?? '#'
+  const brand = BOOKMAKERS[activeBookie?.id ?? '']
+  const joinUrl = brand?.affiliateUrl ?? activeBookie?.signup_url ?? activeBookie?.deeplink_url ?? '#'
   const joinLabel = activeBookie?.signup_cta_label ?? `Join ${bookieName}`
 
   async function onCopy() {
@@ -69,9 +71,13 @@ export function CodeBlock({ activeBookie, timerState }: CodeBlockProps) {
       <a
         href={joinUrl}
         target="_blank"
-        rel="noreferrer"
-        className="rounded-lg px-3 py-1.5 text-[12px] font-medium text-white transition-opacity hover:opacity-80 flex-shrink-0 whitespace-nowrap"
-        style={{ background: '#3DB157' }}
+        rel="noopener noreferrer sponsored"
+        className="join-btn rounded-lg px-3 py-1.5 text-[12px] font-medium flex-shrink-0 whitespace-nowrap"
+        style={{
+          background: brand?.activeBg ?? '#080A2D',
+          color: brand?.activeText ?? '#FFFFFF',
+          textDecoration: 'none',
+        }}
       >
         {joinLabel}
       </a>

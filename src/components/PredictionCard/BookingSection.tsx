@@ -21,6 +21,7 @@ export function BookingSection({
   timerState,
 }: BookingSectionProps) {
   const bookieName = activeBookie?.name ?? 'Bookie'
+  const bookieId = activeBookie?.id ? String(activeBookie.id) : undefined
   const affiliateUrl = activeBookie?.deeplink_url ?? activeBookie?.signup_url
 
   return (
@@ -35,7 +36,7 @@ export function BookingSection({
         timerState={timerState}
       />
       <HowToUse bookieName={bookieName} />
-      <CTAButton bookieName={bookieName} affiliateUrl={affiliateUrl} timerState={timerState} />
+      <CTAButton bookieName={bookieName} bookieId={bookieId} affiliateUrl={affiliateUrl} timerState={timerState} />
     </div>
   )
 }

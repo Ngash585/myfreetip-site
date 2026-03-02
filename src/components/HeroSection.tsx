@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { AnalystStatRecord } from "@/lib/api";
 import { getAnalystStats } from "@/lib/api";
+import { BOOKMAKERS } from "@/constants/bookmakers";
 
 const TODAY = new Date().toLocaleDateString("en-GB", {
   weekday: "short",
@@ -58,11 +59,37 @@ export function HeroSection() {
         style={{ color: '#4F4841', lineHeight: '1.7', fontWeight: 300, hyphens: 'none' }}
       >
         Every day, our analysis finds the highest-confidence match and gives
-        you a booking code —{" "}
-        <strong style={{ color: '#1D1D1D', fontWeight: 500 }}>
-          just paste it into 1xBet, Paripesa, Melbet and more.
-        </strong>{" "}
-        It costs you nothing.
+        you a booking code — just paste it into{" "}
+        <a
+          href={BOOKMAKERS["1xbet"].affiliateUrl}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className="bookie-link"
+          style={{ color: '#1E3A6E', fontWeight: 600, textDecoration: 'none' }}
+        >
+          1xBet
+        </a>
+        ,{" "}
+        <a
+          href={BOOKMAKERS.paripesa.affiliateUrl}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className="bookie-link"
+          style={{ color: '#1A56DB', fontWeight: 600, textDecoration: 'none' }}
+        >
+          Paripesa
+        </a>
+        ,{" "}
+        <a
+          href={BOOKMAKERS.melbet.affiliateUrl}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className="bookie-link"
+          style={{ color: '#B8860B', fontWeight: 600, textDecoration: 'none' }}
+        >
+          Melbet
+        </a>
+        {" "}and more. It costs you nothing.
       </p>
 
       {/* ── Stats — single inline row with hairline dividers at all sizes ── */}

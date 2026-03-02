@@ -1,25 +1,35 @@
 import { motion } from 'framer-motion'
 import { type TimerState } from './timerUtils'
+import { BOOKMAKERS } from '@/constants/bookmakers'
 
 interface CTAButtonProps {
   bookieName: string
+  bookieId?: string
   affiliateUrl: string | null | undefined
   timerState: TimerState
 }
 
-export function CTAButton({ bookieName, affiliateUrl, timerState }: CTAButtonProps) {
+export function CTAButton({ bookieName, bookieId, affiliateUrl, timerState }: CTAButtonProps) {
   const expired = timerState === 'expired'
   const label = expired
     ? 'Code Expired — See next pick ↓'
     : `Open ${bookieName} & Place Bet →`
 
+  const brand = bookieId ? BOOKMAKERS[bookieId] : undefined
+  const bg = expired ? '#CCCCCC' : (brand?.activeBg ?? '#080A2D')
+  const textColor = expired ? '#FFFFFF' : (brand?.activeText ?? '#FFFFFF')
+  const href = brand?.affiliateUrl ?? affiliateUrl ?? '#'
+
   return (
     <div className="mx-4 mt-3 mb-4">
       <motion.a
-        href={affiliateUrl ?? '#'}
-        className="relative block w-full text-center font-medium text-white transition-opacity overflow-hidden"
+        href={expired ? undefined : href}
+        target={expired ? undefined : '_blank'}
+        rel={expired ? undefined : 'noopener noreferrer sponsored'}
+        className="join-btn relative block w-full text-center font-medium transition-opacity overflow-hidden"
         style={{
-          background: expired ? '#CCCCCC' : '#080A2D',
+          background: bg,
+          color: textColor,
           borderRadius: '12px',
           height: '52px',
           lineHeight: '52px',
@@ -27,14 +37,15 @@ export function CTAButton({ bookieName, affiliateUrl, timerState }: CTAButtonPro
           fontWeight: 600,
           letterSpacing: '-0.01em',
           cursor: expired ? 'default' : 'pointer',
+          textDecoration: 'none',
         }}
         animate={{
           boxShadow: expired
             ? undefined
             : [
-                '0 0 0 0px rgba(8,10,45,0.3)',
-                '0 0 0 10px rgba(8,10,45,0)',
-                '0 0 0 0px rgba(8,10,45,0)',
+                `0 0 0 0px ${bg}4D`,
+                `0 0 0 10px ${bg}00`,
+                `0 0 0 0px ${bg}00`,
               ],
         }}
         transition={{ duration: 2, repeat: expired ? 0 : 2, delay: expired ? 0 : 0.5 }}

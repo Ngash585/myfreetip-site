@@ -91,19 +91,34 @@ export function CardHeader({ title, timerState, secs, confidenceLabel, totalOdds
         />
       )}
 
-      {/* Odds — pushed to far right */}
+      {/* Total Odds — pushed to far right */}
       {odds && (
-        <span
-          style={{
-            fontSize: '15px',
-            fontWeight: 700,
-            color: '#1D1D1D',
-            marginLeft: 'auto',
-            flex: '0 0 auto',
-          }}
+        <div
+          className="flex items-baseline"
+          style={{ marginLeft: 'auto', flex: '0 0 auto', gap: '4px' }}
         >
-          {odds}
-        </span>
+          <span
+            style={{
+              fontSize: '9px',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              color: '#777777',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Total Odds
+          </span>
+          <span
+            style={{
+              fontSize: '15px',
+              fontWeight: 700,
+              color: '#1D1D1D',
+            }}
+          >
+            {odds}
+          </span>
+        </div>
       )}
     </div>
   )

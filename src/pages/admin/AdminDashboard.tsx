@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 
 type Counts = { tips: number; news: number; winRate: number | null }
@@ -7,6 +8,7 @@ type Counts = { tips: number; news: number; winRate: number | null }
 export default function AdminDashboard() {
   const [counts, setCounts] = useState<Counts>({ tips: 0, news: 0, winRate: null })
   const [loading, setLoading] = useState(true)
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (!supabase) { setLoading(false); return }
@@ -109,6 +111,13 @@ export default function AdminDashboard() {
           >
             Update Win Rate
           </Link>
+          <button
+            onClick={() => queryClient.invalidateQueries()}
+            className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors hover:bg-white/10"
+            style={{ background: '#0f1923', border: '1px solid #2a3a4a' }}
+          >
+            Refresh Live Data
+          </button>
         </div>
       </div>
     </div>

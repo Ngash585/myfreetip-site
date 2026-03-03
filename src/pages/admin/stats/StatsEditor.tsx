@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 
 type StatsRow = {
@@ -29,6 +30,7 @@ export default function StatsEditor() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (!supabase) { setLoading(false); return }
@@ -87,6 +89,7 @@ export default function StatsEditor() {
     }
 
     setSaving(false)
+    if (!err) queryClient.invalidateQueries({ queryKey: ['analyst-stats'] })
     setMessage(err ? `Error: ${err.message}` : 'Stats saved successfully!')
   }
 

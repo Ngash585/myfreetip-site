@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import type { NewsArticle } from "@/lib/api";
 import { getNewsArticles } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
 const CATEGORY_ICON: Record<string, string> = {
   "Premier League":   "⚽",
@@ -21,13 +20,11 @@ function formatDate(iso: string): string {
 }
 
 export function LatestNewsSnippet() {
-  const [articles, setArticles] = useState<NewsArticle[]>([]);
-
-  useEffect(() => {
-    getNewsArticles()
-      .then((all) => setArticles(all.slice(0, 3)))
-      .catch(() => setArticles([]));
-  }, []);
+  const { data: allArticles = [] } = useQuery({
+    queryKey: ['news-articles'],
+    queryFn: getNewsArticles,
+  });
+  const articles = allArticles.slice(0, 3);
 
   if (articles.length === 0) return null;
 

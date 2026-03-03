@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 
 type TipRow = {
@@ -20,6 +21,7 @@ const RESULT_COLOR: Record<string, string> = {
 export default function TipsList() {
   const [tips, setTips] = useState<TipRow[]>([])
   const [loading, setLoading] = useState(true)
+  const queryClient = useQueryClient()
 
   async function load() {
     if (!supabase) { setLoading(false); return }
@@ -37,6 +39,7 @@ export default function TipsList() {
     if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return
     await supabase!.from('tip_cards').delete().eq('id', id)
     setTips((prev) => prev.filter((t) => t.id !== id))
+    queryClient.invalidateQueries({ queryKey: ['tip-cards'] })
   }
 
   return (

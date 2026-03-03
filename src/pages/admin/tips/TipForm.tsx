@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 
 // ─── Sub-types ────────────────────────────────────────────────────────────────
@@ -60,6 +61,7 @@ const sectionCls = 'rounded-xl p-5 flex flex-col gap-4'
 export default function TipForm() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const isEdit = Boolean(id)
 
   // core fields
@@ -239,6 +241,7 @@ export default function TipForm() {
     }
 
     setSaving(false)
+    queryClient.invalidateQueries({ queryKey: ['tip-cards'] })
     navigate('/admin/tips')
   }
 

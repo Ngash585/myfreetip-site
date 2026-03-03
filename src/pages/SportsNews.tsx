@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { NewsArticle } from "@/lib/api";
 import { getNewsArticles } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
 const CATEGORIES = [
   "All",
@@ -42,17 +42,11 @@ function ArticleSkeleton() {
 }
 
 export default function SportsNews() {
-  const [articles, setArticles]       = useState<NewsArticle[]>([]);
-  const [loading, setLoading]         = useState(true);
+  const { data: articles = [], isLoading: loading } = useQuery({
+    queryKey: ['news-articles'],
+    queryFn: getNewsArticles,
+  });
   const [activeCategory, setCategory] = useState("All");
-
-  useEffect(() => {
-    document.title = "Sports News | MyFreeTip";
-    getNewsArticles()
-      .then(setArticles)
-      .catch(() => setArticles([]))
-      .finally(() => setLoading(false));
-  }, []);
 
   const filtered =
     activeCategory === "All"

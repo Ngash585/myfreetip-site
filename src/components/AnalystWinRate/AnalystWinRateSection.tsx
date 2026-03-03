@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { AnalystWinRateCard } from './AnalystWinRateCard';
 import { AnalystWinRateCardSkeleton } from './AnalystWinRateCardSkeleton';
 import { getAnalystStats } from '@/lib/api';
-import type { AnalystStatRecord } from '@/lib/api';
 
 interface AnalystWinRateSectionProps {
   heading?: string;
@@ -11,30 +10,12 @@ interface AnalystWinRateSectionProps {
 export function AnalystWinRateSection({
   heading = 'Analyst Win Rate',
 }: AnalystWinRateSectionProps) {
-  const [records, setRecords] = useState<AnalystStatRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    setError(null);
-
-    getAnalystStats()
-      .then(payload => {
-        if (!mounted) return;
-        setRecords(payload.records);
-      })
-      .catch(err => {
-        if (!mounted) return;
-        setError(err?.message ?? 'Failed to load stats');
-      })
-      .finally(() => {
-        if (mounted) setLoading(false);
-      });
-
-    return () => { mounted = false; };
-  }, []);
+  const { data, isLoading: loading, isError } = useQuery({
+    queryKey: ['analyst-stats'],
+    queryFn: getAnalystStats,
+  });
+  const records = data?.records ?? [];
+  const error = isError ? 'Failed to load stats' : null;
 
   return (
     <section>

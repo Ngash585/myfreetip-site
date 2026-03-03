@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 
 type ArticleRow = {
@@ -13,6 +14,7 @@ type ArticleRow = {
 export default function NewsList() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [loading, setLoading] = useState(true)
+  const queryClient = useQueryClient()
 
   async function load() {
     if (!supabase) { setLoading(false); return }
@@ -30,6 +32,7 @@ export default function NewsList() {
     if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return
     await supabase!.from('news_articles').delete().eq('id', id)
     setArticles((prev) => prev.filter((a) => a.id !== id))
+    queryClient.invalidateQueries({ queryKey: ['news-articles'] })
   }
 
   return (

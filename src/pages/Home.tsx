@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import type { TipCard } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 import { getTipCards } from "@/lib/api";
 import { PredictionCard, PredictionCardSkeleton } from "@/components/PredictionCard";
 import { AnalystWinRateSection } from "@/components/AnalystWinRate";
@@ -8,15 +7,11 @@ import { LatestNewsSnippet } from "@/components/LatestNewsSnippet";
 import { HeroSection } from "@/components/HeroSection";
 
 export default function Home() {
-  const [bestBet, setBestBet]               = useState<TipCard | null>(null);
-  const [bestBetLoading, setBestBetLoading] = useState(true);
-
-  useEffect(() => {
-    getTipCards()
-      .then((cards) => setBestBet(cards[0] ?? null))
-      .catch(() => setBestBet(null))
-      .finally(() => setBestBetLoading(false));
-  }, []);
+  const { data: cards = [], isLoading: bestBetLoading } = useQuery({
+    queryKey: ['tip-cards'],
+    queryFn: getTipCards,
+  });
+  const bestBet = cards[0] ?? null;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

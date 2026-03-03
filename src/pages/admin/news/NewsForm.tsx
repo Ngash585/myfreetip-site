@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 
 const CATEGORIES = [
@@ -28,6 +29,7 @@ function slugify(str: string) {
 export default function NewsForm() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const isEdit = Boolean(id)
 
   const [slug, setSlug] = useState('')
@@ -105,6 +107,7 @@ export default function NewsForm() {
     if (err) {
       setError(err.message)
     } else {
+      queryClient.invalidateQueries({ queryKey: ['news-articles'] })
       navigate('/admin/news')
     }
   }

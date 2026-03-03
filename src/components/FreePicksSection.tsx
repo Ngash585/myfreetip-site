@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { TipCard } from "@/lib/api";
 import { getTipCards } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 import { PickRow } from "./PickRow";
 
 type Tab = "today" | "tomorrow";
@@ -24,16 +25,11 @@ function getCardTab(card: TipCard): "today" | "tomorrow" | "upcoming" {
 }
 
 export function FreePicksSection() {
-  const [cards, setCards]     = useState<TipCard[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [active, setActive]   = useState<Tab>("today");
-
-  useEffect(() => {
-    getTipCards()
-      .then(setCards)
-      .catch(() => setCards([]))
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: cards = [], isLoading: loading } = useQuery({
+    queryKey: ['tip-cards'],
+    queryFn: getTipCards,
+  });
+  const [active, setActive] = useState<Tab>("today");
 
   const filtered = cards.filter((c) => getCardTab(c) === active);
 

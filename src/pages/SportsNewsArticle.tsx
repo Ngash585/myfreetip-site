@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import type { NewsArticle } from "@/lib/api";
 import { getNewsArticle } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
@@ -38,38 +38,29 @@ function ArticleDetailSkeleton() {
 
 export default function SportsNewsArticle() {
   const { slug } = useParams<{ slug: string }>();
-  const [article, setArticle] = useState<NewsArticle | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+
+  const { data: article, isLoading, isError } = useQuery({
+    queryKey: ['news-article', slug],
+    queryFn: () => getNewsArticle(slug!),
+    enabled: !!slug,
+  });
+
+  const notFound = !isLoading && (isError || article === null);
 
   useEffect(() => {
-    if (!slug) return;
-    setLoading(true);
-    setNotFound(false);
+    if (!article) return;
+    document.title = `${article.title} | MyFreeTip`;
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.content = article.excerpt;
+    return () => { document.title = "MyFreeTip"; };
+  }, [article]);
 
-    getNewsArticle(slug)
-      .then((a) => {
-        if (!a) { setNotFound(true); return; }
-        setArticle(a);
-
-        document.title = `${a.title} | MyFreeTip`;
-        let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-        if (!meta) {
-          meta = document.createElement("meta");
-          meta.name = "description";
-          document.head.appendChild(meta);
-        }
-        meta.content = a.excerpt;
-      })
-      .catch(() => setNotFound(true))
-      .finally(() => setLoading(false));
-
-    return () => {
-      document.title = "MyFreeTip";
-    };
-  }, [slug]);
-
-  if (loading) return <ArticleDetailSkeleton />;
+  if (isLoading) return <ArticleDetailSkeleton />;
 
   if (notFound || !article) {
     return (

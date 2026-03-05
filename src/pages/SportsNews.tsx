@@ -8,8 +8,8 @@ const CATEGORIES = [
   "Premier League",
   "Champions League",
   "Football",
-  "Betting Tips",
-  "Betting Academy",
+  "Match Analysis",
+  "Football Academy",
   "Big Wins",
 ];
 
@@ -62,7 +62,7 @@ export default function SportsNews() {
           Sports News
         </h1>
         <p className="text-sm mt-1" style={{ color: '#777777' }}>
-          Betting tips, analysis and big win stories
+          Match analysis, predictions and big win stories
         </p>
       </div>
 

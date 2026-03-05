@@ -107,7 +107,7 @@ export function CardHeader({ title, timerState, secs, confidenceLabel, totalOdds
               whiteSpace: 'nowrap',
             }}
           >
-            Total Odds
+            Total Value
           </span>
           <span
             style={{

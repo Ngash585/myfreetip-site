@@ -7,8 +7,8 @@ const CATEGORIES = [
   'Premier League',
   'Champions League',
   'Football',
-  'Betting Tips',
-  'Betting Academy',
+  'Match Analysis',
+  'Football Academy',
   'Big Wins',
 ]
 

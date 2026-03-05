@@ -16,12 +16,12 @@ export default function Home() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      {/* ── Hero + Best Bet — single col mobile, 2-col desktop ── */}
+      {/* ── Hero + Best Pick — single col mobile, 2-col desktop ── */}
       <div className="pt-12 pb-12 lg:pt-20 lg:pb-20 lg:grid lg:grid-cols-[1fr_440px] lg:gap-16 lg:items-start">
 
         <HeroSection />
 
-        {/* Best Bet card — stacks below on mobile, sticky right col on desktop */}
+        {/* Best Pick card — stacks below on mobile, sticky right col on desktop */}
         <div className="mt-8 lg:mt-0 lg:sticky lg:top-24">
           {bestBetLoading && <PredictionCardSkeleton />}
 
@@ -30,7 +30,7 @@ export default function Home() {
               <div className="mb-3 flex items-center gap-2">
                 <span className="inline-block w-2 h-2 rounded-full animate-pulse" style={{ background: '#3DB157' }} />
                 <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#777777' }}>
-                  Best Bet Today
+                  Best Pick Today
                 </span>
               </div>
               <PredictionCard card={bestBet} />

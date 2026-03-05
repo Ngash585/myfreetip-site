@@ -1,15 +1,15 @@
 const SECTIONS = [
   {
-    title: "1. No Guarantee of Winnings",
-    body: "MyFreeTip provides football predictions, betting codes, and suggested slips generated using data analysis and expert judgement. While we strive for accuracy, betting always carries risk. We cannot and do not guarantee any winnings. Users accept full responsibility for the outcomes of their bets.",
+    title: "1. No Guarantee of Results",
+    body: "MyFreeTip provides football predictions, match codes, and suggested slips generated using data analysis and expert judgement. While we strive for accuracy, this always carries risk. We cannot and do not guarantee any results. Users accept full responsibility for the outcomes of their backing.",
   },
   {
-    title: "2. Editing Bet Slips",
-    body: "Our platform allows users to copy betting slips and booking codes from our predictions. You are free to edit, add, or remove selections before placing a bet. Once edited, the responsibility for the final slip lies solely with you. MyFreeTip is not liable for any changes you make to the recommended slip.",
+    title: "2. Editing Prediction Slips",
+    body: "Our platform allows users to copy prediction slips and match codes from our predictions. You are free to edit, add, or remove selections before confirming your backing. Once edited, the responsibility for the final slip lies solely with you. MyFreeTip is not liable for any changes you make to the recommended slip.",
   },
   {
     title: "3. Information Purposes Only",
-    body: "All content on MyFreeTip.com is provided for informational and entertainment purposes only. We are not a bookmaker and do not take bets. Users must be of legal gambling age in their jurisdiction to engage with any betting services via third-party partners.",
+    body: "All content on MyFreeTip.com is provided for informational and entertainment purposes only. We are not a platform that takes backing. Users must be of legal age in their jurisdiction to engage with any services via third-party partners.",
   },
   {
     title: "4. Privacy & Data Use",
@@ -23,11 +23,11 @@ const SECTIONS = [
   },
   {
     title: "5. Liability",
-    body: "MyFreeTip is not responsible for any financial loss, damages, or consequences arising from the use of our predictions, codes, or partner links. Users are advised to bet responsibly and within their means.",
+    body: "MyFreeTip is not responsible for any financial loss, damages, or consequences arising from the use of our predictions, codes, or partner links. Users are advised to play responsibly and within their means.",
   },
   {
     title: "6. Third-Party Links & Affiliate Partners",
-    body: "Our website contains links to third-party bookmaker sites including 1xBet, Paripesa, Melbet, and Sportsbet.io. We may earn commission when you register or deposit via these links. We do not control these platforms and are not responsible for their content, security, or practices. Always review their terms and conditions before placing bets.",
+    body: "Our website contains links to third-party bookmaker sites including 1xBet, Paripesa, Melbet, and Sportsbet.io. We may earn commission when you register or deposit via these links. We do not control these platforms and are not responsible for their content, security, or practices. Always review their terms and conditions before committing any backing.",
   },
   {
     title: "7. Changes to These Terms",
@@ -73,8 +73,8 @@ export default function Terms() {
         <span className="text-xl flex-shrink-0">⚠️</span>
         <p className="text-sm leading-relaxed" style={{ color: '#92650A' }}>
           You must be <strong>18 years or older</strong> to use this site and
-          place bets with our partner bookmakers. Gambling may be illegal in
-          your jurisdiction — it is your responsibility to check local laws.
+          engage with our partner platforms. Sports wagering may be restricted
+          in your jurisdiction — it is your responsibility to check local laws.
         </p>
       </div>
 

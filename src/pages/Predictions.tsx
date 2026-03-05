@@ -73,7 +73,7 @@ export default function Predictions() {
         {!loading && filtered.length === 0 && (
           <p className="text-sm py-6 text-center" style={{ color: '#777777' }}>
             {active === "tomorrow"
-              ? "Tomorrow's codes drop at 9:00 AM — check back soon."
+              ? "Tomorrow's picks drop at 9:00 AM — check back soon."
               : `No picks available for ${TAB_LABELS[active].toLowerCase()} yet.`}
           </p>
         )}

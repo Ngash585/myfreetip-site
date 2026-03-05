@@ -24,19 +24,6 @@ export function HeroSection() {
   return (
     <section>
 
-      {/* ── Social proof pill — sits close to headline ── */}
-      <div
-        className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 mb-4"
-        style={{ background: '#EAF7EE', border: '1px solid rgba(61,177,87,0.30)' }}
-      >
-        <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ background: '#3DB157' }} />
-        <span className="text-xs font-medium tracking-wide" style={{ color: '#2D9A47' }}>
-          40,000 bettors follow our daily picks
-        </span>
-        <span className="select-none" style={{ color: 'rgba(61,177,87,0.35)' }}>|</span>
-        <span className="text-xs font-bold tracking-widest" style={{ color: '#3DB157' }}>LIVE</span>
-      </div>
-
       {/* ── Headline — 48px mobile, 64px desktop ── */}
       <h1
         className="mb-5 leading-[1.05] tracking-[-0.04em] text-[48px] md:text-[64px]"
@@ -53,7 +40,7 @@ export function HeroSection() {
         style={{ color: '#4F4841', lineHeight: '1.7', fontWeight: 300, hyphens: 'none' }}
       >
         Every day, our analysis finds the highest-confidence match and gives
-        you a booking code — just paste it into{" "}
+        you a match code — just paste it into{" "}
         <a
           href={BOOKMAKERS["1xbet"].affiliateUrl}
           target="_blank"
@@ -120,7 +107,7 @@ export function HeroSection() {
       {/* ── Scroll cue (mobile only) ── */}
       <div className="mt-8 flex flex-col items-center gap-1 lg:hidden">
         <p className="text-[10px] font-medium uppercase tracking-[0.18em]" style={{ color: '#B8860B' }}>
-          Today's best bet below
+          Today's best pick below
         </p>
         <span className="text-xs animate-bounce" style={{ color: '#B8860B' }}>↓</span>
       </div>

@@ -320,7 +320,7 @@ export default function TipForm() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Badge Label</label>
-              <input className={inputCls} style={inputStyle} value={badgeLabel} onChange={(e) => setBadgeLabel(e.target.value)} placeholder="e.g. Best Bet" />
+              <input className={inputCls} style={inputStyle} value={badgeLabel} onChange={(e) => setBadgeLabel(e.target.value)} placeholder="e.g. Best Pick" />
             </div>
             <div>
               <label className={labelCls}>Total Odds Label</label>
@@ -473,7 +473,7 @@ export default function TipForm() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2">
-                  <label className={labelCls}>Booking Code</label>
+                  <label className={labelCls}>Match Code</label>
                   <input className={inputCls} style={inputStyle} value={b.code} onChange={(e) => updateBookie(b._key, 'code', e.target.value)} placeholder="e.g. XB12345" />
                 </div>
                 <div>

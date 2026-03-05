@@ -143,7 +143,7 @@ export default function SportsNewsArticle() {
           className="mt-10 p-5 rounded-2xl"
           style={{ background: '#FFFFFF', boxShadow: 'rgba(29,29,29,0.08) 4px 16px 32px 0', border: '1px solid rgba(29,29,29,0.08)' }}
         >
-          <p className="text-sm mb-3" style={{ color: '#777777' }}>Ready to place your bet?</p>
+          <p className="text-sm mb-3" style={{ color: '#777777' }}>Ready to back this?</p>
           <a
             href={article.affiliate_url}
             target="_blank"
@@ -151,7 +151,7 @@ export default function SportsNewsArticle() {
             className="block text-center text-white font-bold py-3 rounded-xl transition-opacity hover:opacity-80"
             style={{ background: '#080A2D' }}
           >
-            {article.affiliate_label || "Bet Now"}
+            {article.affiliate_label || "Back This Now"}
           </a>
         </div>
       )}

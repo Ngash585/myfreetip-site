@@ -14,12 +14,12 @@ const WHAT_WE_DO_DIFFERENTLY = [
   {
     icon: "🔑",
     title: "We make the code work for you",
-    body: "Every tip comes with a booking code ready to paste directly into 1xBet, Paripesa, Melbet and more. No searching. No manual slip building. One paste and your selections are loaded.",
+    body: "Every pick comes with a match code ready to paste directly into 1xBet, Paripesa, Melbet and more. No searching. No manual slip building. One paste and your selections are loaded.",
   },
   {
     icon: "🎁",
     title: "We tell you about the bonuses",
-    body: "Welcome offers exist on every platform. Most bettors never claim them. We show you which ones are worth using and how to combine them with today's pick — free money most people leave on the table.",
+    body: "Welcome offers exist on every platform. Most people never claim them. We show you which ones are worth using and how to combine them with today's pick — free money most leave on the table.",
   },
   {
     icon: "✅",
@@ -37,9 +37,9 @@ const WHAT_WE_DONT_DO = [
 
 const STATS = [
   { label: "Overall Win Rate",  value: "73%" },
-  { label: "Tips Published",    value: "63+" },
+  { label: "Picks Published",    value: "63+" },
   { label: "Markets Covered",   value: "12+" },
-  { label: "Partner Bookies",   value: "4"   },
+  { label: "Partner Platforms", value: "4"   },
 ];
 
 const PARTNERS = [
@@ -76,7 +76,7 @@ export default function About() {
         </h1>
         <p className="leading-relaxed" style={{ color: '#777777' }}>
           Every day, our analysis finds the highest-confidence match and gives
-          you a booking code — just paste it into 1xBet, Paripesa, Melbet and
+          you a match code — just paste it into 1xBet, Paripesa, Melbet and
           more. It costs you nothing.
         </p>
       </section>
@@ -89,7 +89,7 @@ export default function About() {
           </h2>
           <div className="space-y-3 text-sm leading-relaxed" style={{ color: '#777777' }}>
             <p>
-              You've followed tipsters who disappeared after a bad week. You've
+              You've followed analysts who disappeared after a bad week. You've
               seen win rates that never show the losses. You've copied a code
               that expired before you could use it. You've lost money you
               couldn't afford to lose and didn't fully understand why.
@@ -213,32 +213,32 @@ export default function About() {
               Our affiliate relationships do{" "}
               <strong style={{ color: '#1D1D1D' }}>not</strong> influence our
               predictions. Tips are selected on statistical merit only. We will
-              never recommend a bet to benefit our affiliate revenue at the
+              never recommend a pick to benefit our affiliate revenue at the
               expense of your results.
             </p>
             <p>
-              All listed bookmakers are licensed operators. Always check that
-              online betting is legal in your country before registering.
+              All listed platforms are licensed operators. Always verify local
+              laws before registering.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── Responsible Gambling ── */}
+      {/* ── Responsible Play ── */}
       <section className="mb-10">
         <div className="rounded-2xl p-5" style={{ background: '#FFFFFF', border: '1px solid rgba(29,29,29,0.08)', boxShadow: 'rgba(29,29,29,0.06) 4px 16px 32px 0' }}>
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg">🛡️</span>
-            <h2 className="text-base font-bold" style={{ color: '#1D1D1D' }}>Responsible Gambling</h2>
+            <h2 className="text-base font-bold" style={{ color: '#1D1D1D' }}>Responsible Play</h2>
           </div>
           <div className="space-y-3 text-sm leading-relaxed" style={{ color: '#777777' }}>
             <p>
-              Betting should be entertainment, not a source of income. Never
-              stake money you cannot afford to lose. Past results do not
+              This should be entertainment, not a source of income. Never
+              commit money you cannot afford to lose. Past results do not
               guarantee future returns — even a 73% win rate means losses happen.
             </p>
             <p>
-              Set a budget before you bet and stick to it. If gambling is
+              Set a budget and stick to it. If this is
               affecting your finances, relationships, or mental health, please
               seek help. You must be{" "}
               <strong style={{ color: '#1D1D1D' }}>18 years or older</strong> to use

@@ -13,7 +13,7 @@ export function CTAButton({ bookieName, bookieId, affiliateUrl, timerState }: CT
   const expired = timerState === 'expired'
   const label = expired
     ? 'Code Expired — See next pick ↓'
-    : `Open ${bookieName} & Place Bet →`
+    : `Open ${bookieName} & Back This →`
 
   const brand = bookieId ? BOOKMAKERS[bookieId] : undefined
   const bg = expired ? '#CCCCCC' : (brand?.activeBg ?? '#080A2D')

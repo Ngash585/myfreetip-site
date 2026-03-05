@@ -42,7 +42,7 @@ const DEFAULT_SECTIONS: Section[] = [
 
 export default function Footer({
   brand       = "MyFreeTip",
-  description = "Free daily football tips. 18+ only — bet responsibly.",
+  description = "Free daily football predictions. 18+ only — play responsibly.",
   sections    = DEFAULT_SECTIONS,
   showSocial  = true,
   social = {

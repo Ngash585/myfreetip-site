@@ -48,7 +48,7 @@ export function HowToUse({ bookieName }: HowToUseProps) {
               </Step>
               <Step n={2}>
                 <strong style={{ color: '#1D1D1D', fontWeight: 500 }}>Open {bookieName}</strong>
-                {' '}— find "Booking Code" in the menu
+                {' '}— find "Match Code" in the menu
               </Step>
               <Step n={3}>
                 <strong style={{ color: '#1D1D1D', fontWeight: 500 }}>Paste the code</strong>

@@ -74,7 +74,7 @@ export default function Singlepredictioncard({
         </div>
         {odds && (
           <div className="text-right">
-            <p className="text-xs text-[#8a9bb0] mb-0.5">Odds</p>
+            <p className="text-xs text-[#8a9bb0] mb-0.5">Value</p>
             <p className="font-bold text-[#00c853]">{odds}</p>
           </div>
         )}
@@ -94,7 +94,7 @@ export default function Singlepredictioncard({
         </div>
       </div>
 
-      {/* Booking code */}
+      {/* Match code */}
       {bookingCode && (
         <div className="mt-3 flex items-center justify-between rounded-lg border border-[#2a3a4a] px-3 py-2">
           <span className="text-xs text-[#8a9bb0]">{bookmaker ?? "Code"}:</span>

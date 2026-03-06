@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getNewsArticles } from "@/lib/api";
+import { getArticleImage } from "@/lib/articleImage";
 import { useQuery } from "@tanstack/react-query";
 
 const CATEGORIES = [
@@ -103,29 +104,24 @@ export default function SportsNews() {
         )}
 
         {!loading &&
-          filtered.map((article) => (
+          filtered.map((article, index) => (
             <Link
               key={article.id}
               to={`/sports-news/${article.slug}`}
               className="group bg-white rounded-2xl overflow-hidden transition-shadow hover:shadow-lg block"
               style={{ boxShadow: 'rgba(29,29,29,0.08) 4px 16px 32px 0' }}
             >
-              {article.cover_url ? (
-                <div className="aspect-[16/9] overflow-hidden">
-                  <img
-                    src={article.cover_url}
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.02] transition duration-300"
-                  />
-                </div>
-              ) : (
-                <div className="aspect-[16/9] flex flex-col items-center justify-center gap-2" style={{ background: '#F2EEE9' }}>
-                  <span className="text-4xl">⚽</span>
-                  <span className="text-xs font-medium uppercase tracking-widest" style={{ color: '#AAAAAA' }}>
-                    {article.category}
-                  </span>
-                </div>
-              )}
+              <div className="aspect-[16/9] overflow-hidden">
+                <img
+                  src={getArticleImage(article)}
+                  alt={`${article.title} — ${article.category ?? 'Sports'} | MyFreeTip`}
+                  width={800}
+                  height={450}
+                  loading={index < 2 ? "eager" : "lazy"}
+                  decoding="async"
+                  className="w-full h-full object-cover group-hover:scale-[1.02] transition duration-300"
+                />
+              </div>
 
               <div className="p-4">
                 <div className="flex items-center gap-2 text-xs mb-2">

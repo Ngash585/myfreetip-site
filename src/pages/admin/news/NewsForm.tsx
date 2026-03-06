@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
+import { ARTICLE_IMAGE_SLOTS } from '@/lib/articleImage'
 
 const CATEGORIES = [
   'Premier League',
@@ -197,15 +198,64 @@ export default function NewsForm() {
                 onChange={(e) => setPublishedAt(e.target.value)}
               />
             </div>
-            <div>
-              <label className={labelCls}>Cover Image URL</label>
-              <input
-                className={inputCls}
-                style={inputStyle}
-                value={coverUrl}
-                onChange={(e) => setCoverUrl(e.target.value)}
-                placeholder="/images/cover.webp"
-              />
+            <div className="col-span-2">
+              <label className={labelCls}>Article Image</label>
+              <p className="text-xs text-[#8a9bb0] mb-2">Pick a theme — leave unselected to auto-assign from category.</p>
+              {/* Image slot picker */}
+              <div className="grid grid-cols-5 gap-1.5 mb-2">
+                {/* Auto / none */}
+                <button
+                  type="button"
+                  onClick={() => setCoverUrl('')}
+                  className="aspect-[16/9] rounded-lg flex items-center justify-center text-xs font-semibold transition-all"
+                  style={{
+                    background: '#0f1923',
+                    border: coverUrl === '' ? '2px solid #10b981' : '1px solid #2a3a4a',
+                    color: coverUrl === '' ? '#10b981' : '#8a9bb0',
+                  }}
+                >
+                  Auto
+                </button>
+                {ARTICLE_IMAGE_SLOTS.map((slot) => (
+                  <button
+                    key={slot.path}
+                    type="button"
+                    onClick={() => setCoverUrl(slot.path)}
+                    title={slot.label}
+                    className="aspect-[16/9] rounded-lg overflow-hidden transition-all relative"
+                    style={{
+                      background: slot.bgColor,
+                      outline: coverUrl === slot.path ? '2px solid #10b981' : '1px solid transparent',
+                      outlineOffset: '2px',
+                    }}
+                  >
+                    <img
+                      src={slot.path}
+                      alt={slot.label}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+              {/* Selected image preview */}
+              {coverUrl && (
+                <div className="rounded-lg overflow-hidden aspect-[16/9] mt-2">
+                  <img src={coverUrl} alt="Selected image preview" className="w-full h-full object-cover" />
+                </div>
+              )}
+              {/* Custom URL escape hatch */}
+              <details className="mt-2">
+                <summary className="text-xs text-[#8a9bb0] cursor-pointer select-none hover:text-white transition-colors">
+                  Use a custom image URL instead
+                </summary>
+                <input
+                  className={inputCls + ' mt-2'}
+                  style={inputStyle}
+                  value={coverUrl && !ARTICLE_IMAGE_SLOTS.find(s => s.path === coverUrl) ? coverUrl : ''}
+                  onChange={(e) => setCoverUrl(e.target.value)}
+                  placeholder="https://… or /images/my-photo.webp"
+                />
+              </details>
             </div>
           </div>
 

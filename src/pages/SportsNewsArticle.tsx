@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getNewsArticle } from "@/lib/api";
+import { getArticleImage } from "@/lib/articleImage";
 import { useQuery } from "@tanstack/react-query";
+
+const SITE_URL = "https://myfreetip.com";
+const SITE_NAME = "MyFreeTip";
 
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
@@ -14,6 +18,22 @@ function timeAgo(iso: string): string {
     month: "short",
     year: "numeric",
   });
+}
+
+function setMeta(name: string, content: string, isProperty = false) {
+  const attr = isProperty ? "property" : "name";
+  let el = document.querySelector<HTMLMetaElement>(`meta[${attr}="${name}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, name);
+    document.head.appendChild(el);
+  }
+  el.content = content;
+}
+
+function removeMeta(name: string, isProperty = false) {
+  const attr = isProperty ? "property" : "name";
+  document.querySelector(`meta[${attr}="${name}"]`)?.remove();
 }
 
 function ArticleDetailSkeleton() {
@@ -49,15 +69,88 @@ export default function SportsNewsArticle() {
 
   useEffect(() => {
     if (!article) return;
-    document.title = `${article.title} | MyFreeTip`;
-    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
+
+    const articleUrl = `${SITE_URL}/sports-news/${article.slug}`;
+    const imageUrl = `${SITE_URL}${getArticleImage(article)}`;
+    const pageTitle = `${article.title} | ${SITE_NAME}`;
+
+    // Basic
+    document.title = pageTitle;
+    setMeta("description", article.excerpt);
+
+    // Open Graph
+    setMeta("og:type", "article", true);
+    setMeta("og:url", articleUrl, true);
+    setMeta("og:title", pageTitle, true);
+    setMeta("og:description", article.excerpt, true);
+    setMeta("og:image", imageUrl, true);
+    setMeta("og:image:width", "1600", true);
+    setMeta("og:image:height", "900", true);
+    setMeta("og:site_name", SITE_NAME, true);
+
+    // Twitter / X
+    setMeta("twitter:card", "summary_large_image");
+    setMeta("twitter:title", pageTitle);
+    setMeta("twitter:description", article.excerpt);
+    setMeta("twitter:image", imageUrl);
+
+    // Article-specific OG
+    setMeta("article:published_time", article.published_at, true);
+    if (article.author) setMeta("article:author", article.author, true);
+
+    // JSON-LD structured data (NewsArticle)
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": article.title,
+      "description": article.excerpt,
+      "image": imageUrl,
+      "datePublished": article.published_at,
+      "dateModified": article.published_at,
+      "url": articleUrl,
+      "author": {
+        "@type": "Person",
+        "name": article.author ?? SITE_NAME,
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": SITE_NAME,
+        "url": SITE_URL,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${SITE_URL}/brand/app-icon-512.png`,
+        },
+      },
+      "articleSection": article.category,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": articleUrl,
+      },
+    };
+
+    let script = document.querySelector<HTMLScriptElement>('script[data-article-jsonld]');
+    if (!script) {
+      script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.setAttribute("data-article-jsonld", "");
+      document.head.appendChild(script);
     }
-    meta.content = article.excerpt;
-    return () => { document.title = "MyFreeTip"; };
+    script.textContent = JSON.stringify(jsonLd);
+
+    return () => {
+      // Restore defaults on unmount
+      document.title = `${SITE_NAME} — Free Daily Football Predictions & Match Codes`;
+      removeMeta("og:type", true);
+      removeMeta("og:url", true);
+      removeMeta("og:title", true);
+      removeMeta("og:description", true);
+      removeMeta("og:image", true);
+      removeMeta("og:image:width", true);
+      removeMeta("og:image:height", true);
+      removeMeta("article:published_time", true);
+      removeMeta("article:author", true);
+      document.querySelector('script[data-article-jsonld]')?.remove();
+    };
   }, [article]);
 
   if (isLoading) return <ArticleDetailSkeleton />;
@@ -89,16 +182,19 @@ export default function SportsNewsArticle() {
         ← Sports News
       </Link>
 
-      {/* Cover image */}
-      {article.cover_url && (
-        <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-6">
-          <img
-            src={article.cover_url}
-            alt={article.title}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
+      {/* Hero image — always shown, fetchpriority=high for LCP */}
+      <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-6">
+        <img
+          src={getArticleImage(article)}
+          alt={`${article.title} — ${article.category ?? 'Sports'} | ${SITE_NAME}`}
+          width={1600}
+          height={900}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
       {/* Meta row */}
       <div className="flex flex-wrap items-center gap-2 text-xs mb-3">

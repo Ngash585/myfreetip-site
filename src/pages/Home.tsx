@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { getTipCards } from "@/lib/api";
 import { PredictionCard, PredictionCardSkeleton } from "@/components/PredictionCard";
 import { AnalystWinRateSection } from "@/components/AnalystWinRate";
@@ -7,6 +8,13 @@ import { LatestNewsSnippet } from "@/components/LatestNewsSnippet";
 import { HeroSection } from "@/components/HeroSection";
 
 export default function Home() {
+  usePageMeta({
+    title: "MyFreeTip \u2014 Free Daily Football Predictions and Match Analysis",
+    description:
+      "Free daily football match analysis, confidence-based predictions, and transparent results. Full record published including missed calls. No noise, just analysis.",
+    canonical: "https://myfreetip.com/",
+  });
+
   const { data: cards = [], isLoading: bestBetLoading } = useQuery({
     queryKey: ['tip-cards'],
     queryFn: getTipCards,

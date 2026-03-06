@@ -72,11 +72,15 @@ export default function SportsNewsArticle() {
 
     const articleUrl = `${SITE_URL}/sports-news/${article.slug}`;
     const imageUrl = `${SITE_URL}${getArticleImage(article)}`;
-    const pageTitle = `${article.title} | ${SITE_NAME}`;
+    const pageTitle = `${article.title} \u2014 ${SITE_NAME}`;
 
     // Basic
     document.title = pageTitle;
     setMeta("description", article.excerpt);
+
+    // Canonical
+    const linkCanonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (linkCanonical) linkCanonical.href = articleUrl;
 
     // Open Graph
     setMeta("og:type", "article", true);
@@ -139,7 +143,8 @@ export default function SportsNewsArticle() {
 
     return () => {
       // Restore defaults on unmount
-      document.title = `${SITE_NAME} — Free Daily Football Predictions & Match Codes`;
+      document.title = `${SITE_NAME} \u2014 Free Daily Football Predictions and Match Analysis`;
+      if (linkCanonical) linkCanonical.href = `${SITE_URL}/`;
       removeMeta("og:type", true);
       removeMeta("og:url", true);
       removeMeta("og:title", true);

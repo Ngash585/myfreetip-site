@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { Link } from "react-router-dom";
 import { getNewsArticles } from "@/lib/api";
 import { getArticleImage } from "@/lib/articleImage";
@@ -43,6 +44,12 @@ function ArticleSkeleton() {
 }
 
 export default function SportsNews() {
+  usePageMeta({
+    title: "Football Match Analysis and News \u2014 MyFreeTip",
+    description:
+      "In-depth football match previews, tactical analysis, and form guides covering Premier League, La Liga, Serie A, Bundesliga, Champions League and African leagues.",
+    canonical: "https://myfreetip.com/sports-news",
+  });
   const { data: articles = [], isLoading: loading } = useQuery({
     queryKey: ['news-articles'],
     queryFn: getNewsArticles,

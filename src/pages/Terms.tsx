@@ -1,3 +1,5 @@
+import { usePageMeta } from "@/hooks/usePageMeta";
+
 const SECTIONS = [
   {
     title: "1. No Guarantee of Results",
@@ -43,6 +45,13 @@ const CARD = {
 } as const;
 
 export default function Terms() {
+  usePageMeta({
+    title: "Terms and Conditions \u2014 MyFreeTip",
+    description:
+      "Terms and conditions for using MyFreeTip, a football predictions and match analysis platform. Please read before using the site.",
+    canonical: "https://myfreetip.com/terms",
+  });
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-8" style={{ color: '#1D1D1D' }}>
 

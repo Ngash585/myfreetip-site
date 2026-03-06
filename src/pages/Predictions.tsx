@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import type { TipCard } from "@/lib/api";
 import { getTipCards } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
@@ -30,6 +31,12 @@ function getCardTab(card: TipCard): Tab {
 }
 
 export default function Predictions() {
+  usePageMeta({
+    title: "Today\u2019s Football Predictions \u2014 MyFreeTip",
+    description:
+      "Today\u2019s football match analysis and predictions. Confidence scores, form data, and match context updated daily across Premier League, La Liga, Champions League and more.",
+    canonical: "https://myfreetip.com/predictions",
+  });
   const { data: cards = [], isLoading: loading } = useQuery({
     queryKey: ['tip-cards'],
     queryFn: getTipCards,

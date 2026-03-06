@@ -1,3 +1,5 @@
+import { usePageMeta } from "@/hooks/usePageMeta";
+
 const SECTIONS = [
   {
     title: "1. Information We Collect",
@@ -63,6 +65,13 @@ const CARD = {
 } as const;
 
 export default function Privacy() {
+  usePageMeta({
+    title: "Privacy Policy \u2014 MyFreeTip",
+    description:
+      "MyFreeTip\u2019s privacy policy covering how we collect, use, and protect information from users of our football predictions and analysis platform.",
+    canonical: "https://myfreetip.com/privacy",
+  });
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-8" style={{ color: '#1D1D1D' }}>
 

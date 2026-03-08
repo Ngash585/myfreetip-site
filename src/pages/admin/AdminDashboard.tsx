@@ -1,35 +1,43 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
+import { getAnalystStats } from '@/lib/api'
 
-type Counts = { tips: number; news: number; winRate: number | null }
+async function getDashboardCounts() {
+  if (!supabase) return { tips: 0, news: 0 }
+  const [tips, news] = await Promise.all([
+    supabase.from('tip_cards').select('id', { count: 'exact', head: true }),
+    supabase.from('news_articles').select('id', { count: 'exact', head: true }),
+  ])
+  return { tips: tips.count ?? 0, news: news.count ?? 0 }
+}
 
 export default function AdminDashboard() {
-  const [counts, setCounts] = useState<Counts>({ tips: 0, news: 0, winRate: null })
-  const [loading, setLoading] = useState(true)
   const queryClient = useQueryClient()
 
-  useEffect(() => {
-    if (!supabase) { setLoading(false); return }
-    Promise.all([
-      supabase.from('tip_cards').select('id', { count: 'exact', head: true }),
-      supabase.from('news_articles').select('id', { count: 'exact', head: true }),
-      supabase.from('analyst_stats').select('win_rate_pct').order('created_at', { ascending: false }).limit(1),
-    ]).then(([tips, news, stats]) => {
-      setCounts({
-        tips: tips.count ?? 0,
-        news: news.count ?? 0,
-        winRate: stats.data?.[0]?.win_rate_pct ?? null,
-      })
-      setLoading(false)
-    })
-  }, [])
+  const { data: counts, isLoading: countsLoading } = useQuery({
+    queryKey: ['dashboard-counts'],
+    queryFn: getDashboardCounts,
+    staleTime: 30_000,
+  })
+
+  const { data: statsPayload, isLoading: statsLoading } = useQuery({
+    queryKey: ['analyst-stats'],
+    queryFn: getAnalystStats,
+    staleTime: 30_000,
+  })
+
+  const stats = statsPayload?.records[0]
+  const loading = countsLoading || statsLoading
+
+  function handleRefresh() {
+    queryClient.invalidateQueries()
+  }
 
   const cards = [
     {
       label: 'Tip Cards',
-      value: loading ? '—' : String(counts.tips),
+      value: loading ? '—' : String(counts?.tips ?? 0),
       link: '/admin/tips',
       action: 'New Tip',
       actionTo: '/admin/tips/new',
@@ -37,7 +45,7 @@ export default function AdminDashboard() {
     },
     {
       label: 'News Articles',
-      value: loading ? '—' : String(counts.news),
+      value: loading ? '—' : String(counts?.news ?? 0),
       link: '/admin/news',
       action: 'New Article',
       actionTo: '/admin/news/new',
@@ -45,11 +53,12 @@ export default function AdminDashboard() {
     },
     {
       label: 'Win Rate',
-      value: loading ? '—' : counts.winRate !== null ? `${counts.winRate}%` : 'N/A',
-      link: '/admin/stats',
-      action: 'Update Stats',
-      actionTo: '/admin/stats',
-      color: '#ff9800',
+      value: loading ? '—' : stats ? `${stats.win_rate_pct}%` : 'N/A',
+      sub: loading || !stats ? null : `${stats.won}W · ${stats.lost}L`,
+      link: '/admin/tips',
+      action: 'View Tips',
+      actionTo: '/admin/tips',
+      color: '#00c853',
     },
   ]
 
@@ -66,21 +75,16 @@ export default function AdminDashboard() {
             style={{ background: '#1a2634', border: '1px solid #2a3a4a' }}
           >
             <p className="text-xs text-[#8a9bb0] font-medium uppercase tracking-wider">{c.label}</p>
-            <p className="text-3xl font-bold" style={{ color: c.color }}>
-              {c.value}
-            </p>
+            <div>
+              <p className="text-3xl font-bold" style={{ color: c.color }}>{c.value}</p>
+              {c.sub && <p className="text-xs mt-1" style={{ color: '#8a9bb0' }}>{c.sub}</p>}
+            </div>
             <div className="flex gap-2 mt-auto">
-              <Link
-                to={c.link}
-                className="text-xs text-[#8a9bb0] hover:text-white transition-colors"
-              >
+              <Link to={c.link} className="text-xs text-[#8a9bb0] hover:text-white transition-colors">
                 View all →
               </Link>
               <span className="text-[#2a3a4a]">·</span>
-              <Link
-                to={c.actionTo}
-                className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors font-medium"
-              >
+              <Link to={c.actionTo} className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors font-medium">
                 {c.action}
               </Link>
             </div>
@@ -104,15 +108,8 @@ export default function AdminDashboard() {
           >
             + New Article
           </Link>
-          <Link
-            to="/admin/stats"
-            className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors hover:bg-white/10"
-            style={{ background: '#0f1923', border: '1px solid #2a3a4a' }}
-          >
-            Update Win Rate
-          </Link>
           <button
-            onClick={() => queryClient.invalidateQueries()}
+            onClick={handleRefresh}
             className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors hover:bg-white/10"
             style={{ background: '#0f1923', border: '1px solid #2a3a4a' }}
           >

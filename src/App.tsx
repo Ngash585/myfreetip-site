@@ -1,7 +1,8 @@
-import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import Layout from "@/components/Layout";
+import { fbPageView } from "@/lib/fbpixel";
 
 // Home loads eagerly — it is the most common landing page
 import Home from "@/pages/Home";
@@ -27,6 +28,13 @@ const NewsForm       = lazy(() => import("@/pages/admin/news/NewsForm"));
 const StatsEditor    = lazy(() => import("@/pages/admin/stats/StatsEditor"));
 
 export default function App() {
+  const location = useLocation();
+
+  // Fire PageView on every client-side route change (SPA navigation)
+  useEffect(() => {
+    fbPageView();
+  }, [location.pathname]);
+
   return (
     <>
       <Analytics />

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import type { TipCard } from "@/lib/api";
 import { getTipCards } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { PredictionCard, PredictionCardSkeleton } from "@/components/PredictionCard";
+import { fbEvent } from "@/lib/fbpixel";
 
 const TABS = ["today", "tomorrow", "weekend", "upcoming"] as const;
 type Tab = typeof TABS[number];
@@ -31,6 +32,10 @@ function getCardTab(card: TipCard): Tab {
 }
 
 export default function Predictions() {
+  useEffect(() => {
+    fbEvent('ViewContent', { content_name: 'Predictions', content_category: 'football-predictions' });
+  }, []);
+
   usePageMeta({
     title: "Today\u2019s Football Predictions \u2014 MyFreeTip",
     description:

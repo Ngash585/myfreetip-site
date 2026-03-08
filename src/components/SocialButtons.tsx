@@ -1,3 +1,5 @@
+import { fbEvent } from "@/lib/fbpixel";
+
 type Props = {
   size?: number;
   twitter?: string;
@@ -61,6 +63,7 @@ export default function SocialButtons({
           aria-label={label}
           style={{ width: size, height: size }}
           className="flex items-center justify-center rounded-full bg-[#1a2634] border border-[#2a3a4a] text-[#8a9bb0] hover:text-[#00c853] hover:border-[#00c853] transition-colors duration-200"
+          onClick={() => { if (url.includes('t.me')) fbEvent('Lead'); }}
         >
           <Icon s={iconSize} />
         </a>

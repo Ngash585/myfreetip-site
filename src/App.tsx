@@ -26,7 +26,6 @@ const TipsList       = lazy(() => import("@/pages/admin/tips/TipsList"));
 const TipForm        = lazy(() => import("@/pages/admin/tips/TipForm"));
 const NewsList       = lazy(() => import("@/pages/admin/news/NewsList"));
 const NewsForm       = lazy(() => import("@/pages/admin/news/NewsForm"));
-const StatsEditor    = lazy(() => import("@/pages/admin/stats/StatsEditor"));
 
 export default function App() {
   const location = useLocation();
@@ -70,7 +69,6 @@ export default function App() {
             <Route path="news" element={<NewsList />} />
             <Route path="news/new" element={<NewsForm />} />
             <Route path="news/:id" element={<NewsForm />} />
-            <Route path="stats" element={<StatsEditor />} />
           </Route>
         </Routes>
       </Suspense>

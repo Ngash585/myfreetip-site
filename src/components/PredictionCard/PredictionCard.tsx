@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { TipCard } from '@/lib/api'
 import { Surface } from '@/components/Surface'
-import { CardHeader } from './CardHeader'
+import { CardHeader, type ResultBadgeType } from './CardHeader'
 import { MatchBody } from './MatchBody'
 import { BookingSection } from './BookingSection'
 import { useTimer } from './useTimer'
@@ -29,6 +29,13 @@ export function PredictionCard({ card, showHeader = true }: PredictionCardProps)
   const kickoffIso = card.legs[0]?.kickoff_iso
   const { secs, timerState } = useTimer(kickoffIso)
 
+  // Derive what badge (if any) to show in the card header
+  const resultBadge: ResultBadgeType | undefined =
+    card.result === 'win' ? 'win' :
+    card.result === 'loss' ? 'loss' :
+    timerState === 'expired' ? 'pending-expired' :
+    undefined
+
   return (
     <Surface noPadding rounded="rounded-2xl" className="overflow-hidden">
       {showHeader && (
@@ -37,6 +44,7 @@ export function PredictionCard({ card, showHeader = true }: PredictionCardProps)
           timerState={timerState as TimerState}
           secs={secs}
           totalOddsLabel={card.total_odds_label}
+          result={resultBadge}
         />
       )}
 

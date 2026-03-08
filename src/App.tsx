@@ -8,6 +8,7 @@ import { fbPageView } from "@/lib/fbpixel";
 import Home from "@/pages/Home";
 
 // All other public pages are lazy-loaded — only fetched when the user navigates there
+const Results          = lazy(() => import("@/pages/Results"));
 const Predictions      = lazy(() => import("@/pages/Predictions"));
 const SportsNews       = lazy(() => import("@/pages/SportsNews"));
 const SportsNewsArticle = lazy(() => import("@/pages/SportsNewsArticle"));
@@ -43,6 +44,7 @@ export default function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/predictions" element={<Predictions />} />
+            <Route path="/results" element={<Results />} />
             <Route path="/sports-news" element={<SportsNews />} />
             <Route path="/sports-news/:slug" element={<SportsNewsArticle />} />
             <Route path="/about" element={<About />} />

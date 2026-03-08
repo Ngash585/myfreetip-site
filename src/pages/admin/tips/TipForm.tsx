@@ -17,6 +17,7 @@ type LegDraft = {
   pick_title: string
   odds: string
   short_reason: string
+  final_score: string
   sort_order: number
 }
 
@@ -37,7 +38,7 @@ function makeLeg(sort_order = 0): LegDraft {
     _key: crypto.randomUUID(),
     home_team: '', away_team: '', match_label: '', league: '',
     kickoff_iso: '', kickoff_label: '', prediction: '', pick_title: '',
-    odds: '', short_reason: '', sort_order,
+    odds: '', short_reason: '', final_score: '', sort_order,
   }
 }
 
@@ -129,6 +130,7 @@ export default function TipForm() {
                 pick_title: String(l.pick_title ?? ''),
                 odds: String(l.odds ?? ''),
                 short_reason: String(l.short_reason ?? ''),
+                final_score: String(l.final_score ?? ''),
                 sort_order: i,
               }))
           )
@@ -217,6 +219,7 @@ export default function TipForm() {
         pick_title: l.pick_title || null,
         odds: l.odds || null,
         short_reason: l.short_reason || null,
+        final_score: l.final_score || null,
         sort_order: i,
       }))
       const { error: legsErr } = await supabase.from('legs').insert(legsPayload)
@@ -412,6 +415,16 @@ export default function TipForm() {
                   value={leg.short_reason}
                   onChange={(e) => updateLeg(leg._key, 'short_reason', e.target.value)}
                   placeholder="Brief analyst note shown on card"
+                />
+              </div>
+
+              <div>
+                <label className={labelCls}>Final Score (after match)</label>
+                <input
+                  className={inputCls} style={inputStyle}
+                  value={leg.final_score}
+                  onChange={(e) => updateLeg(leg._key, 'final_score', e.target.value)}
+                  placeholder="e.g. 2 - 1"
                 />
               </div>
             </div>

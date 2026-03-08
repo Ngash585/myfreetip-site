@@ -29,6 +29,7 @@ create table if not exists public.tip_cards (
   confidence       text        not null check (confidence in ('low', 'medium', 'high')),
   result           text        not null check (result in ('win', 'loss', 'pending')) default 'pending',
   expires_at       timestamptz,
+  resulted_at      timestamptz,                        -- set when admin marks win/loss
   default_bookie_id text       references public.bookies(id) on delete set null,
   analyst          text,
   category         text,
@@ -52,7 +53,8 @@ create table if not exists public.legs (
   short_reason   text,
   left_icon_url  text,
   right_icon_url text,
-  sort_order     int         not null default 0
+  sort_order     int         not null default 0,
+  final_score    text                            -- e.g. "2 - 1", set after match
 );
 
 -- ─── 4. card_bookies ────────────────────────────────────────────────────────
@@ -83,7 +85,8 @@ create table if not exists public.news_articles (
   published_at    timestamptz not null default now(),
   author          text,
   affiliate_label text,
-  affiliate_url   text
+  affiliate_url   text,
+  archived        boolean     not null default false   -- hidden from public feed but still crawlable
 );
 
 -- ─── 6. analyst_stats ───────────────────────────────────────────────────────
@@ -148,5 +151,7 @@ create policy "auth write analyst_stats delete"  on public.analyst_stats  for de
 create index if not exists legs_card_id_idx       on public.legs(card_id);
 create index if not exists card_bookies_card_idx  on public.card_bookies(card_id);
 create index if not exists tip_cards_created_idx  on public.tip_cards(created_at desc);
+create index if not exists tip_cards_resulted_idx on public.tip_cards(resulted_at desc);
 create index if not exists news_slug_idx          on public.news_articles(slug);
 create index if not exists news_published_idx     on public.news_articles(published_at desc);
+create index if not exists news_archived_idx      on public.news_articles(archived);

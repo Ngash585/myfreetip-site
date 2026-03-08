@@ -66,6 +66,25 @@ export function MatchRow({ leg, showDivider }: MatchRowProps) {
           </span>
         </div>
 
+        {/* Final score — shown when set */}
+        {leg.final_score && (
+          <span
+            style={{
+              flex: '0 0 auto',
+              fontFamily: "'DM Mono', monospace",
+              fontSize: '13px',
+              fontWeight: 700,
+              color: '#1D1D1D',
+              background: 'rgba(29,29,29,0.05)',
+              borderRadius: '6px',
+              padding: '2px 7px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {leg.final_score}
+          </span>
+        )}
+
         {/* Chevron */}
         <ChevronDown
           className={`flex-shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}

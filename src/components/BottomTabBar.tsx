@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lightbulb } from "lucide-react";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -10,7 +9,7 @@ function isTabActive(href: string, pathname: string): boolean {
   return pathname.startsWith(href);
 }
 
-// ── Icon render functions — receive active state ──────────────────────────────
+// ── Icons ─────────────────────────────────────────────────────────────────────
 
 function HomeIcon() {
   return (
@@ -21,15 +20,22 @@ function HomeIcon() {
   );
 }
 
-function PredictionsIcon({ active }: { active: boolean }) {
+function PredictionsIcon() {
   return (
-    <Lightbulb
-      width={22}
-      height={22}
-      stroke={active ? "#F59E0B" : "#FACC15"}
-      fill={active ? "rgba(245,158,11,0.18)" : "none"}
-      strokeWidth={2}
-    />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  );
+}
+
+function ResultsIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6"  y1="20" x2="6"  y2="14" />
+      <line x1="3"  y1="20" x2="21" y2="20" />
+    </svg>
   );
 }
 
@@ -53,22 +59,14 @@ function AboutIcon() {
   );
 }
 
-function ContactIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
-  );
-}
-
 // ── Tab config ────────────────────────────────────────────────────────────────
 
 const TABS = [
-  { label: "Home",        href: "/",            isPredictions: false },
-  { label: "Predictions", href: "/predictions",  isPredictions: true  },
-  { label: "News",        href: "/sports-news",  isPredictions: false },
-  { label: "About",       href: "/about",        isPredictions: false },
-  { label: "Contact",     href: "/contact",      isPredictions: false },
+  { label: "Home",        href: "/",            Icon: HomeIcon        },
+  { label: "Picks",       href: "/predictions",  Icon: PredictionsIcon },
+  { label: "Results",     href: "/results",      Icon: ResultsIcon     },
+  { label: "News",        href: "/sports-news",  Icon: NewsIcon        },
+  { label: "About",       href: "/about",        Icon: AboutIcon       },
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -108,16 +106,9 @@ export default function BottomTabBar() {
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 24 }}
         >
-          {TABS.map(({ label, href, isPredictions }) => {
+          {TABS.map(({ label, href, Icon }) => {
             const active = isTabActive(href, location.pathname);
-
-            const iconColor = isPredictions
-              ? active ? "#F59E0B" : "#FACC15"
-              : active ? "#3DB157" : "#777777";
-
-            const activePillBg = isPredictions
-              ? "rgba(245,158,11,0.08)"
-              : "rgba(61,177,87,0.08)";
+            const iconColor = active ? "#3DB157" : "#777777";
 
             return (
               <NavLink
@@ -136,40 +127,22 @@ export default function BottomTabBar() {
                   {active && (
                     <span
                       className="absolute inset-x-1 top-1 bottom-1 rounded-xl"
-                      style={{ background: activePillBg }}
+                      style={{ background: "rgba(61,177,87,0.08)" }}
                     />
                   )}
 
                   {/* Icon */}
                   <span
                     className="relative z-10 flex items-center justify-center"
-                    style={{
-                      color: iconColor,
-                      filter: active && isPredictions
-                        ? "drop-shadow(0 0 5px rgba(245,158,11,0.55))"
-                        : undefined,
-                    }}
+                    style={{ color: iconColor }}
                   >
-                    {isPredictions ? (
-                      <PredictionsIcon active={active} />
-                    ) : href === "/" ? (
-                      <HomeIcon />
-                    ) : href === "/sports-news" ? (
-                      <NewsIcon />
-                    ) : href === "/about" ? (
-                      <AboutIcon />
-                    ) : (
-                      <ContactIcon />
-                    )}
+                    <Icon />
                   </span>
 
                   {/* Label */}
                   <span
                     className="relative z-10 text-[10px] leading-none"
-                    style={{
-                      color: iconColor,
-                      fontWeight: active ? 600 : 400,
-                    }}
+                    style={{ color: iconColor, fontWeight: active ? 600 : 400 }}
                   >
                     {label}
                   </span>

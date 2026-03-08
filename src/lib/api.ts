@@ -80,6 +80,8 @@ export type Leg = {
   short_reason?: string;
   left_icon_url?: string;
   right_icon_url?: string;
+  /** Final score entered after match e.g. "2 - 1" */
+  final_score?: string;
 };
 
 export type OddsOption = {
@@ -104,6 +106,8 @@ export type TipCard = {
   confidence: Confidence;
   result: Result;
   expiresAt?: string;
+  /** ISO string — set when admin marks win or loss */
+  resulted_at?: string;
   bookies: Bookie[];
   default_bookie_id?: string;
   platformCodes?: PlatformCode[];
@@ -135,32 +139,47 @@ export type AnalystStatsPayload = {
 
 export async function getAnalystStats(): Promise<AnalystStatsPayload> {
   if (supabase) {
+    // Auto-calculate from actual tip results — accumulates forever
     const { data, error } = await supabase
-      .from('analyst_stats')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(10)
+      .from('tip_cards')
+      .select('result')
+      .in('result', ['win', 'loss'])
+
     if (!error && data) {
-      return { records: data, generatedAt: new Date().toISOString() }
+      const won   = data.filter((r) => r.result === 'win').length
+      const lost  = data.filter((r) => r.result === 'loss').length
+      const total = won + lost
+      const win_rate_pct = total > 0 ? Math.round((won / total) * 100) : 0
+
+      return {
+        records: [{
+          title: "Overall Win Rate",
+          subtitle: "Based on all predictions to date",
+          win_rate_pct,
+          won,
+          lost,
+          total,
+          period_label: "all time",
+        }],
+        generatedAt: new Date().toISOString(),
+      }
     }
   }
 
   // Mock fallback
   return {
-    records: [
-      {
-        title: "Overall Win Rate",
-        subtitle: "Based on all predictions to date",
-        win_rate_pct: 73,
-        won: 44,
-        lost: 16,
-        void: 3,
-        total: 63,
-        period_label: "all time",
-      },
-    ],
+    records: [{
+      title: "Overall Win Rate",
+      subtitle: "Based on all predictions to date",
+      win_rate_pct: 73,
+      won: 44,
+      lost: 16,
+      void: 3,
+      total: 63,
+      period_label: "all time",
+    }],
     generatedAt: new Date().toISOString(),
-  };
+  }
 }
 
 // ─── TipCards ─────────────────────────────────────────────────────────────────
@@ -193,6 +212,7 @@ type RawTipCard = {
   confidence: string
   result: string
   expires_at: string | null
+  resulted_at: string | null
   default_bookie_id: string | null
   analyst: string | null
   category: string | null
@@ -212,6 +232,7 @@ type RawTipCard = {
     left_icon_url: string | null
     right_icon_url: string | null
     sort_order: number
+    final_score: string | null
   }>
   card_bookies: RawCardBookie[]
 }
@@ -232,6 +253,7 @@ function rawToTipCard(raw: RawTipCard): TipCard {
       short_reason: l.short_reason ?? undefined,
       left_icon_url: l.left_icon_url ?? undefined,
       right_icon_url: l.right_icon_url ?? undefined,
+      final_score: l.final_score ?? undefined,
     }))
 
   const bookies: Bookie[] = (raw.card_bookies ?? []).map((cb) => {
@@ -264,6 +286,7 @@ function rawToTipCard(raw: RawTipCard): TipCard {
     confidence: raw.confidence as Confidence,
     result: raw.result as Result,
     expiresAt: raw.expires_at ?? undefined,
+    resulted_at: raw.resulted_at ?? undefined,
     default_bookie_id: raw.default_bookie_id ?? undefined,
     bookies,
     analyst: raw.analyst ?? undefined,
@@ -272,23 +295,30 @@ function rawToTipCard(raw: RawTipCard): TipCard {
   }
 }
 
+const CARD_SELECT = `
+  *,
+  legs ( * ),
+  card_bookies (
+    bookie_id, code, is_default, return_5, return_10, return_20,
+    bookies ( name, logo_url, brand_hex, signup_url, deeplink_url, signup_cta_label )
+  )
+`
+
 export async function getTipCards(): Promise<TipCard[]> {
   if (supabase) {
     const { data, error } = await supabase
       .from('tip_cards')
-      .select(`
-        *,
-        legs ( * ),
-        card_bookies (
-          bookie_id, code, is_default, return_5, return_10, return_20,
-          bookies ( name, logo_url, brand_hex, signup_url, deeplink_url, signup_cta_label )
-        )
-      `)
+      .select(CARD_SELECT)
+      .eq('result', 'pending')
       .order('created_at', { ascending: false })
       .limit(20)
 
     if (!error && data) {
-      return (data as RawTipCard[]).map(rawToTipCard)
+      // Filter out cards that expired more than 12h ago (auto-moved to results)
+      const twelveHoursAgo = Date.now() - 12 * 60 * 60 * 1000
+      return (data as RawTipCard[])
+        .filter(c => !c.expires_at || new Date(c.expires_at).getTime() > twelveHoursAgo)
+        .map(rawToTipCard)
     }
   }
 
@@ -462,6 +492,99 @@ export async function getTipCards(): Promise<TipCard[]> {
   ];
 }
 
+// ─── Results ──────────────────────────────────────────────────────────────────
+
+export async function getResults(): Promise<TipCard[]> {
+  if (supabase) {
+    // Fetch all cards from the last 7 days, filter in JS
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+    const { data, error } = await supabase
+      .from('tip_cards')
+      .select(CARD_SELECT)
+      .gte('created_at', sevenDaysAgo)
+      .order('created_at', { ascending: false })
+
+    if (!error && data) {
+      const twelveHoursAgo = Date.now() - 12 * 60 * 60 * 1000
+      return (data as RawTipCard[])
+        .filter(c =>
+          c.result === 'win' ||
+          c.result === 'loss' ||
+          (c.result === 'pending' && c.expires_at && new Date(c.expires_at).getTime() < twelveHoursAgo)
+        )
+        .map(rawToTipCard)
+    }
+  }
+
+  // Mock fallback — a few resulted cards for local dev
+  const now = new Date()
+  const yesterday = new Date(now.getTime() - 26 * 60 * 60 * 1000).toISOString()
+  const twoDaysAgo = new Date(now.getTime() - 50 * 60 * 60 * 1000).toISOString()
+  const threeDaysAgo = new Date(now.getTime() - 74 * 60 * 60 * 1000).toISOString()
+
+  return [
+    {
+      id: "r1",
+      title: "Weekend Accumulator",
+      type: "accumulator",
+      badge_label: "Best Pick",
+      total_odds_label: "4.62 | High",
+      legs: [
+        { homeTeam: "Man City", awayTeam: "Arsenal", match_label: "Man City vs Arsenal", league: "Premier League", kickoff_iso: yesterday, kickoff_label: "Premier League · 20:00", prediction: "Both Teams to Score", pick_title: "Both Teams to Score", odds: "1.85" },
+        { homeTeam: "Real Madrid", awayTeam: "Barcelona", match_label: "Real Madrid vs Barcelona", league: "La Liga", kickoff_iso: yesterday, kickoff_label: "La Liga · 22:00", prediction: "Over 2.5 Goals", pick_title: "Over 2.5 Goals", odds: "1.72" },
+      ],
+      confidence: "high",
+      result: "win",
+      expiresAt: yesterday,
+      resulted_at: new Date(now.getTime() - 20 * 60 * 60 * 1000).toISOString(),
+      bookies: [],
+      date: new Date(yesterday).toLocaleDateString('en-GB'),
+    },
+    {
+      id: "r2",
+      title: "Safe Single — Home Win",
+      type: "single",
+      badge_label: "Safe Pick",
+      total_odds_label: "1.55 | High",
+      legs: [
+        { homeTeam: "Liverpool", awayTeam: "Wolves", match_label: "Liverpool vs Wolves", league: "Premier League", kickoff_iso: twoDaysAgo, kickoff_label: "Premier League · 15:00", prediction: "Liverpool Win", pick_title: "Liverpool Win", odds: "1.55", short_reason: "Liverpool unbeaten in last 8 home games." },
+      ],
+      confidence: "medium",
+      result: "loss",
+      expiresAt: twoDaysAgo,
+      resulted_at: new Date(now.getTime() - 44 * 60 * 60 * 1000).toISOString(),
+      bookies: [],
+      date: new Date(twoDaysAgo).toLocaleDateString('en-GB'),
+    },
+    {
+      id: "r3",
+      title: "Champions League Double",
+      type: "accumulator",
+      badge_label: "UCL Special",
+      total_odds_label: "2.81 | Medium",
+      legs: [
+        { homeTeam: "Bayern Munich", awayTeam: "Inter Milan", match_label: "Bayern Munich vs Inter Milan", league: "Champions League", kickoff_iso: threeDaysAgo, kickoff_label: "UCL · 21:00", prediction: "Both Teams to Score", pick_title: "Both Teams to Score", odds: "1.70" },
+        { homeTeam: "Atletico Madrid", awayTeam: "Dortmund", match_label: "Atletico Madrid vs Dortmund", league: "Champions League", kickoff_iso: threeDaysAgo, kickoff_label: "UCL · 19:00", prediction: "Over 2.5 Goals", pick_title: "Over 2.5 Goals", odds: "1.65" },
+      ],
+      confidence: "medium",
+      result: "win",
+      expiresAt: threeDaysAgo,
+      resulted_at: new Date(now.getTime() - 68 * 60 * 60 * 1000).toISOString(),
+      bookies: [],
+      date: new Date(threeDaysAgo).toLocaleDateString('en-GB'),
+    },
+  ]
+}
+
+/** Admin: mark a card as won or lost. */
+export async function setTipResult(id: string, result: 'win' | 'loss'): Promise<void> {
+  if (!supabase) return
+  await supabase
+    .from('tip_cards')
+    .update({ result })
+    .eq('id', id)
+}
+
 // ─── News Articles ────────────────────────────────────────────────────────────
 
 export type NewsArticle = {
@@ -586,10 +709,17 @@ export async function getNewsArticles(): Promise<NewsArticle[]> {
     const { data, error } = await supabase
       .from('news_articles')
       .select('*')
+      .eq('archived', false)
       .order('published_at', { ascending: false })
     if (!error && data) return data as NewsArticle[]
   }
   return MOCK_NEWS
+}
+
+/** Admin: toggle archived state on a news article. */
+export async function setNewsArchived(id: string, archived: boolean): Promise<void> {
+  if (!supabase) return
+  await supabase.from('news_articles').update({ archived }).eq('id', id)
 }
 
 export async function getNewsArticle(slug: string): Promise<NewsArticle | null> {

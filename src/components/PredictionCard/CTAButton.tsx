@@ -7,10 +7,50 @@ interface CTAButtonProps {
   bookieId?: string
   affiliateUrl: string | null | undefined
   timerState: TimerState
+  /** When false, the button is blurred and clicking fires onWallTrigger. */
+  showFull: boolean
+  onWallTrigger: () => void
 }
 
-export function CTAButton({ bookieName, bookieId, affiliateUrl, timerState }: CTAButtonProps) {
+export function CTAButton({ bookieName, bookieId, affiliateUrl, timerState, showFull, onWallTrigger }: CTAButtonProps) {
   const expired = timerState === 'expired'
+
+  // ── Locked state ──────────────────────────────────────────────────────────────
+  if (!showFull) {
+    return (
+      <div style={{ margin: '8px 14px 14px', position: 'relative' }}>
+        {/* Blurred ghost of the real button */}
+        <div
+          style={{
+            background: '#080A2D',
+            borderRadius: '12px',
+            padding: '13px 20px',
+            fontSize: '16px',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            filter: 'blur(4px)',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            textAlign: 'center',
+          }}
+        >
+          Open {bookieName} &amp; Back This →
+        </div>
+        {/* Clickable lock overlay */}
+        <button
+          type="button"
+          onClick={onWallTrigger}
+          className="absolute inset-0 flex items-center justify-center gap-2 rounded-xl"
+          style={{ background: 'rgba(255,255,255,0.55)', cursor: 'pointer' }}
+        >
+          <span style={{ fontSize: 16 }}>🔒</span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: '#1D1D1D' }}>Unlock to back this tip</span>
+        </button>
+      </div>
+    )
+  }
+
+  // ── Unlocked state ────────────────────────────────────────────────────────────
   const label = expired
     ? 'Code Expired — See next pick ↓'
     : `Open ${bookieName} & Back This →`

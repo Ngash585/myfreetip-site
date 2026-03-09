@@ -716,6 +716,14 @@ export async function getNewsArticles(): Promise<NewsArticle[]> {
   return MOCK_NEWS
 }
 
+// ─── VIP Emails ───────────────────────────────────────────────────────────────
+
+/** Save a VIP email to Supabase. Silently succeeds if Supabase is not configured. */
+export async function saveVipEmail(email: string): Promise<void> {
+  if (!supabase) return
+  await supabase.from('vip_emails').insert({ email })
+}
+
 /** Admin: toggle archived state on a news article. */
 export async function setNewsArchived(id: string, archived: boolean): Promise<void> {
   if (!supabase) return

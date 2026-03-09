@@ -104,6 +104,15 @@ create table if not exists public.analyst_stats (
   created_at    timestamptz not null default now()
 );
 
+-- ─── 7. vip_emails ──────────────────────────────────────────────────────────
+-- Collected when a user completes the VIP registration flow.
+-- Anonymous insert only — no read/update/delete for public users.
+create table if not exists public.vip_emails (
+  id         uuid        primary key default uuid_generate_v4(),
+  email      text        not null,
+  created_at timestamptz not null default now()
+);
+
 -- ─── Row-Level Security ─────────────────────────────────────────────────────
 -- Public read, no public write. All writes go through the Supabase dashboard
 -- or a service-role key (never exposed to the browser).
@@ -114,6 +123,7 @@ alter table public.legs           enable row level security;
 alter table public.card_bookies   enable row level security;
 alter table public.news_articles  enable row level security;
 alter table public.analyst_stats  enable row level security;
+alter table public.vip_emails     enable row level security;
 
 create policy "public read bookies"        on public.bookies        for select using (true);
 create policy "public read tip_cards"      on public.tip_cards      for select using (true);
@@ -121,6 +131,8 @@ create policy "public read legs"           on public.legs           for select u
 create policy "public read card_bookies"   on public.card_bookies   for select using (true);
 create policy "public read news_articles"  on public.news_articles  for select using (true);
 create policy "public read analyst_stats"  on public.analyst_stats  for select using (true);
+-- vip_emails: anonymous insert only (no read/update/delete)
+create policy "anon insert vip_emails" on public.vip_emails for insert with check (true);
 
 -- Authenticated users (admin team) — full write access
 create policy "auth write bookies insert"        on public.bookies        for insert to authenticated with check (true);

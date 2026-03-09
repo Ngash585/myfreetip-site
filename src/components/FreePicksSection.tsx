@@ -85,12 +85,15 @@ export function FreePicksSection() {
               : "No picks today."}
           </p>
         )}
-        {!loading &&
-          filtered.flatMap((card) =>
-            card.legs.map((leg, i) => (
-              <PickRow key={`${card.id}-${i}`} card={card} leg={leg} />
-            ))
-          )}
+        {!loading && (() => {
+          let rowIndex = 0;
+          return filtered.flatMap((card) =>
+            card.legs.map((leg, i) => {
+              const idx = rowIndex++;
+              return <PickRow key={`${card.id}-${i}`} card={card} leg={leg} rowIndex={idx} />;
+            })
+          );
+        })()}
       </div>
 
       {/* Footer link */}

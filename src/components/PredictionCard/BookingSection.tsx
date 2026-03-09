@@ -11,6 +11,9 @@ interface BookingSectionProps {
   onBookieChange: (id: string | number) => void
   activeBookie: TipCard['bookies'][0] | undefined
   timerState: TimerState
+  showFull: boolean
+  onWallTrigger: () => void
+  onCopy: () => void
 }
 
 export function BookingSection({
@@ -19,6 +22,9 @@ export function BookingSection({
   onBookieChange,
   activeBookie,
   timerState,
+  showFull,
+  onWallTrigger,
+  onCopy,
 }: BookingSectionProps) {
   const bookieName = activeBookie?.name ?? 'Bookie'
   const bookieId = activeBookie?.id ? String(activeBookie.id) : undefined
@@ -34,9 +40,19 @@ export function BookingSection({
       <CodeBlock
         activeBookie={activeBookie}
         timerState={timerState}
+        showFull={showFull}
+        onWallTrigger={onWallTrigger}
+        onCopy={onCopy}
       />
-      <HowToUse bookieName={bookieName} />
-      <CTAButton bookieName={bookieName} bookieId={bookieId} affiliateUrl={affiliateUrl} timerState={timerState} />
+      {showFull && <HowToUse bookieName={bookieName} />}
+      <CTAButton
+        bookieName={bookieName}
+        bookieId={bookieId}
+        affiliateUrl={affiliateUrl}
+        timerState={timerState}
+        showFull={showFull}
+        onWallTrigger={onWallTrigger}
+      />
     </div>
   )
 }

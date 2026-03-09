@@ -6,6 +6,7 @@ import { MatchBody } from './MatchBody'
 import { BookingSection } from './BookingSection'
 import { useTimer } from './useTimer'
 import { type TimerState } from './timerUtils'
+import { useVip } from '@/context/VipContext'
 
 interface PredictionCardProps {
   card: TipCard
@@ -28,6 +29,23 @@ export function PredictionCard({ card, showHeader = true }: PredictionCardProps)
 
   const kickoffIso = card.legs[0]?.kickoff_iso
   const { secs, timerState } = useTimer(kickoffIso)
+
+  const { unlocked, openWall, tryView, hasViewed, onCopy } = useVip()
+
+  // Initialise as revealed if the user already viewed this card today or is unlocked
+  const [revealed, setRevealed] = useState(() => hasViewed(card.id))
+
+  const showFull = unlocked || revealed
+
+  function handleWallTrigger() {
+    if (unlocked) return
+    const allowed = tryView(card.id)
+    if (allowed) {
+      setRevealed(true)
+    } else {
+      openWall()
+    }
+  }
 
   // Build confidence label from card data
   const confidenceLabel =
@@ -55,7 +73,11 @@ export function PredictionCard({ card, showHeader = true }: PredictionCardProps)
         />
       )}
 
-      <MatchBody legs={card.legs} />
+      <MatchBody
+        legs={card.legs}
+        showFull={showFull}
+        onWallTrigger={handleWallTrigger}
+      />
 
       <BookingSection
         bookies={card.bookies}
@@ -63,6 +85,9 @@ export function PredictionCard({ card, showHeader = true }: PredictionCardProps)
         onBookieChange={setSelectedBookieId}
         activeBookie={activeBookie}
         timerState={timerState as TimerState}
+        showFull={showFull}
+        onWallTrigger={handleWallTrigger}
+        onCopy={onCopy}
       />
     </Surface>
   )

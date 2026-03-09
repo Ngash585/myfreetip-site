@@ -29,6 +29,12 @@ export function PredictionCard({ card, showHeader = true }: PredictionCardProps)
   const kickoffIso = card.legs[0]?.kickoff_iso
   const { secs, timerState } = useTimer(kickoffIso)
 
+  // Build confidence label from card data
+  const confidenceLabel =
+    card.confidence === 'high' ? 'High Confidence'
+    : card.confidence === 'medium' ? 'Medium Confidence'
+    : 'Low Confidence'
+
   // Derive what badge (if any) to show in the card header
   const resultBadge: ResultBadgeType | undefined =
     card.result === 'win' ? 'win' :
@@ -43,6 +49,7 @@ export function PredictionCard({ card, showHeader = true }: PredictionCardProps)
           title={card.badge_label ?? card.title}
           timerState={timerState as TimerState}
           secs={secs}
+          confidenceLabel={confidenceLabel}
           totalOddsLabel={card.total_odds_label}
           result={resultBadge}
         />

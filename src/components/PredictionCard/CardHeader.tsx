@@ -13,7 +13,7 @@ interface CardHeaderProps {
 }
 
 export function CardHeader({ title, timerState, secs, confidenceLabel, totalOddsLabel, result }: CardHeaderProps) {
-  const conf = confidenceLabel ?? 'Confidence · 82%'
+  const conf = confidenceLabel ?? 'Confidence'
 
   // Extract numeric odds from e.g. "4.62 | High" → "4.62"
   const odds = totalOddsLabel ? totalOddsLabel.split(' |')[0].trim() : null

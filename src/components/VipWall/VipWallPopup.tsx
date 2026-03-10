@@ -155,20 +155,25 @@ function Screen1({ onDownloadTap, onClose }: { onDownloadTap: () => void; onClos
             Recommended Bookmaker
           </p>
 
-          {/* Paripesa — primary, full width */}
-          <button
-            type="button"
-            onClick={() => handleDownload(BOOKMAKERS.paripesa.affiliateUrl)}
-            className="w-full rounded-xl font-semibold text-base transition-opacity hover:opacity-90 active:opacity-80"
-            style={{
-              background: '#1A56DB',
-              color: '#FFFFFF',
-              padding: '14px 20px',
-              minHeight: 52,
-            }}
-          >
-            Download Paripesa App →
-          </button>
+          {/* Paripesa — two options: App + Web */}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => handleDownload(BOOKMAKERS.paripesa.affiliateUrl)}
+              className="flex-1 rounded-xl font-semibold text-sm transition-opacity hover:opacity-90 active:opacity-80"
+              style={{ background: '#1A56DB', color: '#FFFFFF', padding: '13px 14px', minHeight: 52 }}
+            >
+              Download App →
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDownload(BOOKMAKERS.paripesa.webUrl ?? BOOKMAKERS.paripesa.affiliateUrl)}
+              className="flex-1 rounded-xl font-semibold text-sm transition-opacity hover:opacity-90 active:opacity-80"
+              style={{ background: 'rgba(26,86,219,0.12)', color: '#1A56DB', padding: '13px 14px', minHeight: 52, border: '1.5px solid #1A56DB' }}
+            >
+              Register Online →
+            </button>
+          </div>
 
           <p className="text-xs text-center" style={{ color: '#8a9bb0' }}>Other options</p>
 

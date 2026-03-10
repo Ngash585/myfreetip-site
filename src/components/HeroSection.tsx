@@ -52,7 +52,7 @@ export function HeroSection() {
         </a>
         ,{" "}
         <a
-          href={BOOKMAKERS.paripesa.affiliateUrl}
+          href={BOOKMAKERS.paripesa.webUrl ?? BOOKMAKERS.paripesa.affiliateUrl}
           target="_blank"
           rel="noopener noreferrer sponsored"
           className="bookie-link"

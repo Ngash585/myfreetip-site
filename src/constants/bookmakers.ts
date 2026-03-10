@@ -4,6 +4,7 @@ export type BookmakerConfig = {
   activeBg: string
   activeText: string
   affiliateUrl: string
+  webUrl?: string
 }
 
 export const BOOKMAKERS: Record<string, BookmakerConfig> = {
@@ -12,7 +13,8 @@ export const BOOKMAKERS: Record<string, BookmakerConfig> = {
     dot: '#1A56DB',
     activeBg: '#1A56DB',
     activeText: '#FFFFFF',
-    affiliateUrl: 'https://paripesa.bet/kimingiapp',
+    affiliateUrl: 'https://combodef.com/L?tag=d_5338871m_45611c_&site=5338871&ad=45611',
+    webUrl: 'https://combodef.com/L?tag=d_5338871m_60651c_&site=5338871&ad=60651',
   },
   '1xbet': {
     name: '1xBet',

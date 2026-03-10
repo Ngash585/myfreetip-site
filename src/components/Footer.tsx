@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import SocialButtons from "@/components/SocialButtons";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 type FooterLink = { label: string; href: string };
 type Section    = { heading: string; items: FooterLink[] };
@@ -96,6 +97,9 @@ export default function Footer({
                   />
                 </div>
               )}
+              <div className="mt-5">
+                <NewsletterSignup variant="inline" source="footer" />
+              </div>
             </section>
 
             {/* Link sections */}

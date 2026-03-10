@@ -6,6 +6,7 @@ import { AnalystWinRateSection } from "@/components/AnalystWinRate";
 import { FreePicksSection } from "@/components/FreePicksSection";
 import { LatestNewsSnippet } from "@/components/LatestNewsSnippet";
 import { HeroSection } from "@/components/HeroSection";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 export default function Home() {
   usePageMeta({
@@ -64,6 +65,10 @@ export default function Home() {
 
         <section>
           <AnalystWinRateSection />
+        </section>
+
+        <section>
+          <NewsletterSignup variant="banner" source="homepage" />
         </section>
 
       </div>

@@ -724,6 +724,23 @@ export async function saveVipEmail(email: string): Promise<void> {
   await supabase.from('vip_emails').insert({ email })
 }
 
+/**
+ * Subscribe an email to the newsletter.
+ * Returns 'ok' on success, 'duplicate' if already subscribed, 'error' on failure.
+ */
+export async function saveNewsletterEmail(
+  email: string,
+  source = 'website',
+): Promise<'ok' | 'duplicate' | 'error'> {
+  if (!supabase) return 'ok' // dev: silently succeed when Supabase not configured
+  const { error } = await supabase
+    .from('newsletter_subscribers')
+    .insert({ email, source })
+  if (!error) return 'ok'
+  if (error.code === '23505') return 'duplicate' // unique_violation
+  return 'error'
+}
+
 /** Admin: toggle archived state on a news article. */
 export async function setNewsArchived(id: string, archived: boolean): Promise<void> {
   if (!supabase) return

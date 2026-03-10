@@ -47,7 +47,7 @@ export default function Footer({
   sections    = DEFAULT_SECTIONS,
   showSocial  = true,
   social = {
-    twitter:   "https://x.com/Nganga_Kimingi",
+    twitter:   "https://x.com/MyFreeTip_",
     facebook:  "https://www.facebook.com/profile.php?id=61576700997754",
     instagram: "https://www.instagram.com/myfreetip?igsh=MWV2cGgzY2F2NHJ0Nw==",
     telegram:  "https://t.me/BetsmartTi",

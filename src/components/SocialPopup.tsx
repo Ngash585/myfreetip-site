@@ -10,8 +10,7 @@ const SOCIALS = [
     body: 'Get tips on Telegram before they go live on the site.',
     cta: 'Join Telegram →',
     bg: '#2CA5E0',
-    // Replace these placeholder URLs with real channel/page links before deploying
-    url: 'https://t.me/myfreetip',
+    url: 'https://t.me/BetsmartTi',
   },
   {
     platform: 'facebook',
@@ -20,16 +19,16 @@ const SOCIALS = [
     body: 'Daily tips, results and analysis in your feed.',
     cta: 'Follow on Facebook →',
     bg: '#1877F2',
-    url: 'https://facebook.com/myfreetip',
+    url: 'https://www.facebook.com/profile.php?id=61576700997754',
   },
   {
     platform: 'twitter',
     milestone: 15,
-    heading: "We're on Twitter too",
+    heading: "Follow us on X",
     body: 'Quick updates, live results and match alerts.',
-    cta: 'Follow on Twitter →',
+    cta: 'Follow on X →',
     bg: '#000000',
-    url: 'https://twitter.com/myfreetip',
+    url: 'https://x.com/MyFreeTip_',
   },
 ] as const
 

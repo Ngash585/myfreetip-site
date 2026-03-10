@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 type StatsRow = {
   id?: string
@@ -33,29 +33,30 @@ export default function StatsEditor() {
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    if (!supabase) { setLoading(false); return }
-    supabase
-      .from('analyst_stats')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .then(({ data }) => {
-        if (data && data.length > 0) {
-          const r = data[0]
-          setForm({
-            id: r.id,
-            title: r.title ?? '',
-            subtitle: r.subtitle ?? '',
-            win_rate_pct: r.win_rate_pct ?? 0,
-            won: r.won ?? 0,
-            lost: r.lost ?? 0,
-            void: r.void ?? 0,
-            total: r.total ?? 0,
-            period_label: r.period_label ?? '',
-          })
-        }
-        setLoading(false)
-      })
+    getSupabase().then((sb) => {
+      if (!sb) { setLoading(false); return }
+      sb.from('analyst_stats')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .then(({ data }) => {
+          if (data && data.length > 0) {
+            const r = data[0]
+            setForm({
+              id: r.id,
+              title: r.title ?? '',
+              subtitle: r.subtitle ?? '',
+              win_rate_pct: r.win_rate_pct ?? 0,
+              won: r.won ?? 0,
+              lost: r.lost ?? 0,
+              void: r.void ?? 0,
+              total: r.total ?? 0,
+              period_label: r.period_label ?? '',
+            })
+          }
+          setLoading(false)
+        })
+    })
   }, [])
 
   function set<K extends keyof StatsRow>(key: K, value: StatsRow[K]) {
@@ -64,7 +65,8 @@ export default function StatsEditor() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (!supabase) return
+    const sb = await getSupabase()
+    if (!sb) return
     setSaving(true)
     setMessage('')
 
@@ -81,9 +83,9 @@ export default function StatsEditor() {
 
     let err
     if (form.id) {
-      ;({ error: err } = await supabase.from('analyst_stats').update(payload).eq('id', form.id))
+      ;({ error: err } = await sb.from('analyst_stats').update(payload).eq('id', form.id))
     } else {
-      const { data, error } = await supabase.from('analyst_stats').insert(payload).select().single()
+      const { data, error } = await sb.from('analyst_stats').insert(payload).select().single()
       err = error
       if (data) setForm((f) => ({ ...f, id: data.id }))
     }

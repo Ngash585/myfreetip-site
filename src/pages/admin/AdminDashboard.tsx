@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { getAnalystStats } from '@/lib/api'
 
 async function getDashboardCounts() {
-  if (!supabase) return { tips: 0, news: 0 }
+  const sb = await getSupabase()
+  if (!sb) return { tips: 0, news: 0 }
   const [tips, news] = await Promise.all([
-    supabase.from('tip_cards').select('id', { count: 'exact', head: true }),
-    supabase.from('news_articles').select('id', { count: 'exact', head: true }),
+    sb.from('tip_cards').select('id', { count: 'exact', head: true }),
+    sb.from('news_articles').select('id', { count: 'exact', head: true }),
   ])
   return { tips: tips.count ?? 0, news: news.count ?? 0 }
 }

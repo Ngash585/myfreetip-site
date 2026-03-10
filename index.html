@@ -29,8 +29,7 @@
     <meta name="twitter:description" content="Free daily football match analysis, confidence-based predictions, and transparent results. Full record published including missed calls." />
     <meta name="twitter:image"       content="https://myfreetip.com/og-image-1200x630.png" />
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7TRJN39CPK"></script>
+    <!-- Google Analytics — dataLayer stub (queues calls; actual script loads after paint) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -38,17 +37,31 @@
       gtag('config', 'G-7TRJN39CPK');
     </script>
 
-    <!-- Facebook Pixel Code -->
+    <!-- Facebook Pixel — stub only (queues init + PageView; fbevents.js loads after paint) -->
     <script>
-      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+      !function(f,b,e,v,n){if(f.fbq)return;n=f.fbq=function(){
+      n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}
       (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
       fbq('init','4414913595452236');
       fbq('track','PageView');
     </script>
-    <!-- End Facebook Pixel Code -->
+
+    <!-- Load heavy third-party scripts after the page has painted (deferred for LCP) -->
+    <script>
+      (function(){
+        function loadAnalytics(){
+          var g=document.createElement('script');g.async=true;
+          g.src='https://www.googletagmanager.com/gtag/js?id=G-7TRJN39CPK';
+          document.head.appendChild(g);
+          var f=document.createElement('script');f.async=true;
+          f.src='https://connect.facebook.net/en_US/fbevents.js';
+          document.head.appendChild(f);
+        }
+        if(document.readyState==='complete'){loadAnalytics();}
+        else{window.addEventListener('load',loadAnalytics);}
+      })();
+    </script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

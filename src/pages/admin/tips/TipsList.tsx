@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { setTipResult } from '@/lib/api'
 
 type TipRow = {
@@ -38,8 +38,9 @@ export default function TipsList() {
   const queryClient = useQueryClient()
 
   async function load() {
-    if (!supabase) { setLoading(false); return }
-    const { data } = await supabase
+    const sb = await getSupabase()
+    if (!sb) { setLoading(false); return }
+    const { data } = await sb
       .from('tip_cards')
       .select('id, title, type, result, expires_at, created_at')
       .order('created_at', { ascending: false })
@@ -51,7 +52,8 @@ export default function TipsList() {
 
   async function handleDelete(id: string, title: string) {
     if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return
-    await supabase!.from('tip_cards').delete().eq('id', id)
+    const sb = await getSupabase()
+    await sb?.from('tip_cards').delete().eq('id', id)
     setTips((prev) => prev.filter((t) => t.id !== id))
     if (scoringId === id) setScoringId(null)
     queryClient.invalidateQueries({ queryKey: ['tip-cards'] })
@@ -72,9 +74,10 @@ export default function TipsList() {
   }
 
   async function openScores(id: string) {
-    if (!supabase) return
+    const sb = await getSupabase()
+    if (!sb) return
     if (scoringId === id) { setScoringId(null); return }
-    const { data } = await supabase
+    const { data } = await sb
       .from('legs')
       .select('id, match_label, home_team, away_team, final_score')
       .eq('card_id', id)
@@ -93,11 +96,13 @@ export default function TipsList() {
   }
 
   async function saveScores() {
-    if (!supabase || !legScores.length) return
+    if (!legScores.length) return
+    const sb = await getSupabase()
+    if (!sb) return
     setSavingScores(true)
     await Promise.all(
       legScores.map((l) =>
-        supabase!.from('legs').update({ final_score: l.final_score || null }).eq('id', l.id)
+        sb.from('legs').update({ final_score: l.final_score || null }).eq('id', l.id)
       )
     )
     setSavingScores(false)

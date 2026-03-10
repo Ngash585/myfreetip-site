@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { ARTICLE_IMAGE_SLOTS } from '@/lib/articleImage'
 
 const CATEGORIES = [
@@ -56,31 +56,34 @@ export default function NewsForm() {
   }
 
   useEffect(() => {
-    if (!isEdit || !supabase) { setLoading(false); return }
-    supabase
-      .from('news_articles')
-      .select('*')
-      .eq('id', id)
-      .single()
-      .then(({ data, error: err }) => {
-        if (err || !data) { setError('Article not found'); setLoading(false); return }
-        setSlug(data.slug ?? '')
-        setTitle(data.title ?? '')
-        setExcerpt(data.excerpt ?? '')
-        setBody(data.body ?? '')
-        setCategory(data.category ?? CATEGORIES[0])
-        setCoverUrl(data.cover_url ?? '')
-        setPublishedAt(data.published_at ? toDatetimeLocal(data.published_at) : '')
-        setAuthor(data.author ?? '')
-        setAffiliateLabel(data.affiliate_label ?? '')
-        setAffiliateUrl(data.affiliate_url ?? '')
-        setLoading(false)
-      })
+    if (!isEdit) { setLoading(false); return }
+    getSupabase().then((sb) => {
+      if (!sb) { setLoading(false); return }
+      sb.from('news_articles')
+        .select('*')
+        .eq('id', id)
+        .single()
+        .then(({ data, error: err }) => {
+          if (err || !data) { setError('Article not found'); setLoading(false); return }
+          setSlug(data.slug ?? '')
+          setTitle(data.title ?? '')
+          setExcerpt(data.excerpt ?? '')
+          setBody(data.body ?? '')
+          setCategory(data.category ?? CATEGORIES[0])
+          setCoverUrl(data.cover_url ?? '')
+          setPublishedAt(data.published_at ? toDatetimeLocal(data.published_at) : '')
+          setAuthor(data.author ?? '')
+          setAffiliateLabel(data.affiliate_label ?? '')
+          setAffiliateUrl(data.affiliate_url ?? '')
+          setLoading(false)
+        })
+    })
   }, [id, isEdit])
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (!supabase) return
+    const sb = await getSupabase()
+    if (!sb) return
     setSaving(true)
     setError('')
 
@@ -99,9 +102,9 @@ export default function NewsForm() {
 
     let err
     if (isEdit) {
-      ;({ error: err } = await supabase.from('news_articles').update(payload).eq('id', id))
+      ;({ error: err } = await sb.from('news_articles').update(payload).eq('id', id))
     } else {
-      ;({ error: err } = await supabase.from('news_articles').insert(payload))
+      ;({ error: err } = await sb.from('news_articles').insert(payload))
     }
 
     setSaving(false)

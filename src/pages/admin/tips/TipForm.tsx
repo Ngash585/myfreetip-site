@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 // ─── Sub-types ────────────────────────────────────────────────────────────────
 
@@ -88,17 +88,20 @@ export default function TipForm() {
 
   // Load bookie options
   useEffect(() => {
-    if (!supabase) return
-    supabase.from('bookies').select('id, name').order('name').then(({ data }) => {
-      if (data) setBookieOptions(data as BookieOption[])
+    getSupabase().then((sb) => {
+      if (!sb) return
+      sb.from('bookies').select('id, name').order('name').then(({ data }) => {
+        if (data) setBookieOptions(data as BookieOption[])
+      })
     })
   }, [])
 
   // Load existing tip if editing
   useEffect(() => {
-    if (!isEdit || !supabase) { setLoading(false); return }
-    supabase
-      .from('tip_cards')
+    if (!isEdit) { setLoading(false); return }
+    getSupabase().then((sb) => {
+      if (!sb) { setLoading(false); return }
+      sb.from('tip_cards')
       .select(`*, legs(*), card_bookies(*)`)
       .eq('id', id)
       .single()
@@ -150,6 +153,7 @@ export default function TipForm() {
         }
         setLoading(false)
       })
+    })
   }, [id, isEdit])
 
   // ─── Leg helpers ────────────────────────────────────────────────────────────
@@ -176,7 +180,8 @@ export default function TipForm() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (!supabase) return
+    const sb = await getSupabase()
+    if (!sb) return
     setSaving(true)
     setError('')
 
@@ -196,16 +201,16 @@ export default function TipForm() {
     let cardId = id ?? ''
 
     if (isEdit) {
-      const { error: err } = await supabase.from('tip_cards').update(cardPayload).eq('id', cardId)
+      const { error: err } = await sb.from('tip_cards').update(cardPayload).eq('id', cardId)
       if (err) { setError(err.message); setSaving(false); return }
     } else {
-      const { data, error: err } = await supabase.from('tip_cards').insert(cardPayload).select().single()
+      const { data, error: err } = await sb.from('tip_cards').insert(cardPayload).select().single()
       if (err || !data) { setError(err?.message ?? 'Insert failed'); setSaving(false); return }
       cardId = data.id
     }
 
     // Re-insert legs
-    await supabase.from('legs').delete().eq('card_id', cardId)
+    await sb.from('legs').delete().eq('card_id', cardId)
     if (legs.length > 0) {
       const legsPayload = legs.map((l, i) => ({
         card_id: cardId,
@@ -222,12 +227,12 @@ export default function TipForm() {
         final_score: l.final_score || null,
         sort_order: i,
       }))
-      const { error: legsErr } = await supabase.from('legs').insert(legsPayload)
+      const { error: legsErr } = await sb.from('legs').insert(legsPayload)
       if (legsErr) { setError(legsErr.message); setSaving(false); return }
     }
 
     // Re-insert card_bookies
-    await supabase.from('card_bookies').delete().eq('card_id', cardId)
+    await sb.from('card_bookies').delete().eq('card_id', cardId)
     const validBookies = bookieDrafts.filter((b) => b.bookie_id)
     if (validBookies.length > 0) {
       const bookiesPayload = validBookies.map((b) => ({
@@ -239,7 +244,7 @@ export default function TipForm() {
         return_10: b.return_10 ? Number(b.return_10) : null,
         return_20: b.return_20 ? Number(b.return_20) : null,
       }))
-      const { error: bookiesErr } = await supabase.from('card_bookies').insert(bookiesPayload)
+      const { error: bookiesErr } = await sb.from('card_bookies').insert(bookiesPayload)
       if (bookiesErr) { setError(bookiesErr.message); setSaving(false); return }
     }
 

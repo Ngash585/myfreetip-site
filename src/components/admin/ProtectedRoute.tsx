@@ -1,6 +1,6 @@
 import { useState, useEffect, type ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
-import { supabase } from '@/lib/supabase'
+import { getSupabase, isSupabaseConfigured } from '@/lib/supabase'
 import type { Session } from '@supabase/supabase-js'
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -8,19 +8,24 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!supabase) {
+    if (!isSupabaseConfigured) {
       setLoading(false)
       return
     }
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session)
-      setLoading(false)
+    let unsubscribe: (() => void) | null = null
+    getSupabase().then((sb) => {
+      if (!sb) { setLoading(false); return }
+      sb.auth.getSession().then(({ data }) => {
+        setSession(data.session)
+        setLoading(false)
+      })
+      const { data: sub } = sb.auth.onAuthStateChange((_, s) => setSession(s))
+      unsubscribe = () => sub.subscription.unsubscribe()
     })
-    const { data: sub } = supabase.auth.onAuthStateChange((_, s) => setSession(s))
-    return () => sub.subscription.unsubscribe()
+    return () => { if (unsubscribe) unsubscribe() }
   }, [])
 
-  if (!supabase) {
+  if (!isSupabaseConfigured) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#0f1923', color: '#8a9bb0' }}>
         <p className="text-center">Supabase is not configured.<br />Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local</p>

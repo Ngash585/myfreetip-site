@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { setNewsArchived } from '@/lib/api'
 
 type ArticleRow = {
@@ -21,8 +21,9 @@ export default function NewsList() {
   const queryClient = useQueryClient()
 
   async function load() {
-    if (!supabase) { setLoading(false); return }
-    const { data } = await supabase
+    const sb = await getSupabase()
+    if (!sb) { setLoading(false); return }
+    const { data } = await sb
       .from('news_articles')
       .select('id, slug, title, category, published_at, archived')
       .order('published_at', { ascending: false })
@@ -34,7 +35,8 @@ export default function NewsList() {
 
   async function handleDelete(id: string, title: string) {
     if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return
-    await supabase!.from('news_articles').delete().eq('id', id)
+    const sb = await getSupabase()
+    await sb?.from('news_articles').delete().eq('id', id)
     setArticles((prev) => prev.filter((a) => a.id !== id))
     queryClient.invalidateQueries({ queryKey: ['news-articles'] })
   }

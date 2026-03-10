@@ -1,6 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '@/lib/supabase'
+import { getSupabase, isSupabaseConfigured } from '@/lib/supabase'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
@@ -11,21 +11,25 @@ export default function AdminLogin() {
 
   // Redirect if already signed in
   useEffect(() => {
-    if (!supabase) return
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate('/admin', { replace: true })
+    if (!isSupabaseConfigured) return
+    getSupabase().then((sb) => {
+      if (!sb) return
+      sb.auth.getSession().then(({ data }) => {
+        if (data.session) navigate('/admin', { replace: true })
+      })
     })
   }, [navigate])
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (!supabase) {
+    const sb = await getSupabase()
+    if (!sb) {
       setError('Supabase is not configured. Set env vars in .env.local')
       return
     }
     setLoading(true)
     setError('')
-    const { error: err } = await supabase.auth.signInWithPassword({ email, password })
+    const { error: err } = await sb.auth.signInWithPassword({ email, password })
     if (err) {
       setError(err.message)
       setLoading(false)

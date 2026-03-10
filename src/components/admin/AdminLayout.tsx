@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 const NAV = [
   { to: '/admin', label: 'Dashboard', icon: '▦', end: true },
@@ -15,7 +15,8 @@ export default function AdminLayout() {
 
   async function handleSignOut() {
     setSigningOut(true)
-    await supabase!.auth.signOut()
+    const sb = await getSupabase()
+    await sb?.auth.signOut()
     navigate('/admin/login', { replace: true })
   }
 

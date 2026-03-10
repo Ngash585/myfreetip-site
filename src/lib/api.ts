@@ -3,7 +3,7 @@
 // To migrate a function to Supabase, replace the mock body —
 // components require zero changes.
 
-import { supabase } from './supabase'
+import { getSupabase } from './supabase'
 import { BOOKMAKERS } from '@/constants/bookmakers'
 
 export type Confidence = "low" | "medium" | "high";
@@ -138,9 +138,10 @@ export type AnalystStatsPayload = {
 // ─── Analyst Stats ────────────────────────────────────────────────────────────
 
 export async function getAnalystStats(): Promise<AnalystStatsPayload> {
-  if (supabase) {
+  const sb = await getSupabase()
+  if (sb) {
     // Auto-calculate from actual tip results — accumulates forever
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from('tip_cards')
       .select('result')
       .in('result', ['win', 'loss'])
@@ -305,8 +306,9 @@ const CARD_SELECT = `
 `
 
 export async function getTipCards(): Promise<TipCard[]> {
-  if (supabase) {
-    const { data, error } = await supabase
+  const sb = await getSupabase()
+  if (sb) {
+    const { data, error } = await sb
       .from('tip_cards')
       .select(CARD_SELECT)
       .eq('result', 'pending')
@@ -495,10 +497,11 @@ export async function getTipCards(): Promise<TipCard[]> {
 // ─── Results ──────────────────────────────────────────────────────────────────
 
 export async function getResults(): Promise<TipCard[]> {
-  if (supabase) {
+  const sb = await getSupabase()
+  if (sb) {
     // Fetch all cards from the last 7 days, filter in JS
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from('tip_cards')
       .select(CARD_SELECT)
       .gte('created_at', sevenDaysAgo)
@@ -578,8 +581,9 @@ export async function getResults(): Promise<TipCard[]> {
 
 /** Admin: mark a card as won or lost. */
 export async function setTipResult(id: string, result: 'win' | 'loss'): Promise<void> {
-  if (!supabase) return
-  await supabase
+  const sb = await getSupabase()
+  if (!sb) return
+  await sb
     .from('tip_cards')
     .update({ result })
     .eq('id', id)
@@ -705,8 +709,9 @@ One important note: match codes expire at kick-off time. If a match in the accum
 ];
 
 export async function getNewsArticles(): Promise<NewsArticle[]> {
-  if (supabase) {
-    const { data, error } = await supabase
+  const sb = await getSupabase()
+  if (sb) {
+    const { data, error } = await sb
       .from('news_articles')
       .select('*')
       .eq('archived', false)
@@ -720,8 +725,9 @@ export async function getNewsArticles(): Promise<NewsArticle[]> {
 
 /** Save a VIP email to Supabase. Silently succeeds if Supabase is not configured. */
 export async function saveVipEmail(email: string): Promise<void> {
-  if (!supabase) return
-  await supabase.from('vip_emails').insert({ email })
+  const sb = await getSupabase()
+  if (!sb) return
+  await sb.from('vip_emails').insert({ email })
 }
 
 /**
@@ -732,8 +738,9 @@ export async function saveNewsletterEmail(
   email: string,
   source = 'website',
 ): Promise<'ok' | 'duplicate' | 'error'> {
-  if (!supabase) return 'ok' // dev: silently succeed when Supabase not configured
-  const { error } = await supabase
+  const sb = await getSupabase()
+  if (!sb) return 'ok' // dev: silently succeed when Supabase not configured
+  const { error } = await sb
     .from('newsletter_subscribers')
     .insert({ email, source })
   if (!error) return 'ok'
@@ -743,13 +750,15 @@ export async function saveNewsletterEmail(
 
 /** Admin: toggle archived state on a news article. */
 export async function setNewsArchived(id: string, archived: boolean): Promise<void> {
-  if (!supabase) return
-  await supabase.from('news_articles').update({ archived }).eq('id', id)
+  const sb = await getSupabase()
+  if (!sb) return
+  await sb.from('news_articles').update({ archived }).eq('id', id)
 }
 
 export async function getNewsArticle(slug: string): Promise<NewsArticle | null> {
-  if (supabase) {
-    const { data, error } = await supabase
+  const sb = await getSupabase()
+  if (sb) {
+    const { data, error } = await sb
       .from('news_articles')
       .select('*')
       .eq('slug', slug)

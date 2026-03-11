@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import type { TipCard } from "@/lib/api";
 import { getTipCards } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
@@ -92,19 +91,8 @@ export function FreePicksSection() {
               const idx = rowIndex++;
               return <PickRow key={`${card.id}-${i}`} card={card} leg={leg} rowIndex={idx} />;
             })
-          );
+          ).slice(0, 4);
         })()}
-      </div>
-
-      {/* Footer link */}
-      <div className="px-6 py-4" style={{ borderTop: '1px solid rgba(29,29,29,0.08)' }}>
-        <Link
-          to="/predictions"
-          className="block text-center text-sm font-medium transition-colors hover:opacity-70"
-          style={{ color: '#3DB157' }}
-        >
-          View all predictions →
-        </Link>
       </div>
     </div>
   );

@@ -93,11 +93,11 @@ export function HeroSection() {
           {/* Desktop secondary CTA */}
           <a
             href="/predictions"
-            className="mt-6 hidden lg:inline-flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
-            style={{ color: '#4F4841' }}
+            className="mt-6 hidden lg:inline-flex items-center gap-1.5 text-sm font-medium text-white transition-opacity hover:opacity-80 px-5 py-2.5"
+            style={{ background: '#080A2D', borderRadius: '10px' }}
           >
             See today's picks
-            <span style={{ color: '#3DB157' }}>↓</span>
+            <span>↓</span>
           </a>
         </>
       ) : (

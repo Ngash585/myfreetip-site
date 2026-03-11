@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import type { TipCard, Leg } from "@/lib/api";
 import { useTimer } from "@/components/PredictionCard/useTimer";
 import { formatCountdown } from "@/components/PredictionCard/timerUtils";
@@ -95,7 +96,11 @@ export function PickRow({ card, leg, rowIndex }: PickRowProps) {
       className="flex items-center gap-3 py-4"
       style={{ borderBottom: '1px solid rgba(29,29,29,0.07)' }}
     >
-      <div className="flex-1 min-w-0">
+      <Link
+        to={`/predictions#${card.id}`}
+        className="flex-1 min-w-0 block"
+        style={{ textDecoration: 'none', color: 'inherit' }}
+      >
         <div className="flex items-center gap-1.5 mb-1">
           {card.badge_label && (
             <span
@@ -121,7 +126,7 @@ export function PickRow({ card, leg, rowIndex }: PickRowProps) {
             <> · <span style={{ color: '#B8860B', fontWeight: 500 }}>{leg.odds}</span></>
           ) : null}
         </p>
-      </div>
+      </Link>
 
       {bookie?.code && (
         <button

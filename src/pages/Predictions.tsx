@@ -47,6 +47,22 @@ export default function Predictions() {
     queryFn: getTipCards,
   });
   const [active, setActive] = useState<Tab>("today");
+  const [highlightId, setHighlightId] = useState<string | null>(null);
+
+  // Handle anchor navigation from homepage pick rows
+  useEffect(() => {
+    if (loading || cards.length === 0) return;
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const card = cards.find((c) => c.id === hash);
+    if (!card) return;
+    setActive(getCardTab(card));
+    setHighlightId(hash);
+    setTimeout(() => {
+      document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 150);
+    setTimeout(() => setHighlightId(null), 2500);
+  }, [loading, cards]);
 
   const filtered = cards.filter((c) => getCardTab(c) === active);
 
@@ -79,7 +95,18 @@ export default function Predictions() {
         {loading && <><PredictionCardSkeleton /><PredictionCardSkeleton /></>}
 
         {!loading && filtered.map((card) => (
-          <PredictionCard key={card.id} card={card} />
+          <div
+            key={card.id}
+            id={card.id}
+            style={{
+              scrollMarginTop: '80px',
+              borderRadius: '16px',
+              outline: highlightId === card.id ? '3px solid #3DB157' : '3px solid transparent',
+              transition: 'outline-color 0.4s ease',
+            }}
+          >
+            <PredictionCard card={card} />
+          </div>
         ))}
 
         {!loading && filtered.length === 0 && (

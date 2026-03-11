@@ -50,7 +50,7 @@ export default function Header() {
               className="md:hidden text-[11px] font-medium text-white whitespace-nowrap transition-opacity hover:opacity-80 px-3 py-1.5"
               style={{ background: '#080A2D', borderRadius: '8px' }}
             >
-              Get Started
+              Today's Tips
             </Link>
             {/* Desktop nav + CTA */}
             <div className="hidden md:flex items-center gap-2">
@@ -60,7 +60,7 @@ export default function Header() {
                 className="ml-4 text-sm font-medium text-white whitespace-nowrap transition-opacity hover:opacity-80 px-5 py-2"
                 style={{ background: '#080A2D', borderRadius: '10px' }}
               >
-                Get Started
+                Today's Tips
               </Link>
             </div>
           </div>

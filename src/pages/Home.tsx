@@ -47,8 +47,8 @@ export default function Home() {
               <PredictionCard card={bestBet} />
               <Link
                 to={`/predictions#${bestBet.id}`}
-                className="mt-3 flex items-center justify-center gap-1.5 text-sm font-medium text-white transition-opacity hover:opacity-80 px-5 py-2.5 rounded-xl"
-                style={{ background: '#080A2D' }}
+                className="mt-3 block text-center text-sm font-medium transition-opacity hover:opacity-70"
+                style={{ color: '#3DB157' }}
               >
                 View More →
               </Link>
@@ -62,7 +62,7 @@ export default function Home() {
       </div>
 
       {/* ── Full-width sections ── */}
-      <div className="flex flex-col gap-16 pb-20">
+      <div className="flex flex-col gap-16 pb-10">
 
         <section className="flex flex-col gap-6">
           {matchOfTheDay && (
@@ -76,8 +76,8 @@ export default function Home() {
               <PredictionCard card={matchOfTheDay} />
               <Link
                 to={`/predictions#${matchOfTheDay.id}`}
-                className="mt-3 flex items-center justify-center gap-1.5 text-sm font-medium text-white transition-opacity hover:opacity-80 px-5 py-2.5 rounded-xl"
-                style={{ background: '#080A2D' }}
+                className="mt-3 block text-center text-sm font-medium transition-opacity hover:opacity-70"
+                style={{ color: '#3DB157' }}
               >
                 View More →
               </Link>

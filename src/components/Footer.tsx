@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
 import SocialButtons from "@/components/SocialButtons";
-import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 type FooterLink = { label: string; href: string };
 type Section    = { heading: string; items: FooterLink[] };
 
 type Props = {
-  brand?:       string;
-  description?: string;
-  sections?:    Section[];
-  showSocial?:  boolean;
+  brand?:      string;
+  sections?:   Section[];
+  showSocial?: boolean;
   social?: {
     twitter?:   string;
     instagram?: string;
@@ -42,10 +40,9 @@ const DEFAULT_SECTIONS: Section[] = [
 ];
 
 export default function Footer({
-  brand       = "MyFreeTip",
-  description = "Free daily football predictions. 18+ only — play responsibly.",
-  sections    = DEFAULT_SECTIONS,
-  showSocial  = true,
+  brand      = "MyFreeTip",
+  sections   = DEFAULT_SECTIONS,
+  showSocial = true,
   social = {
     twitter:   "https://x.com/MyFreeTip_",
     facebook:  "https://www.facebook.com/profile.php?id=61576700997754",
@@ -60,49 +57,28 @@ export default function Footer({
     <footer
       role="contentinfo"
       className={className}
-      style={{ borderTop: '1px solid rgba(29,29,29,0.08)', background: '#F8F4EF' }}
+      style={{ background: '#080A2D' }}
     >
       {!compact && (
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <div
-            className="grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-[2fr_1fr_1fr] rounded-2xl p-6 sm:p-8"
-            style={{
-              background: '#FFFFFF',
-              boxShadow: 'rgba(29,29,29,0.06) 0 4px 24px 0',
-            }}
-          >
-            {/* Brand */}
-            <section aria-labelledby="footer-about" className="col-span-2 md:col-span-1">
-              <h2
-                id="footer-about"
-                className="text-base tracking-[-0.02em]"
-                style={{ fontFamily: "'DM Serif Display', Georgia, serif", color: '#1D1D1D', fontWeight: 400 }}
-              >
-                {brand}
-              </h2>
-              <p className="mt-2 text-sm leading-6" style={{ color: '#4F4841', fontWeight: 300 }}>
-                {description}
-              </p>
-              <p className="mt-2 text-xs leading-5" style={{ color: '#777777', fontWeight: 300 }}>
-                Predictions are opinions and not guaranteed. This site may earn commission through affiliate links.
-              </p>
-              {showSocial && (
-                <div className="mt-5">
-                  <SocialButtons
-                    size={40}
-                    twitter={social.twitter}
-                    instagram={social.instagram}
-                    telegram={social.telegram}
-                    facebook={social.facebook}
-                  />
-                </div>
-              )}
-              <div className="mt-5">
-                <NewsletterSignup variant="inline" source="footer" />
-              </div>
-            </section>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-            {/* Link sections */}
+          {/* ── 1. Social icons — full-width centred row ── */}
+          {showSocial && (
+            <div className="py-10 flex justify-center">
+              <SocialButtons
+                size={48}
+                branded
+                twitter={social.twitter}
+                instagram={social.instagram}
+                telegram={social.telegram}
+                facebook={social.facebook}
+                className="gap-4"
+              />
+            </div>
+          )}
+
+          {/* ── 2. Navigation columns ── */}
+          <div className="pb-10 grid grid-cols-2 gap-x-6 gap-y-8 max-w-xs sm:max-w-sm">
             {sections.map((section) => {
               const id = `footer-${section.heading.replace(/\s+/g, "-").toLowerCase()}`;
               return (
@@ -110,23 +86,23 @@ export default function Footer({
                   <h2
                     id={id}
                     className="text-xs font-medium uppercase tracking-widest mb-3"
-                    style={{ color: '#777777' }}
+                    style={{ color: 'rgba(255,255,255,0.35)' }}
                   >
                     {section.heading}
                   </h2>
                   <ul className="space-y-2">
                     {section.items.map((it) => {
-                      const cls = "block text-sm transition-colors hover:opacity-70";
-                      const style = { color: '#4F4841', fontWeight: 300 };
+                      const cls = "block text-sm transition-opacity hover:opacity-60";
+                      const st  = { color: 'rgba(255,255,255,0.70)', fontWeight: 300 };
                       return it.href.startsWith("http") ? (
                         <li key={it.label}>
-                          <a href={it.href} target="_blank" rel="noreferrer" className={cls} style={style}>
+                          <a href={it.href} target="_blank" rel="noreferrer" className={cls} style={st}>
                             {it.label}
                           </a>
                         </li>
                       ) : (
                         <li key={it.label}>
-                          <Link to={it.href} className={cls} style={style}>
+                          <Link to={it.href} className={cls} style={st}>
                             {it.label}
                           </Link>
                         </li>
@@ -137,14 +113,18 @@ export default function Footer({
               );
             })}
           </div>
+
         </div>
       )}
 
+      {/* ── 3. Copyright / disclaimer strip ── */}
       <div
-        className="py-4 text-center text-xs"
-        style={{ borderTop: '1px solid rgba(29,29,29,0.08)', color: '#777777' }}
+        className="py-6 text-center space-y-1"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.30)' }}
       >
-        © {year} {brand}. All rights reserved.
+        <p className="text-xs">Free daily football predictions. Play responsibly.</p>
+        <p className="text-xs">Predictions are opinions and not guaranteed. This site may earn commission through affiliate links.</p>
+        <p className="text-xs">© {year} {brand}. All rights reserved.</p>
       </div>
     </footer>
   );

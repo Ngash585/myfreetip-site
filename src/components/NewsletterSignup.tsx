@@ -75,22 +75,19 @@ export function NewsletterSignup({ variant = "banner", source = "website" }: Pro
 
   // ── Banner variant ──────────────────────────────────────────────────────────
   return (
-    <div
-      className="rounded-2xl px-6 py-10 sm:px-10 text-center"
-      style={{ background: '#080A2D' }}
-    >
+    <div className="rounded-2xl px-6 py-10 sm:px-10 text-center" style={{ background: '#FFFFFF', boxShadow: 'rgba(29,29,29,0.06) 0 2px 16px 0' }}>
       <p
         className="text-2xl tracking-tight"
-        style={{ fontFamily: "'DM Serif Display', Georgia, serif", color: '#FAFAEB', fontWeight: 400 }}
+        style={{ fontFamily: "'DM Serif Display', Georgia, serif", color: '#1D1D1D', fontWeight: 400 }}
       >
         Get tomorrow's tip in your inbox
       </p>
-      <p className="mt-2 text-sm" style={{ color: 'rgba(250,250,235,0.55)' }}>
+      <p className="mt-2 text-sm" style={{ color: '#4F4841' }}>
         Free daily predictions, booking codes, and results — straight to you. No spam, ever.
       </p>
 
       {status === "ok" ? (
-        <div className="mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3" style={{ background: 'rgba(61,177,87,0.15)' }}>
+        <div className="mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3" style={{ background: 'rgba(61,177,87,0.10)', border: '1px solid rgba(61,177,87,0.25)' }}>
           <svg viewBox="0 0 24 24" fill="none" stroke="#3DB157" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
@@ -105,9 +102,9 @@ export function NewsletterSignup({ variant = "banner", source = "website" }: Pro
             placeholder="Enter your email address"
             className="flex-1 rounded-xl px-4 py-3 text-sm outline-none"
             style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: `1px solid ${status === "invalid" ? '#e87070' : 'rgba(255,255,255,0.12)'}`,
-              color: '#FAFAEB',
+              background: '#F8F4EF',
+              border: `1px solid ${status === "invalid" ? '#C0392B' : 'rgba(29,29,29,0.12)'}`,
+              color: '#1D1D1D',
             }}
           />
           <button
@@ -122,22 +119,22 @@ export function NewsletterSignup({ variant = "banner", source = "website" }: Pro
       )}
 
       {status === "invalid" && (
-        <p className="mt-3 text-xs" style={{ color: '#e87070' }}>
+        <p className="mt-3 text-xs" style={{ color: '#C0392B' }}>
           Please enter a valid email address.
         </p>
       )}
       {status === "duplicate" && (
-        <p className="mt-3 text-xs" style={{ color: 'rgba(250,250,235,0.45)' }}>
+        <p className="mt-3 text-xs" style={{ color: '#777777' }}>
           That email is already subscribed — you're all set!
         </p>
       )}
       {status === "error" && (
-        <p className="mt-3 text-xs" style={{ color: '#e87070' }}>
+        <p className="mt-3 text-xs" style={{ color: '#C0392B' }}>
           Something went wrong. Please try again.
         </p>
       )}
 
-      <p className="mt-4 text-xs" style={{ color: 'rgba(250,250,235,0.3)' }}>
+      <p className="mt-4 text-xs" style={{ color: '#AAAAAA' }}>
         Unsubscribe any time · No spam
       </p>
     </div>

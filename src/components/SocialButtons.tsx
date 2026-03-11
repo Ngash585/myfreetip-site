@@ -7,6 +7,10 @@ type Props = {
   telegram?: string;
   facebook?: string;
   className?: string;
+  /** Render plain SVG icons with no circle container */
+  plain?: boolean;
+  /** Render brand-coloured circular containers with white icons */
+  branded?: boolean;
 };
 
 const XIcon = ({ s }: { s: number }) => (
@@ -33,6 +37,14 @@ const FBIcon = ({ s }: { s: number }) => (
   </svg>
 );
 
+// Brand background per network (used in `branded` mode)
+const BRAND_BG: Record<string, string> = {
+  "Twitter / X": '#000000',
+  "Instagram":   'linear-gradient(45deg, #F77737, #E1306C, #833AB4)',
+  "Telegram":    '#229ED9',
+  "Facebook":    '#1877F2',
+};
+
 export default function SocialButtons({
   size = 36,
   twitter,
@@ -40,34 +52,78 @@ export default function SocialButtons({
   telegram,
   facebook,
   className = "",
+  plain = false,
+  branded = false,
 }: Props) {
   const links = [
-    { url: twitter, Icon: XIcon, label: "Twitter / X" },
-    { url: instagram, Icon: InstaIcon, label: "Instagram" },
-    { url: telegram, Icon: TelegramIcon, label: "Telegram" },
-    { url: facebook, Icon: FBIcon, label: "Facebook" },
+    { url: twitter,   Icon: XIcon,        label: "Twitter / X" },
+    { url: instagram, Icon: InstaIcon,    label: "Instagram" },
+    { url: telegram,  Icon: TelegramIcon, label: "Telegram" },
+    { url: facebook,  Icon: FBIcon,       label: "Facebook" },
   ].filter((l): l is typeof l & { url: string } => Boolean(l.url));
 
   if (links.length === 0) return null;
 
-  const iconSize = Math.round(size * 0.44);
+  const iconSize = branded ? Math.round(size * 0.46) : plain ? size : Math.round(size * 0.44);
 
   return (
-    <div className={`flex flex-wrap gap-2 ${className}`}>
-      {links.map(({ url, Icon, label }) => (
-        <a
-          key={label}
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={label}
-          style={{ width: size, height: size }}
-          className="flex items-center justify-center rounded-full bg-[#1a2634] border border-[#2a3a4a] text-[#8a9bb0] hover:text-[#00c853] hover:border-[#00c853] transition-colors duration-200"
-          onClick={() => { if (url.includes('t.me')) fbEvent('Lead'); }}
-        >
-          <Icon s={iconSize} />
-        </a>
-      ))}
+    <div className={`flex flex-wrap gap-3 ${className}`}>
+      {links.map(({ url, Icon, label }) => {
+        if (branded) {
+          return (
+            <a
+              key={label}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="flex items-center justify-center text-white transition-transform duration-200 hover:scale-110"
+              style={{
+                width: size,
+                height: size,
+                borderRadius: '50%',
+                background: BRAND_BG[label] ?? '#555',
+                flexShrink: 0,
+              }}
+              onClick={() => { if (url.includes('t.me')) fbEvent('Lead'); }}
+            >
+              <Icon s={iconSize} />
+            </a>
+          );
+        }
+
+        if (plain) {
+          return (
+            <a
+              key={label}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              style={{ color: '#1D1D1D' }}
+              className="transition-opacity hover:opacity-70"
+              onClick={() => { if (url.includes('t.me')) fbEvent('Lead'); }}
+            >
+              <Icon s={iconSize} />
+            </a>
+          );
+        }
+
+        return (
+          <a
+            key={label}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={label}
+            style={{ width: size, height: size }}
+            className="flex items-center justify-center rounded-full bg-[#1a2634] border border-[#2a3a4a] text-[#8a9bb0] hover:text-[#00c853] hover:border-[#00c853] transition-colors duration-200"
+            onClick={() => { if (url.includes('t.me')) fbEvent('Lead'); }}
+          >
+            <Icon s={iconSize} />
+          </a>
+        );
+      })}
     </div>
   );
 }

@@ -68,6 +68,8 @@ export default function Predictions() {
 
   return (
     <div style={{ color: '#1D1D1D' }}>
+      {/* H1 for SEO — visually hidden, tabs convey context to users */}
+      <h1 className="sr-only">Today's Football Predictions — MyFreeTip</h1>
       {/* Tab bar */}
       <div style={{ borderBottom: '1px solid rgba(29,29,29,0.08)' }}>
         <div className="flex px-4">

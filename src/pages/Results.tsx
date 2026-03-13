@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { usePageMeta } from '@/hooks/usePageMeta'
 import { getResults, getAnalystStats } from '@/lib/api'
 import { PredictionCard, PredictionCardSkeleton } from '@/components/PredictionCard'
 
@@ -12,6 +14,12 @@ const FILTERS: { value: Filter; label: string }[] = [
 ]
 
 export default function Results() {
+  usePageMeta({
+    title: 'Prediction Results \u2014 Full Win\u2019Loss Record | MyFreeTip',
+    description: 'Full prediction results for MyFreeTip football tips. Every win, loss, and void published transparently. Filter by result and track our all-time win rate.',
+    canonical: 'https://myfreetip.com/results',
+  })
+
   const [filter, setFilter] = useState<Filter>('all')
 
   const { data: cards = [], isLoading } = useQuery({
@@ -40,6 +48,30 @@ export default function Results() {
   return (
     <div className="min-h-screen" style={{ background: '#F3F2EC' }}>
       <div className="max-w-2xl mx-auto px-4 py-8">
+
+        {/* Schema.org BreadcrumbList */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://myfreetip.com/' },
+                { '@type': 'ListItem', position: 2, name: 'Results', item: 'https://myfreetip.com/results' },
+              ],
+            }),
+          }}
+        />
+
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="mb-4">
+          <ol className="flex items-center gap-1.5 text-xs" style={{ color: '#777777' }}>
+            <li><Link to="/" className="hover:underline">Home</Link></li>
+            <li>»</li>
+            <li style={{ color: '#1D1D1D' }}>Results</li>
+          </ol>
+        </nav>
 
         {/* Page header */}
         <div className="mb-6">

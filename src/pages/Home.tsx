@@ -35,6 +35,41 @@ export default function Home() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+      {/* Schema.org WebSite + Organization */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'MyFreeTip',
+              url: 'https://myfreetip.com',
+              description: 'Free daily football predictions, match analysis, and transparent results for Kenyan bettors.',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: { '@type': 'EntryPoint', urlTemplate: 'https://myfreetip.com/sports-news?q={search_term_string}' },
+                'query-input': 'required name=search_term_string',
+              },
+            },
+            {
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'MyFreeTip',
+              url: 'https://myfreetip.com',
+              logo: 'https://myfreetip.com/brand/app-icon-512.png',
+              sameAs: ['https://t.me/BetsmartTi'],
+              contactPoint: {
+                '@type': 'ContactPoint',
+                contactType: 'customer support',
+                email: 'support@myfreetip.com',
+                availableLanguage: 'English',
+              },
+            },
+          ]),
+        }}
+      />
+
       {/* ── Hero + Best Pick — single col mobile, 2-col desktop ── */}
       <div className="pt-12 pb-12 lg:pt-20 lg:pb-20 lg:grid lg:grid-cols-[1fr_440px] lg:gap-16 lg:items-start">
 

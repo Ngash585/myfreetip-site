@@ -68,6 +68,20 @@ const ROUTES = [
       "Get in touch with the MyFreeTip team. Questions, partnership enquiries, or feedback about our football predictions and match analysis platform.",
   },
   {
+    path: "/results",
+    dir: "results",
+    title: "Prediction Results \u2014 Full Win\u2019Loss Record | MyFreeTip",
+    description:
+      "Full prediction results for MyFreeTip football tips. Every win, loss, and void published transparently. Filter by result and track our all-time win rate.",
+  },
+  {
+    path: "/contact",
+    dir: "contact",
+    title: "Contact MyFreeTip \u2014 Football Analysis Platform",
+    description:
+      "Get in touch with the MyFreeTip team. Questions, partnership enquiries, or feedback about our football predictions and match analysis platform.",
+  },
+  {
     path: "/bookmakers",
     dir: "bookmakers",
     title: "Bookmaker Reviews 2026 \u2014 Best Betting Sites in Kenya | MyFreeTip",

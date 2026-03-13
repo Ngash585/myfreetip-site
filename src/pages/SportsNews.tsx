@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { usePageMeta } from "@/hooks/usePageMeta";
 import { Link } from "react-router-dom";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { getNewsArticles } from "@/lib/api";
 import { getArticleImage } from "@/lib/articleImage";
 import { useQuery } from "@tanstack/react-query";
@@ -65,8 +65,31 @@ export default function SportsNews() {
   return (
     <div style={{ color: '#1D1D1D' }}>
 
+      {/* Schema.org BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://myfreetip.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Sports News', item: 'https://myfreetip.com/sports-news' },
+            ],
+          }),
+        }}
+      />
+
       {/* Page header */}
       <div className="px-4 pt-6 pb-4" style={{ borderBottom: '1px solid rgba(29,29,29,0.08)' }}>
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="mb-3">
+          <ol className="flex items-center gap-1.5 text-xs" style={{ color: '#777777' }}>
+            <li><Link to="/" className="hover:underline">Home</Link></li>
+            <li>»</li>
+            <li style={{ color: '#1D1D1D' }}>Sports News</li>
+          </ol>
+        </nav>
         <h1 className="text-2xl font-bold" style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, fontSize: '28px' }}>
           Sports News
         </h1>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getSportTipCards } from '@/lib/api'
@@ -57,8 +58,17 @@ export default function Football() {
         }}
       />
 
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="mt-6 mb-2">
+        <ol className="flex items-center gap-1.5 text-xs" style={{ color: '#777777' }}>
+          <li><Link to="/" className="hover:underline">Home</Link></li>
+          <li>»</li>
+          <li style={{ color: '#1D1D1D' }}>Football Predictions</li>
+        </ol>
+      </nav>
+
       {/* Page header */}
-      <div className="pt-8 pb-6">
+      <div className="pt-4 pb-6">
         <div className="flex items-center gap-3 mb-2">
           <span className="text-3xl" role="img" aria-label="Football">⚽</span>
           <h1 className="text-2xl sm:text-3xl font-black" style={{ color: '#1D1D1D' }}>

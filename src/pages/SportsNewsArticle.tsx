@@ -141,6 +141,25 @@ export default function SportsNewsArticle() {
     }
     script.textContent = JSON.stringify(jsonLd);
 
+    // BreadcrumbList schema
+    const breadcrumbLd = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Sports News", item: `${SITE_URL}/sports-news` },
+        { "@type": "ListItem", position: 3, name: article.title, item: articleUrl },
+      ],
+    };
+    let breadcrumbScript = document.querySelector<HTMLScriptElement>('script[data-breadcrumb-jsonld]');
+    if (!breadcrumbScript) {
+      breadcrumbScript = document.createElement("script");
+      breadcrumbScript.type = "application/ld+json";
+      breadcrumbScript.setAttribute("data-breadcrumb-jsonld", "");
+      document.head.appendChild(breadcrumbScript);
+    }
+    breadcrumbScript.textContent = JSON.stringify(breadcrumbLd);
+
     return () => {
       // Restore defaults on unmount
       document.title = `${SITE_NAME} \u2014 Free Daily Football Predictions and Match Analysis`;
@@ -155,6 +174,7 @@ export default function SportsNewsArticle() {
       removeMeta("article:published_time", true);
       removeMeta("article:author", true);
       document.querySelector('script[data-article-jsonld]')?.remove();
+      document.querySelector('script[data-breadcrumb-jsonld]')?.remove();
     };
   }, [article]);
 
@@ -248,7 +268,7 @@ export default function SportsNewsArticle() {
           <a
             href={article.affiliate_url}
             target="_blank"
-            rel="noreferrer noopener"
+            rel="noopener noreferrer sponsored"
             className="block text-center text-white font-bold py-3 rounded-xl transition-opacity hover:opacity-80"
             style={{ background: '#080A2D' }}
           >

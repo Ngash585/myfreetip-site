@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom'
+import { usePageMeta } from '@/hooks/usePageMeta'
+
 const EMAILS = [
   { label: "General",      address: "contact@myfreetip.com" },
   { label: "Support",      address: "support@myfreetip.com" },
@@ -23,8 +26,38 @@ const INPUT_STYLE = {
 } as const;
 
 export default function Contact() {
+  usePageMeta({
+    title: 'Contact MyFreeTip \u2014 Football Analysis Platform',
+    description: 'Get in touch with the MyFreeTip team. Questions, partnership enquiries, or feedback about our football predictions and match analysis platform.',
+    canonical: 'https://myfreetip.com/contact',
+  })
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-8" style={{ color: '#1D1D1D' }}>
+
+      {/* Schema.org BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://myfreetip.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Contact', item: 'https://myfreetip.com/contact' },
+            ],
+          }),
+        }}
+      />
+
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="mb-6">
+        <ol className="flex items-center gap-1.5 text-xs" style={{ color: '#777777' }}>
+          <li><Link to="/" className="hover:underline">Home</Link></li>
+          <li>»</li>
+          <li style={{ color: '#1D1D1D' }}>Contact</li>
+        </ol>
+      </nav>
 
       {/* ── Header ── */}
       <div className="mb-8">

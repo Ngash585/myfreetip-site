@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
 const WHAT_WE_DO_DIFFERENTLY = [
@@ -33,6 +34,30 @@ export default function About() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8" style={{ color: "#1D1D1D" }}>
+
+      {/* Schema.org BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://myfreetip.com/' },
+              { '@type': 'ListItem', position: 2, name: 'About', item: 'https://myfreetip.com/about' },
+            ],
+          }),
+        }}
+      />
+
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="mb-6">
+        <ol className="flex items-center gap-1.5 text-xs" style={{ color: '#777777' }}>
+          <li><Link to="/" className="hover:underline">Home</Link></li>
+          <li>»</li>
+          <li style={{ color: '#1D1D1D' }}>About</li>
+        </ol>
+      </nav>
 
       {/* About Us */}
       <section style={SECTION}>
@@ -126,6 +151,22 @@ export default function About() {
           This platform is intended for adults only, subject to applicable local laws and platform requirements.
         </p>
       </section>
+
+      {/* Internal links */}
+      <div className="pt-6 mt-2 flex flex-wrap gap-4" style={{ borderTop: '1px solid rgba(29,29,29,0.08)' }}>
+        <Link to="/predictions" className="text-sm font-semibold hover:underline" style={{ color: '#2D9A47' }}>
+          Today's Predictions →
+        </Link>
+        <Link to="/results" className="text-sm font-semibold hover:underline" style={{ color: '#2D9A47' }}>
+          Full Results Record →
+        </Link>
+        <Link to="/bookmakers" className="text-sm font-semibold hover:underline" style={{ color: '#2D9A47' }}>
+          Bookmaker Reviews →
+        </Link>
+        <Link to="/sports-news" className="text-sm font-semibold hover:underline" style={{ color: '#2D9A47' }}>
+          Football Analysis →
+        </Link>
+      </div>
 
     </div>
   );

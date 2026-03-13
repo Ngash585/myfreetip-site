@@ -6,6 +6,7 @@ const NAV = [
   { to: '/admin', label: 'Dashboard', icon: '▦', end: true },
   { to: '/admin/tips', label: 'Tips', icon: '⚽' },
   { to: '/admin/news', label: 'News', icon: '📰' },
+  { to: '/admin/bookmakers', label: 'Bookmakers', icon: '🏆' },
 ]
 
 export default function AdminLayout() {

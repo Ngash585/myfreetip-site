@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { getTipCards } from "@/lib/api";
+import { getTipCards, getBookmakers } from "@/lib/api";
 import { PredictionCard, PredictionCardSkeleton } from "@/components/PredictionCard";
 import { AnalystWinRateSection } from "@/components/AnalystWinRate";
 import { FreePicksSection } from "@/components/FreePicksSection";
 import { LatestNewsSnippet } from "@/components/LatestNewsSnippet";
 import { HeroSection } from "@/components/HeroSection";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
+import { BookmakerLogoStrip } from "@/components/bookmakers/BookmakerLogoStrip";
 
 export default function Home() {
   usePageMeta({
@@ -23,6 +24,13 @@ export default function Home() {
   });
   const bestBet = cards[0] ?? null;
   const matchOfTheDay = cards.find((c) => c.badge_label === "Match of the Day") ?? null;
+
+  const { data: allBookmakers = [] } = useQuery({
+    queryKey: ['bookmakers'],
+    queryFn: getBookmakers,
+  });
+  const homepageBookmakers = allBookmakers.filter((b) => b.show_homepage_widget);
+  const featuredBookmakers = homepageBookmakers.filter((b) => b.featured).slice(0, 3);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,6 +68,90 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      {/* ── Bookmaker logo strip ── */}
+      {homepageBookmakers.length > 0 && (
+        <div className="pb-8">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#777777' }}>
+              Top Bookmakers
+            </span>
+            <Link
+              to="/bookmakers"
+              className="text-xs font-medium transition-opacity hover:opacity-70"
+              style={{ color: '#3DB157' }}
+            >
+              See all →
+            </Link>
+          </div>
+          <BookmakerLogoStrip bookmakers={homepageBookmakers} seeAllHref="/bookmakers" />
+        </div>
+      )}
+
+      {/* ── Featured bookmaker widget ── */}
+      {featuredBookmakers.length > 0 && (
+        <div className="pb-8">
+          <div
+            className="rounded-2xl overflow-hidden"
+            style={{ background: '#FFFFFF', boxShadow: 'rgba(29, 29, 29, 0.08) 4px 16px 32px 0px' }}
+          >
+            <div
+              className="flex items-center justify-between px-5 py-3"
+              style={{ borderBottom: '1px solid rgba(29,29,29,0.06)' }}
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#777777' }}>
+                Top Betting Bonuses
+              </span>
+            </div>
+            <div className="divide-y" style={{ borderColor: 'rgba(29,29,29,0.06)' }}>
+              {featuredBookmakers.map((bm) => (
+                <div key={bm.slug} className="flex items-center gap-3 px-5 py-3">
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 overflow-hidden"
+                    style={{ background: bm.logo_bg_color ?? bm.brand_color ?? '#1D1D1D' }}
+                  >
+                    {bm.logo_url ? (
+                      <img src={bm.logo_url} alt={bm.name} className="w-7 h-7 object-contain" />
+                    ) : (
+                      <span className="text-white text-[10px] font-bold">{bm.name.slice(0, 3).toUpperCase()}</span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold leading-tight truncate" style={{ color: '#1D1D1D' }}>
+                      {bm.offer_headline ?? bm.name}
+                    </p>
+                    {bm.promo_code && (
+                      <p className="text-xs font-mono mt-0.5" style={{ color: '#777777' }}>
+                        Code: {bm.promo_code}
+                      </p>
+                    )}
+                  </div>
+                  {bm.claim_url && (
+                    <a
+                      href={bm.claim_url}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      className="shrink-0 px-3 py-1.5 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-85"
+                      style={{ background: bm.brand_color ?? '#1A56DB' }}
+                    >
+                      Claim
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="px-5 py-3" style={{ borderTop: '1px solid rgba(29,29,29,0.06)' }}>
+              <Link
+                to="/bookmakers"
+                className="text-sm font-medium transition-opacity hover:opacity-70"
+                style={{ color: '#3DB157' }}
+              >
+                See all bookmakers →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Full-width sections ── */}
       <div className="flex flex-col gap-16 pb-10">

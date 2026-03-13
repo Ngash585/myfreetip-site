@@ -5,6 +5,8 @@ const NAV_LINKS = [
   { label: "Predictions", href: "/predictions" },
   { label: "Results",     href: "/results" },
   { label: "News",        href: "/sports-news" },
+  { label: "Promos",      href: "/promo-codes" },
+  { label: "Bookmakers",  href: "/bookmakers" },
   { label: "About",       href: "/about" },
   { label: "Contact",     href: "/contact" },
 ];

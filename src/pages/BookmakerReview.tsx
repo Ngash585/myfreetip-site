@@ -120,12 +120,68 @@ export default function BookmakerReview() {
     },
   }
 
+  // FAQ Schema — triggers rich results for "[bookmaker] review Kenya" queries
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `Is ${bm.name} available in Kenya?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `Yes, ${bm.name} is fully available to Kenyan bettors and supports M-Pesa for deposits and withdrawals.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `What is the ${bm.name} welcome bonus?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: bm.offer_headline
+            ? `${bm.offer_headline}. ${bm.offer_subheadline ?? ''}`
+            : `${bm.name} offers a welcome bonus for new customers. Check the current offer above.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `What is the ${bm.name} promo code?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: bm.promo_code
+            ? `The ${bm.name} promo code is ${bm.promo_code}. Enter it when registering or making your first deposit to unlock the welcome bonus.`
+            : `Visit the ${bm.name} website via our link to see the latest promo code offer.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `How do I withdraw from ${bm.name} in Kenya?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `${bm.name} supports M-Pesa withdrawals in Kenya. Log in to your account, go to the cashier or withdrawal section, select M-Pesa, enter your phone number and amount, and confirm. Most withdrawals are processed quickly.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `What is ${bm.name} rated?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `MyFreeTip rates ${bm.name} ${(bm.our_score ?? bm.star_rating ?? 0).toFixed(1)} out of 10 based on odds quality, payment options, mobile experience, and bonus value.`,
+        },
+      },
+    ],
+  }
+
   return (
     <>
       {/* Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <script
         type="application/ld+json"
@@ -316,6 +372,41 @@ export default function BookmakerReview() {
             </div>
           </div>
         </section>
+
+        {/* ── Compare / internal links ── */}
+        {(() => {
+          const others = [
+            { slug: 'paripesa', name: 'Paripesa' },
+            { slug: '1xbet',    name: '1xBet' },
+            { slug: 'melbet',   name: 'Melbet' },
+          ].filter((b) => b.slug !== bm.slug)
+          return (
+            <section className="mb-10">
+              <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#777777' }}>
+                Compare bookmakers
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {others.map((b) => (
+                  <Link
+                    key={b.slug}
+                    to={`/bookmakers/${b.slug}`}
+                    className="px-4 py-2 rounded-full text-sm font-semibold transition-colors"
+                    style={{ background: '#F2EEE9', color: '#1D1D1D' }}
+                  >
+                    {b.name} Review →
+                  </Link>
+                ))}
+                <Link
+                  to="/bookmakers"
+                  className="px-4 py-2 rounded-full text-sm font-semibold transition-colors"
+                  style={{ background: '#F2EEE9', color: '#1D1D1D' }}
+                >
+                  All Bookmakers →
+                </Link>
+              </div>
+            </section>
+          )
+        })()}
 
         {/* ── Bonus Details ── */}
         <section id="bonus-details" className="scroll-mt-16">

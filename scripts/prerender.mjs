@@ -67,6 +67,55 @@ const ROUTES = [
     description:
       "Get in touch with the MyFreeTip team. Questions, partnership enquiries, or feedback about our football predictions and match analysis platform.",
   },
+  {
+    path: "/bookmakers",
+    dir: "bookmakers",
+    title: "Bookmaker Reviews 2026 \u2014 Best Betting Sites in Kenya | MyFreeTip",
+    description:
+      "Honest, in-depth bookmaker reviews for Kenyan bettors in 2026. We compare welcome bonuses, odds quality, M-Pesa payments, and overall value across the top betting sites.",
+  },
+  {
+    path: "/bookmakers/paripesa",
+    dir: "bookmakers/paripesa",
+    title: "Paripesa Review 2026 \u2014 Honest Assessment for Kenyan Bettors | MyFreeTip",
+    description:
+      "Our honest Paripesa review for 2026. Welcome bonus up to KES 3,000, odds quality, M-Pesa payments, and how Paripesa compares to rivals in Kenya.",
+  },
+  {
+    path: "/bookmakers/1xbet",
+    dir: "bookmakers/1xbet",
+    title: "1xBet Review 2026 \u2014 Is It the Best Bookmaker in Kenya? | MyFreeTip",
+    description:
+      "Comprehensive 1xBet review for Kenyan bettors in 2026. Odds quality, match codes, M-Pesa payments, welcome bonus, and overall value assessed.",
+  },
+  {
+    path: "/bookmakers/melbet",
+    dir: "bookmakers/melbet",
+    title: "Melbet Review 2026 \u2014 Full Assessment for Kenya | MyFreeTip",
+    description:
+      "Our complete Melbet review for 2026. Welcome bonus, ongoing promotions, odds quality, mobile app experience, and M-Pesa payments covered.",
+  },
+  {
+    path: "/promo-codes",
+    dir: "promo-codes",
+    title: "Betting Site Promo Codes 2026 \u2014 Kenya | MyFreeTip",
+    description:
+      "Exclusive, verified promo codes for the best betting sites in Kenya in 2026. Copy your code and claim your welcome bonus today. Updated regularly.",
+  },
+  {
+    path: "/sign-up-bonuses",
+    dir: "sign-up-bonuses",
+    title: "Best Sign Up Bonuses 2026 \u2014 Kenya Betting Sites | MyFreeTip",
+    description:
+      "The best sign-up bonuses and welcome offers from Kenyan betting sites in 2026. Reveal your exclusive code and claim up to KES 3,000 today.",
+  },
+  {
+    path: "/football",
+    dir: "football",
+    title: "Free Football Predictions Today \u2014 MyFreeTip",
+    description:
+      "Free daily football tips with confidence ratings and transparent results. Bet type labels on every pick so you can scan for your preferred markets at a glance.",
+  },
 ];
 
 function escapeAttr(str) {

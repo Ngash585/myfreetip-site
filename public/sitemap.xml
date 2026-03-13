@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core pages -->
   <url><loc>https://myfreetip.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
   <url><loc>https://myfreetip.com/predictions</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myfreetip.com/results</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://myfreetip.com/sports-news</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myfreetip.com/football</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+
+  <!-- Bookmaker pages — primary SEO targets -->
+  <url><loc>https://myfreetip.com/bookmakers</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myfreetip.com/bookmakers/paripesa</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://myfreetip.com/bookmakers/1xbet</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://myfreetip.com/bookmakers/melbet</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://myfreetip.com/promo-codes</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myfreetip.com/sign-up-bonuses</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+
+  <!-- Info pages -->
   <url><loc>https://myfreetip.com/about</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://myfreetip.com/contact</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://myfreetip.com/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>

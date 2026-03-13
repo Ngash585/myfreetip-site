@@ -56,13 +56,6 @@ export function BookmakerLogoStrip({ bookmakers, seeAllHref = '/bookmakers', scr
                 </span>
               )}
 
-              {/* Rank badge */}
-              <span
-                className="absolute top-0 right-0 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
-                style={{ background: '#C0392B', transform: 'translate(2px, -2px)' }}
-              >
-                {bm.rank}
-              </span>
             </div>
 
             {/* Name + rating below circle */}

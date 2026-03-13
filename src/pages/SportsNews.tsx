@@ -13,6 +13,7 @@ const CATEGORIES = [
   "Match Analysis",
   "Football Academy",
   "Big Wins",
+  "Registration Guides",
 ];
 
 function timeAgo(iso: string): string {

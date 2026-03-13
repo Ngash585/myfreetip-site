@@ -116,6 +116,27 @@ const ROUTES = [
     description:
       "Free daily football tips with confidence ratings and transparent results. Bet type labels on every pick so you can scan for your preferred markets at a glance.",
   },
+  {
+    path: "/sports-news/how-to-register-paripesa-kenya-2026",
+    dir: "sports-news/how-to-register-paripesa-kenya-2026",
+    title: "How to Register on Paripesa Kenya 2026 \u2014 Welcome Bonus & M-PESA Guide | MyFreeTip",
+    description:
+      "How to register on Paripesa Kenya in 2026, claim your KSh 18,000 welcome bonus, and make your first M-PESA deposit. Free football predictions and booking codes included. 18+ only.",
+  },
+  {
+    path: "/sports-news/how-to-register-1xbet-kenya-2026",
+    dir: "sports-news/how-to-register-1xbet-kenya-2026",
+    title: "How to Register on 1xBet Kenya 2026 \u2014 Welcome Bonus & M-PESA Guide | MyFreeTip",
+    description:
+      "How to register on 1xBet Kenya in 2026, claim the welcome bonus, and deposit via M-PESA. Free football predictions and daily booking codes from MyFreeTip included. 18+ only.",
+  },
+  {
+    path: "/sports-news/how-to-register-melbet-kenya-2026",
+    dir: "sports-news/how-to-register-melbet-kenya-2026",
+    title: "How to Register on Melbet Kenya 2026 \u2014 Welcome Bonus & M-PESA Guide | MyFreeTip",
+    description:
+      "How to register on Melbet Kenya in 2026, claim the welcome bonus, and deposit via M-PESA. Free football predictions and daily booking codes from MyFreeTip. 18+ only.",
+  },
 ];
 
 function escapeAttr(str) {

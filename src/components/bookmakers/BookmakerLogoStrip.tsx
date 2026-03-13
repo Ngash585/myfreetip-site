@@ -39,8 +39,9 @@ export function BookmakerLogoStrip({ bookmakers, seeAllHref = '/bookmakers', scr
             <div
               className="relative w-11 h-11 rounded-full flex items-center justify-center overflow-hidden"
               style={{
-                background: bm.logo_url ? (bm.logo_bg_color ?? bm.brand_color ?? '#E5E5E5') : '#E5E5E5',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.10)',
+                background: bm.logo_url ? '#FFFFFF' : '#E5E5E5',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
+                border: bm.logo_url ? '1.5px solid rgba(0,0,0,0.08)' : 'none',
               }}
             >
               {bm.logo_url ? (

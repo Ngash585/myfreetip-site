@@ -6,6 +6,7 @@ import { fbPageView } from "@/lib/fbpixel";
 
 // Home loads eagerly — it is the most common landing page
 import Home from "@/pages/Home";
+import GiveawayPopup from "@/components/GiveawayPopup";
 
 // All other public pages are lazy-loaded — only fetched when the user navigates there
 const Results           = lazy(() => import("@/pages/Results"));
@@ -45,6 +46,7 @@ export default function App() {
   return (
     <>
       <Analytics />
+      <GiveawayPopup />
       <Suspense fallback={null}>
         <Routes>
           <Route element={<Layout />}>

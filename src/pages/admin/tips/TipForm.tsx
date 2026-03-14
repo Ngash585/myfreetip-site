@@ -328,7 +328,14 @@ export default function TipForm() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Badge Label</label>
-              <input className={inputCls} style={inputStyle} value={badgeLabel} onChange={(e) => setBadgeLabel(e.target.value)} placeholder="e.g. Best Pick" />
+              <select className={inputCls} style={inputStyle} value={badgeLabel} onChange={(e) => setBadgeLabel(e.target.value)}>
+                <option value="">— None —</option>
+                <option value="Pick of the Day">Pick of the Day</option>
+                <option value="Top Pick">Top Pick</option>
+                <option value="Value Pick">Value Pick</option>
+                <option value="Banker Pick">Banker Pick</option>
+                <option value="Bold Pick">Bold Pick</option>
+              </select>
             </div>
             <div>
               <label className={labelCls}>Total Odds Label</label>

@@ -208,7 +208,10 @@ export default function SportsNewsArticle() {
       </Link>
 
       {/* Hero image — always shown, fetchpriority=high for LCP */}
-      <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-6">
+      <div
+        className="rounded-2xl overflow-hidden aspect-[16/9] mb-6"
+        style={undefined}
+      >
         <img
           src={getArticleImage(article)}
           alt={`${article.title} — ${article.category ?? 'Sports'} | ${SITE_NAME}`}
@@ -217,7 +220,7 @@ export default function SportsNewsArticle() {
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="w-full h-full object-cover"
+          className={`w-full h-full ${article.cover_url ? 'object-contain' : 'object-cover'}`}
         />
       </div>
 

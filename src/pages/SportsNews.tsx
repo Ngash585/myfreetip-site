@@ -142,7 +142,10 @@ export default function SportsNews() {
               className="group bg-white rounded-2xl overflow-hidden transition-shadow hover:shadow-lg block"
               style={{ boxShadow: 'rgba(29,29,29,0.08) 4px 16px 32px 0' }}
             >
-              <div className="aspect-[16/9] overflow-hidden">
+              <div
+                className="aspect-[16/9] overflow-hidden"
+                style={undefined}
+              >
                 <img
                   src={getArticleImage(article)}
                   alt={`${article.title} — ${article.category ?? 'Sports'} | MyFreeTip`}
@@ -150,7 +153,7 @@ export default function SportsNews() {
                   height={450}
                   loading={index < 2 ? "eager" : "lazy"}
                   decoding="async"
-                  className="w-full h-full object-cover group-hover:scale-[1.02] transition duration-300"
+                  className={`w-full h-full transition duration-300 group-hover:scale-[1.02] ${article.cover_url ? 'object-contain' : 'object-cover'}`}
                 />
               </div>
 

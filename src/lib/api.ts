@@ -762,7 +762,7 @@ export async function getNewsArticle(slug: string): Promise<NewsArticle | null> 
       .from('news_articles')
       .select('*')
       .eq('slug', slug)
-      .single()
+      .maybeSingle()
     if (!error && data) return data as NewsArticle
   }
   return MOCK_NEWS.find((a) => a.slug === slug) ?? null

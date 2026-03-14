@@ -28,6 +28,6 @@ export const BOOKMAKERS: Record<string, BookmakerConfig> = {
     dot: '#F5A623',
     activeBg: '#F5A623',
     activeText: '#1A1A1A',
-    affiliateUrl: 'https://refpa3665.com/L?tag=d_4720077m_45415c_&site=4720077&ad=45415',
+    affiliateUrl: 'https://refpa3665.com/L?tag=d_5333273m_45415c_&site=5333273&ad=45415',
   },
 }

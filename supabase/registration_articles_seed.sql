@@ -45,7 +45,7 @@ values
   '/logos/melbet.png',
   '2026-03-13T09:10:00.000Z',
   'TipMaster',
-  'https://refpa3665.com/L?tag=d_4720077m_45415c_&site=4720077&ad=45415',
+  'https://refpa3665.com/L?tag=d_5333273m_45415c_&site=5333273&ad=45415',
   'Register on Melbet — Claim Your Welcome Bonus'
 )
 

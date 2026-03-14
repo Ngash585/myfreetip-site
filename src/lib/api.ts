@@ -373,7 +373,7 @@ export async function getTipCards(): Promise<TipCard[]> {
       expiresAt: todayKickoff,
       bookies: [
         {
-          id: "1xbet", name: "1xBet", logo: "/1xbet.png", code: "XB12345",
+          id: "1xbet", name: "1xBet", logo: "/1xbet.webp", code: "XB12345",
           signup_url: BOOKMAKERS["1xbet"].affiliateUrl,
           signup_cta_label: "Join 1xBet",
           brand_hex: "#1E3A6E", default: true,
@@ -384,7 +384,7 @@ export async function getTipCards(): Promise<TipCard[]> {
           ],
         },
         {
-          id: "melbet", name: "Melbet", logo: "/melbet.png", code: "MB67890",
+          id: "melbet", name: "Melbet", logo: "/melbet.webp", code: "MB67890",
           signup_url: BOOKMAKERS.melbet.affiliateUrl,
           signup_cta_label: "Join Melbet",
           brand_hex: "#F5A623",
@@ -421,7 +421,7 @@ export async function getTipCards(): Promise<TipCard[]> {
       expiresAt: tomorrowKickoff,
       bookies: [
         {
-          id: "paripesa", name: "Paripesa", logo: "/paripesa.png", code: "MYFREETIP",
+          id: "paripesa", name: "Paripesa", logo: "/paripesa.webp", code: "MYFREETIP",
           signup_url: BOOKMAKERS.paripesa.affiliateUrl,
           signup_cta_label: "Join Paripesa",
           brand_hex: "#1A56DB", default: true,
@@ -432,7 +432,7 @@ export async function getTipCards(): Promise<TipCard[]> {
           ],
         },
         {
-          id: "1xbet", name: "1xBet", logo: "/1xbet.png", code: "XB99001",
+          id: "1xbet", name: "1xBet", logo: "/1xbet.webp", code: "XB99001",
           signup_url: BOOKMAKERS["1xbet"].affiliateUrl,
           signup_cta_label: "Join 1xBet",
           brand_hex: "#1E3A6E",
@@ -476,7 +476,7 @@ export async function getTipCards(): Promise<TipCard[]> {
       expiresAt: upcomingKickoff,
       bookies: [
         {
-          id: "melbet", name: "Melbet", logo: "/melbet.png", code: "MB55443",
+          id: "melbet", name: "Melbet", logo: "/melbet.webp", code: "MB55443",
           signup_url: BOOKMAKERS.melbet.affiliateUrl,
           signup_cta_label: "Join Melbet",
           brand_hex: "#F5A623", default: true,
@@ -705,7 +705,7 @@ const MOCK_BOOKMAKERS: BookmakerEntry[] = [
     rank: 1,
     name: 'Paripesa',
     slug: 'paripesa',
-    logo_url: '/logos/paripesa.png',
+    logo_url: '/paripesa.webp',
     brand_color: '#1A56DB',
     logo_bg_color: '#1A56DB',
     active: true,
@@ -732,7 +732,7 @@ const MOCK_BOOKMAKERS: BookmakerEntry[] = [
     rank: 2,
     name: '1xBet',
     slug: '1xbet',
-    logo_url: '/logos/1xbet.png',
+    logo_url: '/1xbet.webp',
     brand_color: '#1E3A6E',
     logo_bg_color: '#1E3A6E',
     active: true,
@@ -759,7 +759,7 @@ const MOCK_BOOKMAKERS: BookmakerEntry[] = [
     rank: 3,
     name: 'Melbet',
     slug: 'melbet',
-    logo_url: '/logos/melbet.png',
+    logo_url: '/melbet.webp',
     brand_color: '#F5A623',
     logo_bg_color: '#F5A623',
     active: true,

@@ -422,7 +422,7 @@ export async function getTipCards(): Promise<TipCard[]> {
       bookies: [
         {
           id: "paripesa", name: "Paripesa", logo: "/paripesa.png", code: "MYFREETIP",
-          signup_url: BOOKMAKERS.paripesa.webUrl ?? BOOKMAKERS.paripesa.affiliateUrl,
+          signup_url: BOOKMAKERS.paripesa.affiliateUrl,
           signup_cta_label: "Join Paripesa",
           brand_hex: "#1A56DB", default: true,
           returns: [

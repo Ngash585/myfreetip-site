@@ -109,7 +109,7 @@ On the payments side, M-Pesa deposits and withdrawals are instant and free. Pari
   'Deposit KES 1,000 Get KES 3,000',
   'Use code MYFREETIP for your welcome bonus',
   'MYFREETIP',
-  'https://refpa483247.pro/L?tag=d_4716502m_1573c_&site=4716502&ad=1573',
+  'https://refpa14435.com/L?tag=d_4659871m_1599c_&site=4659871&ad=1599',
   'Last used 12 mins ago',
   'New customers only. Min deposit KES 1,000. Bonus credited as free bets. Wagering requirements apply. 18+.',
   true, true, true, false,

@@ -31,7 +31,7 @@ values
   '/logos/1xbet.png',
   '2026-03-13T09:05:00.000Z',
   'TipMaster',
-  'https://refpa483247.pro/L?tag=d_4716502m_1573c_&site=4716502&ad=1573',
+  'https://refpa14435.com/L?tag=d_4659871m_1599c_&site=4659871&ad=1599',
   'Register on 1xBet — Claim Your Welcome Bonus'
 ),
 

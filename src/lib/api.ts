@@ -740,7 +740,7 @@ const MOCK_BOOKMAKERS: BookmakerEntry[] = [
     offer_headline: 'Deposit KES 1,000 Get KES 3,000',
     offer_subheadline: 'Use code MYFREETIP for your welcome bonus',
     promo_code: 'MYFREETIP',
-    claim_url: 'https://refpa483247.pro/L?tag=d_4716502m_1573c_&site=4716502&ad=1573',
+    claim_url: 'https://refpa14435.com/L?tag=d_4659871m_1599c_&site=4659871&ad=1599',
     last_used_text: 'Last used 12 mins ago',
     terms: 'New customers only. Min deposit KES 1,000. Bonus credited as free bets. Wagering requirements apply. 18+.',
     show_promo_codes: true,

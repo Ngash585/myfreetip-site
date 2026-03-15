@@ -21,7 +21,7 @@ export const BOOKMAKERS: Record<string, BookmakerConfig> = {
     dot: '#1E3A6E',
     activeBg: '#1E3A6E',
     activeText: '#FFFFFF',
-    affiliateUrl: 'https://refpa483247.pro/L?tag=d_4716502m_1573c_&site=4716502&ad=1573',
+    affiliateUrl: 'https://refpa14435.com/L?tag=d_4659871m_1599c_&site=4659871&ad=1599',
   },
   melbet: {
     name: 'Melbet',
